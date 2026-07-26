@@ -1,0 +1,416 @@
+{
+ "_schema": {
+  "consumes": "derived from the input parameters of non-read tools",
+  "emits": "NOT PRESENT. MCP schemas describe inputs only; emits stays name-derived in data/profiles.json and is unchanged by Phase 3.",
+  "preconditions": "[required_tool, dependent_tool] \u2014 mandatory ordering",
+  "runtime": "activity_feed | poll_windowed | poll_blind \u2014 whether a poll of this connector can ask what CHANGED. Nothing in MCP is event-emitting; there is no subscribe or webhook parameter in any of the 178 tools, so that category is empty by measurement rather than by assumption.",
+  "scope": "11 session connectors of 820. A depth upgrade, not coverage.",
+  "selectors": "keys a READ tool can be addressed by \u2014 new in Phase 3",
+  "tier": "SCHEMA \u2014 tool list AND full parameter schemas observed live. Strictly stronger than VERIFIED, which is names only."
+ },
+ "connectors": {
+  "anthropiceconomicindex": {
+   "consumes": [],
+   "consumes_namesplit": [],
+   "n_params": 10,
+   "n_tools": 9,
+   "name": "Anthropic Economic Index",
+   "preconditions": [],
+   "runtime": "poll_blind",
+   "runtime_evidence": [],
+   "selectors": [
+    "geo",
+    "text"
+   ],
+   "side_effects_name": "read",
+   "side_effects_schema": "read",
+   "tier": "SCHEMA"
+  },
+  "canva": {
+   "consumes": [
+    "code",
+    "company",
+    "file",
+    "image",
+    "person",
+    "phone",
+    "rows",
+    "text",
+    "url",
+    "vendor_id"
+   ],
+   "consumes_namesplit": [
+    "code",
+    "company",
+    "file",
+    "image",
+    "person",
+    "phone",
+    "rows",
+    "text",
+    "url",
+    "vendor_id"
+   ],
+   "n_params": 124,
+   "n_tools": 30,
+   "name": "Canva",
+   "preconditions": [
+    [
+     "generate-design",
+     "create-design-from-candidate"
+    ],
+    [
+     "get-export-formats",
+     "export-design"
+    ],
+    [
+     "list-comments",
+     "list-replies"
+    ],
+    [
+     "list-comments",
+     "reply-to-comment"
+    ],
+    [
+     "read-design",
+     "edit-design"
+    ],
+    [
+     "request-outline-review",
+     "generate-design-structured"
+    ]
+   ],
+   "runtime": "poll_blind",
+   "runtime_evidence": [],
+   "selectors": [
+    "company",
+    "file",
+    "image",
+    "money",
+    "rows",
+    "text",
+    "url",
+    "vendor_id"
+   ],
+   "side_effects_name": "mutate",
+   "side_effects_schema": "irreversible",
+   "tier": "SCHEMA"
+  },
+  "cloudflaredeveloperplatform": {
+   "consumes": [
+    "code",
+    "domain",
+    "person",
+    "rows",
+    "text",
+    "vendor_id"
+   ],
+   "consumes_namesplit": [
+    "domain",
+    "person",
+    "rows",
+    "text",
+    "vendor_id"
+   ],
+   "n_params": 43,
+   "n_tools": 23,
+   "name": "Cloudflare Developer Platform",
+   "preconditions": [],
+   "runtime": "poll_blind",
+   "runtime_evidence": [],
+   "selectors": [
+    "rows",
+    "text",
+    "vendor_id"
+   ],
+   "side_effects_name": "irreversible",
+   "side_effects_schema": "irreversible",
+   "tier": "SCHEMA"
+  },
+  "gmail": {
+   "consumes": [
+    "email",
+    "file",
+    "text",
+    "vendor_id"
+   ],
+   "consumes_namesplit": [
+    "email",
+    "file",
+    "text",
+    "vendor_id"
+   ],
+   "n_params": 50,
+   "n_tools": 16,
+   "name": "Gmail",
+   "preconditions": [],
+   "runtime": "poll_windowed_dsl",
+   "runtime_evidence": [
+    "list_drafts",
+    "search_threads"
+   ],
+   "selectors": [
+    "email",
+    "text"
+   ],
+   "side_effects_name": "irreversible",
+   "side_effects_schema": "irreversible",
+   "tier": "SCHEMA"
+  },
+  "googlecalendar": {
+   "consumes": [],
+   "consumes_namesplit": [],
+   "n_params": 3,
+   "n_tools": 1,
+   "name": "Google Calendar",
+   "preconditions": [],
+   "runtime": "poll_blind",
+   "runtime_evidence": [],
+   "selectors": [
+    "text"
+   ],
+   "side_effects_name": "read",
+   "side_effects_schema": "read",
+   "tier": "SCHEMA"
+  },
+  "googledrive": {
+   "consumes": [
+    "file",
+    "text",
+    "vendor_id"
+   ],
+   "consumes_namesplit": [
+    "file",
+    "text",
+    "vendor_id"
+   ],
+   "n_params": 26,
+   "n_tools": 8,
+   "name": "Google Drive",
+   "preconditions": [],
+   "runtime": "poll_windowed_dsl",
+   "runtime_evidence": [
+    "search_files"
+   ],
+   "selectors": [
+    "file",
+    "money",
+    "text"
+   ],
+   "side_effects_name": "create",
+   "side_effects_schema": "create",
+   "tier": "SCHEMA"
+  },
+  "supabase": {
+   "consumes": [
+    "code",
+    "company",
+    "file",
+    "geo",
+    "project",
+    "text"
+   ],
+   "consumes_namesplit": [
+    "code",
+    "company",
+    "file",
+    "geo",
+    "project",
+    "text"
+   ],
+   "n_params": 49,
+   "n_tools": 29,
+   "name": "Supabase",
+   "preconditions": [
+    [
+     "confirm_cost",
+     "create_branch"
+    ],
+    [
+     "confirm_cost",
+     "create_project"
+    ],
+    [
+     "get_cost",
+     "confirm_cost"
+    ]
+   ],
+   "runtime": "poll_blind",
+   "runtime_evidence": [],
+   "selectors": [
+    "company",
+    "money",
+    "project",
+    "rows",
+    "vendor_id"
+   ],
+   "side_effects_name": "irreversible",
+   "side_effects_schema": "irreversible",
+   "tier": "SCHEMA"
+  },
+  "threejs3dviewer": {
+   "consumes": [
+    "code"
+   ],
+   "consumes_namesplit": [],
+   "n_params": 2,
+   "n_tools": 2,
+   "name": "Three.js 3D Viewer",
+   "preconditions": [],
+   "runtime": "poll_blind",
+   "runtime_evidence": [],
+   "selectors": [],
+   "side_effects_name": "read",
+   "side_effects_schema": "mutate",
+   "tier": "SCHEMA"
+  },
+  "tldraw": {
+   "consumes": [
+    "code",
+    "vendor_id"
+   ],
+   "consumes_namesplit": [],
+   "n_params": 3,
+   "n_tools": 2,
+   "name": "tldraw",
+   "preconditions": [],
+   "runtime": "poll_blind",
+   "runtime_evidence": [],
+   "selectors": [],
+   "side_effects_name": "read",
+   "side_effects_schema": "mutate",
+   "tier": "SCHEMA"
+  },
+  "todoist": {
+   "consumes": [
+    "company",
+    "file",
+    "geo",
+    "person",
+    "project",
+    "rows",
+    "text",
+    "timestamp",
+    "vendor_id"
+   ],
+   "consumes_namesplit": [
+    "company",
+    "file",
+    "geo",
+    "person",
+    "project",
+    "rows",
+    "text",
+    "timestamp",
+    "vendor_id"
+   ],
+   "n_params": 108,
+   "n_tools": 45,
+   "name": "Todoist",
+   "preconditions": [
+    [
+     "find-comments",
+     "view-attachment"
+    ]
+   ],
+   "runtime": "poll_windowed",
+   "runtime_evidence": [
+    "find-activity",
+    "find-completed-tasks",
+    "find-reminders",
+    "find-tasks-by-date"
+   ],
+   "selectors": [
+    "company",
+    "file",
+    "geo",
+    "person",
+    "project",
+    "rows",
+    "text",
+    "timestamp",
+    "vendor_id"
+   ],
+   "side_effects_name": "irreversible",
+   "side_effects_schema": "irreversible",
+   "tier": "SCHEMA"
+  },
+  "vercel": {
+   "consumes": [
+    "code",
+    "company",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "money",
+    "person",
+    "phone",
+    "project",
+    "text",
+    "url",
+    "vendor_id"
+   ],
+   "consumes_namesplit": [
+    "code",
+    "company",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "money",
+    "person",
+    "phone",
+    "project",
+    "text",
+    "url",
+    "vendor_id"
+   ],
+   "n_params": 63,
+   "n_tools": 13,
+   "name": "Vercel",
+   "preconditions": [
+    [
+     "buy_domain",
+     "get_domain_order"
+    ],
+    [
+     "get_purchase_quote",
+     "buy_addon"
+    ],
+    [
+     "get_purchase_quote",
+     "buy_credits"
+    ],
+    [
+     "get_purchase_quote",
+     "buy_domain"
+    ],
+    [
+     "get_purchase_quote",
+     "buy_pro"
+    ]
+   ],
+   "runtime": "poll_windowed",
+   "runtime_evidence": [
+    "get_web_analytics"
+   ],
+   "selectors": [
+    "domain",
+    "email",
+    "money",
+    "project",
+    "rows",
+    "text",
+    "timestamp",
+    "vendor_id"
+   ],
+   "side_effects_name": "irreversible",
+   "side_effects_schema": "irreversible",
+   "tier": "SCHEMA"
+  }
+ },
+ "generated": "2026-07-26"
+}

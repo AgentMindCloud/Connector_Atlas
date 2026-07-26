@@ -1,0 +1,410 @@
+{
+ "_schema": {
+  "note": "names vs parameters on the 11 session connectors. Parameters are the reference set."
+ },
+ "agreement": {
+  "both": 21,
+  "f1": 0.525,
+  "names_only": 4,
+  "params_only": 34,
+  "precision": 0.84,
+  "recall": 0.3818
+ },
+ "connectors": {
+  "Anthropic Economic Index": {
+   "invented": [],
+   "missed": [],
+   "name_derived": [],
+   "param_derived": []
+  },
+  "Canva": {
+   "invented": [
+    "email"
+   ],
+   "missed": [
+    "code",
+    "phone",
+    "text",
+    "vendor_id"
+   ],
+   "name_derived": [
+    "company",
+    "email",
+    "file",
+    "image",
+    "person",
+    "rows",
+    "url"
+   ],
+   "param_derived": [
+    "code",
+    "company",
+    "file",
+    "image",
+    "person",
+    "phone",
+    "rows",
+    "text",
+    "url",
+    "vendor_id"
+   ]
+  },
+  "Cloudflare Developer Platform": {
+   "invented": [
+    "company",
+    "file"
+   ],
+   "missed": [
+    "code",
+    "domain",
+    "person",
+    "text",
+    "vendor_id"
+   ],
+   "name_derived": [
+    "company",
+    "file",
+    "rows"
+   ],
+   "param_derived": [
+    "code",
+    "domain",
+    "person",
+    "rows",
+    "text",
+    "vendor_id"
+   ]
+  },
+  "Gmail": {
+   "invented": [],
+   "missed": [
+    "file",
+    "vendor_id"
+   ],
+   "name_derived": [
+    "email",
+    "text"
+   ],
+   "param_derived": [
+    "email",
+    "file",
+    "text",
+    "vendor_id"
+   ]
+  },
+  "Google Calendar": {
+   "invented": [],
+   "missed": [],
+   "name_derived": [],
+   "param_derived": []
+  },
+  "Google Drive": {
+   "invented": [],
+   "missed": [
+    "text",
+    "vendor_id"
+   ],
+   "name_derived": [
+    "file"
+   ],
+   "param_derived": [
+    "file",
+    "text",
+    "vendor_id"
+   ]
+  },
+  "Supabase": {
+   "invented": [
+    "rows"
+   ],
+   "missed": [
+    "company",
+    "file",
+    "geo",
+    "text"
+   ],
+   "name_derived": [
+    "code",
+    "project",
+    "rows"
+   ],
+   "param_derived": [
+    "code",
+    "company",
+    "file",
+    "geo",
+    "project",
+    "text"
+   ]
+  },
+  "Three.js 3D Viewer": {
+   "invented": [],
+   "missed": [
+    "code"
+   ],
+   "name_derived": [],
+   "param_derived": [
+    "code"
+   ]
+  },
+  "Todoist": {
+   "invented": [],
+   "missed": [
+    "company",
+    "file",
+    "geo",
+    "person",
+    "vendor_id"
+   ],
+   "name_derived": [
+    "project",
+    "rows",
+    "text",
+    "timestamp"
+   ],
+   "param_derived": [
+    "company",
+    "file",
+    "geo",
+    "person",
+    "project",
+    "rows",
+    "text",
+    "timestamp",
+    "vendor_id"
+   ]
+  },
+  "Vercel": {
+   "invented": [],
+   "missed": [
+    "code",
+    "company",
+    "file",
+    "geo",
+    "money",
+    "person",
+    "phone",
+    "project",
+    "vendor_id"
+   ],
+   "name_derived": [
+    "domain",
+    "email",
+    "image",
+    "text",
+    "url"
+   ],
+   "param_derived": [
+    "code",
+    "company",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "money",
+    "person",
+    "phone",
+    "project",
+    "text",
+    "url",
+    "vendor_id"
+   ]
+  },
+  "tldraw": {
+   "invented": [],
+   "missed": [
+    "code",
+    "vendor_id"
+   ],
+   "name_derived": [],
+   "param_derived": [
+    "code",
+    "vendor_id"
+   ]
+  }
+ },
+ "preconditions": {
+  "Canva": [
+   [
+    "generate-design",
+    "create-design-from-candidate"
+   ],
+   [
+    "get-export-formats",
+    "export-design"
+   ],
+   [
+    "list-comments",
+    "list-replies"
+   ],
+   [
+    "list-comments",
+    "reply-to-comment"
+   ],
+   [
+    "read-design",
+    "edit-design"
+   ],
+   [
+    "request-outline-review",
+    "generate-design-structured"
+   ]
+  ],
+  "Supabase": [
+   [
+    "confirm_cost",
+    "create_branch"
+   ],
+   [
+    "confirm_cost",
+    "create_project"
+   ],
+   [
+    "get_cost",
+    "confirm_cost"
+   ]
+  ],
+  "Todoist": [
+   [
+    "find-comments",
+    "view-attachment"
+   ]
+  ],
+  "Vercel": [
+   [
+    "buy_domain",
+    "get_domain_order"
+   ],
+   [
+    "get_purchase_quote",
+    "buy_addon"
+   ],
+   [
+    "get_purchase_quote",
+    "buy_credits"
+   ],
+   [
+    "get_purchase_quote",
+    "buy_domain"
+   ],
+   [
+    "get_purchase_quote",
+    "buy_pro"
+   ]
+  ]
+ },
+ "runtime": {
+  "Anthropic Economic Index": {
+   "name": "poll_blind",
+   "schema": "poll_blind"
+  },
+  "Canva": {
+   "name": "poll_blind",
+   "schema": "poll_blind"
+  },
+  "Cloudflare Developer Platform": {
+   "name": "poll_blind",
+   "schema": "poll_blind"
+  },
+  "Gmail": {
+   "name": "poll_blind",
+   "schema": "poll_windowed_dsl"
+  },
+  "Google Calendar": {
+   "name": "poll_blind",
+   "schema": "poll_blind"
+  },
+  "Google Drive": {
+   "name": "poll_windowed",
+   "schema": "poll_windowed_dsl"
+  },
+  "Supabase": {
+   "name": "poll_windowed",
+   "schema": "poll_blind"
+  },
+  "Three.js 3D Viewer": {
+   "name": "poll_blind",
+   "schema": "poll_blind"
+  },
+  "Todoist": {
+   "name": "poll_windowed",
+   "schema": "poll_windowed"
+  },
+  "Vercel": {
+   "name": "poll_blind",
+   "schema": "poll_windowed"
+  },
+  "tldraw": {
+   "name": "poll_blind",
+   "schema": "poll_blind"
+  }
+ },
+ "selectors": {
+  "Anthropic Economic Index": [
+   "geo",
+   "text"
+  ],
+  "Canva": [
+   "company",
+   "file",
+   "image",
+   "money",
+   "rows",
+   "text",
+   "url",
+   "vendor_id"
+  ],
+  "Cloudflare Developer Platform": [
+   "rows",
+   "text",
+   "vendor_id"
+  ],
+  "Gmail": [
+   "email",
+   "text"
+  ],
+  "Google Calendar": [
+   "text"
+  ],
+  "Google Drive": [
+   "file",
+   "money",
+   "text"
+  ],
+  "Supabase": [
+   "company",
+   "money",
+   "project",
+   "rows",
+   "vendor_id"
+  ],
+  "Three.js 3D Viewer": [],
+  "Todoist": [
+   "company",
+   "file",
+   "geo",
+   "person",
+   "project",
+   "rows",
+   "text",
+   "timestamp",
+   "vendor_id"
+  ],
+  "Vercel": [
+   "domain",
+   "email",
+   "money",
+   "project",
+   "rows",
+   "text",
+   "timestamp",
+   "vendor_id"
+  ],
+  "tldraw": []
+ },
+ "side_effects": {
+  "agree": 8,
+  "differ": 3
+ }
+}

@@ -112,11 +112,13 @@ def load(model="inherited"):
             c["tier"] = p["tier"]
             c["n_tools"] = p["n_tools"]
             c["authless"] = p.get("authless", False)
+            c["runtime"] = p.get("runtime", "unmeasured")
     else:
         for c in conns.values():
             c.setdefault("tier", "DIRECTORY")
             c.setdefault("n_tools", 0)
             c.setdefault("authless", False)
+            c.setdefault("runtime", "unmeasured")
 
     out = list(conns.values())
     if model == "evidence":

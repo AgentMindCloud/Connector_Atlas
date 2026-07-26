@@ -11,7 +11,11 @@
   "distinct_join_profiles": 190,
   "archetype_edges": 1610,
   "curated_overrides": 14,
-  "empty_archetypes": []
+  "empty_archetypes": [
+   "desktop_local",
+   "browser_automation",
+   "ai_tools"
+  ]
  },
  "side_effects": {
   "read": 247,

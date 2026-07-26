@@ -268,11 +268,13 @@ ol.plan li{margin-bottom:5px;padding-left:3px}
     <button data-v="C">connector profile</button>
     <button data-v="M">motif census</button>
     <button data-v="D">model diff</button>
+    <button data-v="S">schema evidence</button>
   </div>
   <div class="lv on" id="lvP"></div>
   <div class="lv" id="lvC"></div>
   <div class="lv" id="lvM"></div>
   <div class="lv" id="lvD"></div>
+  <div class="lv" id="lvS"></div>
 </div>
 <div id="sfx">
   <span class="sfc"><i style="background:#35A481"></i>read</span>
@@ -649,19 +651,19 @@ function openConn(i){
 function openSystem(si){
   st.sys=si; st.sel=-1; st.q=null; st.hl=null; st.last=now();
   document.getElementById("q").value="";
-  var s=SYS[si], sc=s.score, ev=sc.evaluators, ax=sc.requested_axes, ec=sc.economics;
+  var s=SYS[si], sc=s.score, ev=sc.evaluators, dn=sc.descriptive_not_scored, tc=sc.trigger_check;
   var h='<button class="dx" id="dx">×</button><div class="dk">'+esc(s.tier_label)+
     ' system · '+(s.connector_count)+' connectors</div><h2>'+esc(s.name)+'</h2>'+
     '<p class="tag">'+esc(s.tagline)+'</p>';
   h+='<div class="chips">'+
-     '<span class="chip tg '+sc.tier_leverage+'">leverage '+sc.tier_leverage+' · '+sc.LEVERAGE+'</span>'+
+     '<span class="chip tg '+sc.tier_robustness+'">robustness '+sc.tier_robustness+' · '+sc.ROBUSTNESS+'</span>'+
      '<span class="chip tg '+sc.tier_capability+'">capability '+sc.tier_capability+' · '+sc.CAPABILITY+'</span>'+
      '<span class="chip">'+esc(s.mode)+' mode</span>'+
      '<span class="chip" style="'+(s.confidence==="VERIFIED"?'color:#F4EFE8;border-color:rgba(244,239,232,.5)':'')+'">'+esc(s.confidence)+'</span>'+
      '</div>';
 
   h+='<div class="sec">the two lenses</div>';
-  h+=bar("LEVERAGE — will it run, does it pay back",sc.LEVERAGE,"#35A481");
+  h+=bar("ROBUSTNESS — will this combination keep running",sc.ROBUSTNESS,"#35A481");
   h+=bar("CAPABILITY — how hard it works the graph",sc.CAPABILITY,"#E64A2E");
 
   h+='<div class="sec">composition block</div><div class="blk">'+
@@ -682,26 +684,35 @@ function openSystem(si){
   });
   h+='</div>';
 
-  h+='<div class="sec">the nine evaluators</div>';
+  h+='<div class="sec">the evaluators</div>';
   h+='<div class="kv"><span>blast radius</span><span>'+["read (0)","create (1)","mutate (2)","irreversible (3)"][ev.blast_radius]+'</span></div>';
   h+='<div class="kv"><span>auth surface</span><span>'+ev.auth_surface+' accounts</span></div>';
   h+='<div class="kv"><span>trigger reality</span><span>'+ev.trigger_reality+'/3</span></div>';
   h+='<div class="kv"><span>fan-in : depth</span><span>'+ev.fan_in_depth_ratio+'</span></div>';
-  h+='<div class="kv"><span>cold start</span><span>'+ev.cold_start_days+' days</span></div>';
-  h+='<div class="kv"><span>cost per run</span><span>$'+ev.cost_per_run_usd+'</span></div>';
+  h+='<div class="kv"><span>tool preconditions</span><span>'+ev.precondition_edges+
+     ' mandatory <span style="color:#8A7F76">('+esc(sc.precondition_coverage)+')</span></span></div>';
   h+='<div class="kv"><span>state gravity</span><span>'+ev.state_gravity+'</span></div>';
   h+='<div class="kv"><span>judgment share</span><span>'+Math.round(ev.judgment_share*100)+'% claude</span></div>';
   h+='<div class="kv"><span>degradation grace</span><span>'+["dies","partial","degrades","self-heals"][ev.degradation_grace]+'</span></div>';
 
-  h+='<div class="sec">cost & time</div>';
-  h+='<div class="kv"><span>build</span><span>'+ax.build_hours+' h · $'+ax.build_cost_usd.toLocaleString()+'</span></div>';
-  h+='<div class="kv"><span>run</span><span>$'+ax.monthly_run_cost_usd.toLocaleString()+' / month</span></div>';
-  h+='<div class="kv"><span>reclaims</span><span>$'+ec.monthly_value_usd.toLocaleString()+' / month</span></div>';
-  h+='<div class="kv"><span>net</span><span style="color:'+(ec.net_monthly_usd>0?"#35A481":"#E64A2E")+'">$'+
-     ec.net_monthly_usd.toLocaleString()+' / month</span></div>';
-  h+='<div class="kv"><span>break-even</span><span style="color:'+(ec.breakeven_months?"#F4EFE8":"#E64A2E")+'">'+
-     (ec.breakeven_months? ec.breakeven_months+" months" : "never — costs exceed reclaimed value")+'</span></div>';
-  h+='<div class="kv"><span>human input</span><span>'+ax.human_minutes_per_week+' min / week</span></div>';
+  var TVERD={supported:["#35A481","the trigger claim holds"],
+              not_claimed:["#8A7F76","no unattended trigger claimed"],
+              blind:["#E64A2E","fires blind"],
+              unmeasurable:["#8A7F76","nothing to check against"]};
+  h+='<div class="sec">trigger, checked against the runtime axis</div>';
+  h+='<div class="kv"><span>claimed</span><span>'+esc(tc.claimed||"—")+'</span></div>';
+  h+='<div class="kv"><span>source connectors</span><span>'+
+     (tc.source_runtimes.length? tc.source_runtimes.join(", ") : "none named")+'</span></div>';
+  h+='<div class="kv"><span>verdict</span><span style="color:'+TVERD[tc.verdict][0]+'">'+
+     esc(tc.verdict)+' — '+TVERD[tc.verdict][1]+'</span></div>';
+  if(tc.note) h+='<div class="warn" style="margin-top:9px">'+esc(tc.note)+'</div>';
+
+  h+='<div class="sec">build shape — described, not scored</div>';
+  h+='<div class="kv"><span>build</span><span>'+dn.build_hours+' h</span></div>';
+  h+='<div class="kv"><span>run</span><span>$'+dn.monthly_run_cost_usd.toLocaleString()+' / month</span></div>';
+  h+='<div class="kv"><span>cost per run</span><span>$'+dn.cost_per_run_usd+'</span></div>';
+  h+='<div class="kv"><span>cold start</span><span>'+dn.cold_start_days+' days</span></div>';
+  h+='<div class="note" style="margin-top:9px">'+esc(dn.note)+'</div>';
 
   h+='<div class="sec">build plan</div><ol class="plan">'+
      (s.build_plan||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ol>';
@@ -724,8 +735,10 @@ function renderRail(){
     });
   } else {
     h+='<div class="srow" style="cursor:default;opacity:.75"><div class="m" style="line-height:1.6">'+
-       'Authored under an operator-payback framing this project has dropped. '+
-       'Kept as worked examples of composition shape, not as recommendations.</div></div>';
+       'Authored under an operator-payback framing this project has dropped. Phase 3 '+
+       'deleted that lens from the scorer too: these now rank on ROBUSTNESS, which uses '+
+       'no rates and no reclaimed hours. Kept as worked examples of composition shape, '+
+       'not as recommendations.</div></div>';
     SYS.forEach(function(s,i){
       /* Payback months and LEVERAGE tiers were the wrong frame: they scored these
          by what one operator would save, which says nothing about whether the
@@ -1069,9 +1082,103 @@ function renderDiff(){
   document.getElementById("lvD").innerHTML=h;
 }
 
+
+/* ---------- lab view 5: parameter schemas, and what names cost -------------
+   The other four views describe a graph built from tool NAMES. This one is the
+   audit of that graph against tool PARAMETERS, on the 11 connectors where both
+   exist. It is deliberately the smallest view and the only one that reports an
+   error rate for the method the other four rely on. */
+function renderSchema(){
+  var d=D.schema, el=document.getElementById("lvS");
+  if(!d){
+    el.innerHTML='<h2>parameter <em>schemas</em></h2><div class="sub">Not computed for '+
+      'this build. Run <code>python3 engine/schema.py --derive --delta</code> and re-render. '+
+      'An empty table here would read as a finding; it is a missing measurement.</div>';
+    return;
+  }
+  var a=d.agreement, tot=a.both+a.names_only+a.params_only;
+  var h='<h2>what a name <em>costs</em></h2>'+
+    '<div class="sub">ToolSearch returns the full JSONSchema for every tool this session can '+
+    'reach. Parameters give <b>consumes</b> directly, where names only approximate it, so the '+
+    '11 session connectors can be used to price the name-based derivation carrying the other '+
+    '453. Parameters are the reference; names are the estimate. This is a depth upgrade for '+
+    'eleven connectors and a sharper test for the rest &mdash; it is not, and cannot be turned '+
+    'into, coverage.</div>';
+
+  h+='<div class="mgrid" style="margin-top:20px">'+
+     '<div class="mcard"><div class="k">precision</div><div class="v">'+
+     (a.precision*100).toFixed(1)+'%</div><div class="d">when a name claims a key, it is '+
+     'usually right</div></div>'+
+     '<div class="mcard"><div class="k">recall</div><div class="v">'+
+     (a.recall*100).toFixed(1)+'%</div><div class="d">but it sees well under half of what '+
+     'the parameters actually accept</div></div>'+
+     '<div class="mcard"><div class="k">keys invented</div><div class="v">'+a.names_only+
+     '</div><div class="d">of '+tot+' claims &mdash; edges drawn into a parameter that does '+
+     'not exist</div></div>'+
+     '<div class="mcard"><div class="k">keys missed</div><div class="v">'+a.params_only+
+     '</div><div class="d">real inbound edges the name model never drew</div></div>'+
+     '</div>';
+
+  h+='<div class="caveat" style="margin-top:14px">Only <b>consumes</b> is upgraded here. MCP '+
+     'tool schemas describe inputs; there is no output schema, so <b>emits</b> stays '+
+     'name-derived everywhere in this atlas, including on these eleven. Side-effect class '+
+     'agrees on '+d.sideEffects.agree+' of '+(d.sideEffects.agree+d.sideEffects.differ)+'.</div>';
+
+  h+='<h2 style="font-size:22px;margin-top:30px">per connector</h2>'+
+     '<div class="scroll"><table class="ltab"><tr><th>connector</th><th>tools</th><th>params</th>'+
+     '<th>names said</th><th>parameters say</th><th>invented</th><th>missed</th></tr>';
+  Object.keys(d.connectors).sort().forEach(function(n){
+    var r=d.connectors[n], p=d.profiles[n]||{};
+    h+='<tr><td>'+esc(n)+'</td><td class="num">'+(p.nTools||0)+'</td>'+
+       '<td class="num">'+(p.nParams||0)+'</td>'+
+       '<td>'+(r.name_derived.join(", ")||"&mdash;")+'</td>'+
+       '<td>'+(r.param_derived.join(", ")||"&mdash;")+'</td>'+
+       '<td style="color:#E64A2E">'+(r.invented.join(", ")||"&mdash;")+'</td>'+
+       '<td style="color:#35A481">'+(r.missed.join(", ")||"&mdash;")+'</td></tr>';
+  });
+  h+='</table></div>';
+
+  h+='<h2 style="font-size:22px;margin-top:30px">selectors &mdash; what a read can be '+
+     '<em>addressed by</em></h2>'+
+     '<div class="sub">New in Phase 3 and with no name-level equivalent. A connector whose '+
+     'reads accept only its own opaque ids cannot be entered from outside without already '+
+     'holding one, which is a join constraint the edge model never expressed.</div>'+
+     '<div class="scroll"><table class="ltab"><tr><th>connector</th><th>addressable by</th>'+
+     '<th>runtime</th></tr>';
+  Object.keys(d.selectors).sort().forEach(function(n){
+    var sel=d.selectors[n], rt=(d.runtime[n]||{}).schema||"&mdash;";
+    h+='<tr><td>'+esc(n)+'</td><td>'+(sel.join(", ")||
+       '<span style="color:#E64A2E">nothing &mdash; no read tool takes a typed key</span>')+
+       '</td><td'+(rt==="poll_blind"?' style="color:#E64A2E"':'')+'>'+esc(rt)+'</td></tr>';
+  });
+  h+='</table></div>';
+
+  h+='<h2 style="font-size:22px;margin-top:30px">preconditions &mdash; tools that '+
+     '<em>cannot be called first</em></h2>'+
+     '<div class="sub">Mandatory ordering inside a single connector, stated in the schema and '+
+     'invisible in a tool name. Two vendors independently guard money this way: nothing can be '+
+     'bought on Vercel without a quote, and no Supabase project is created without a cost '+
+     'confirmation. Every arrow is a step that must succeed before the system can act.</div>'+
+     '<div class="scroll"><table class="ltab"><tr><th>connector</th><th>must run first</th>'+
+     '<th>before</th></tr>';
+  Object.keys(d.preconditions).sort().forEach(function(n){
+    d.preconditions[n].forEach(function(pr,i){
+      h+='<tr><td>'+(i===0?esc(n):"")+'</td><td>'+esc(pr[0])+'</td><td>'+esc(pr[1])+'</td></tr>';
+    });
+  });
+  h+='</table></div>';
+
+  h+='<div class="caveat" style="margin-top:18px">11 of 820 connectors, which is 1.3%. '+
+     'ToolSearch can only see connectors this session is connected to, and connecting 800 is '+
+     'not something a session can do. Phase 2&rsquo;s 58% registry-harvest ceiling is a '+
+     'different limit on a different axis and is neither affected nor beaten by any of this.</div>';
+  el.innerHTML=h;
+}
+
 var labBuilt=false;
 function openLab(){
-  if(!labBuilt){ labsub(); renderPairs(); renderProf(); renderMot(); renderDiff(); labBuilt=true; }
+  if(!labBuilt){ labsub(); renderPairs(); renderProf(); renderMot(); renderDiff();
+                 renderSchema(); labBuilt=true; }
   LAB.classList.add("open");
 }
 document.getElementById("labbtn").onclick=openLab;

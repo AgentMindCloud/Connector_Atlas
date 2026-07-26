@@ -1,0 +1,244 @@
+{
+ "_schema": {
+  "covers": "connectors connected to THIS session only -- not the directory",
+  "note": "input schemas only; MCP exposes no output schema, so `emits` is not derivable here and stays name-derived",
+  "source": "ToolSearch full JSONSchema, read live in-session"
+ },
+ "n_tools": 178,
+ "observed_on": "2026-07-26",
+ "servers": {
+  "Anthropic Economic Index": {
+   "n_tools": 9,
+   "tools": [
+    "econ_index_compare_regions",
+    "econ_index_get_dataset_overview",
+    "econ_index_get_global_usage",
+    "econ_index_get_occupation_usage",
+    "econ_index_get_usage_by_country",
+    "econ_index_get_usage_by_subregion",
+    "econ_index_list_countries",
+    "econ_index_list_subregions",
+    "econ_index_list_top_work_tasks"
+   ]
+  },
+  "Canva": {
+   "n_tools": 30,
+   "tools": [
+    "comment-on-design",
+    "copy-design",
+    "create-brand-template-draft",
+    "create-design-from-brand-template",
+    "create-design-from-candidate",
+    "create-folder",
+    "edit-design",
+    "export-design",
+    "generate-design",
+    "generate-design-structured",
+    "get-assets",
+    "get-brand-template-dataset",
+    "get-export-formats",
+    "import-design-from-url",
+    "list-brand-kits",
+    "list-comments",
+    "list-folder-items",
+    "list-replies",
+    "merge-designs",
+    "move-item-to-folder",
+    "publish-brand-template",
+    "read-design",
+    "reply-to-comment",
+    "request-outline-review",
+    "resize-design",
+    "resolve-shortlink",
+    "search-brand-templates",
+    "search-designs",
+    "search-folders",
+    "upload-asset-from-url"
+   ]
+  },
+  "Cloudflare Developer Platform": {
+   "n_tools": 23,
+   "tools": [
+    "d1_database_create",
+    "d1_database_delete",
+    "d1_database_get",
+    "d1_database_query",
+    "d1_databases_list",
+    "hyperdrive_config_delete",
+    "hyperdrive_config_edit",
+    "hyperdrive_config_get",
+    "hyperdrive_configs_list",
+    "kv_namespace_create",
+    "kv_namespace_delete",
+    "kv_namespace_get",
+    "kv_namespace_update",
+    "kv_namespaces_list",
+    "migrate_pages_to_workers_guide",
+    "r2_bucket_create",
+    "r2_bucket_delete",
+    "r2_bucket_get",
+    "r2_buckets_list",
+    "search_cloudflare_documentation",
+    "workers_get_worker",
+    "workers_get_worker_code",
+    "workers_list"
+   ]
+  },
+  "Gmail": {
+   "n_tools": 16,
+   "tools": [
+    "apply_sensitive_message_label",
+    "apply_sensitive_thread_label",
+    "create_draft",
+    "create_label",
+    "delete_label",
+    "get_message",
+    "get_thread",
+    "label_message",
+    "label_thread",
+    "list_drafts",
+    "list_labels",
+    "search_threads",
+    "unlabel_message",
+    "unlabel_thread",
+    "update_draft",
+    "update_label"
+   ]
+  },
+  "Google Calendar": {
+   "n_tools": 1,
+   "tools": [
+    "search_events"
+   ]
+  },
+  "Google Drive": {
+   "n_tools": 8,
+   "tools": [
+    "copy_file",
+    "create_file",
+    "download_file_content",
+    "get_file_metadata",
+    "get_file_permissions",
+    "list_recent_files",
+    "read_file_content",
+    "search_files"
+   ]
+  },
+  "Supabase": {
+   "n_tools": 29,
+   "tools": [
+    "apply_migration",
+    "confirm_cost",
+    "create_branch",
+    "create_project",
+    "delete_branch",
+    "deploy_edge_function",
+    "execute_sql",
+    "generate_typescript_types",
+    "get_advisors",
+    "get_cost",
+    "get_edge_function",
+    "get_logs",
+    "get_organization",
+    "get_project",
+    "get_project_url",
+    "get_publishable_keys",
+    "list_branches",
+    "list_edge_functions",
+    "list_extensions",
+    "list_migrations",
+    "list_organizations",
+    "list_projects",
+    "list_tables",
+    "merge_branch",
+    "pause_project",
+    "rebase_branch",
+    "reset_branch",
+    "restore_project",
+    "search_docs"
+   ]
+  },
+  "Three.js 3D Viewer": {
+   "n_tools": 2,
+   "tools": [
+    "learn_threejs",
+    "show_threejs_scene"
+   ]
+  },
+  "Todoist": {
+   "n_tools": 45,
+   "tools": [
+    "add-comments",
+    "add-filters",
+    "add-labels",
+    "add-projects",
+    "add-reminders",
+    "add-sections",
+    "add-tasks",
+    "analyze-project-health",
+    "complete-tasks",
+    "delete-object",
+    "fetch",
+    "fetch-object",
+    "find-activity",
+    "find-comments",
+    "find-completed-tasks",
+    "find-filters",
+    "find-labels",
+    "find-project-collaborators",
+    "find-projects",
+    "find-reminders",
+    "find-sections",
+    "find-tasks",
+    "find-tasks-by-date",
+    "get-overview",
+    "get-productivity-stats",
+    "get-project-activity-stats",
+    "get-project-health",
+    "get-workspace-insights",
+    "list-workspaces",
+    "manage-assignments",
+    "project-management",
+    "project-move",
+    "reorder-objects",
+    "reschedule-tasks",
+    "search",
+    "uncomplete-tasks",
+    "update-comments",
+    "update-filters",
+    "update-labels",
+    "update-projects",
+    "update-reminders",
+    "update-sections",
+    "update-tasks",
+    "user-info",
+    "view-attachment"
+   ]
+  },
+  "Vercel": {
+   "n_tools": 13,
+   "tools": [
+    "add_toolbar_reaction",
+    "buy_addon",
+    "buy_credits",
+    "buy_domain",
+    "buy_pro",
+    "change_toolbar_thread_resolve_status",
+    "deploy_to_vercel",
+    "edit_toolbar_message",
+    "get_domain_order",
+    "get_purchase_quote",
+    "get_web_analytics",
+    "import-claude-design-from-url",
+    "reply_to_toolbar_thread"
+   ]
+  },
+  "tldraw": {
+   "n_tools": 2,
+   "tools": [
+    "exec",
+    "search"
+   ]
+  }
+ }
+}

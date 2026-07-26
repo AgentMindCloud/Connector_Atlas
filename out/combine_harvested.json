@@ -71,8 +71,11 @@
    "nodes_with_degree_ge_2": 382
   },
   "trigger_action": {
-   "encoding": "A -> HUB -> B where HUB is an automation_hub connector and B can write; without a firing mechanism the pattern is not instantiable",
-   "count": 2030181
+   "encoding": "hub_fired: A -> HUB -> B, HUB an automation_hub and B a writer. self_fired: A -> B where A is pollable for change (runtime != poll_blind) and B can write \u2014 no hub required.",
+   "count": 2035487,
+   "hub_fired": 2030181,
+   "self_fired": 5306,
+   "caveat": "runtime is name-derived for all but the 11 schema-measured connectors, and scored 8/11 against them \u2014 see engine/schema.py --delta"
   },
   "mirror": {
    "encoding": "Reconcile pairs where BOTH connectors are mutate or above",

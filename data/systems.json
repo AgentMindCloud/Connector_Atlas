@@ -1,12 +1,12 @@
 {
   "_schema": {
-    "note": "Authored findings. Machine discovery (engine/discover.py) proposes archetype sets; these are the ones judgment kept, with build plans and cost models attached. Scored by engine/score.py — no tier is hand-assigned.",
+    "note": "Authored findings, demoted to EXAMPLES in Phase 2. engine/combine.py searches the real space; these are the compositions judgment kept, with build plans attached. Scored by engine/score.py on ROBUSTNESS and CAPABILITY — no tier is hand-assigned, and neither lens uses operator economics.",
     "tiers": {
       "buildable": "6-15 connectors, <=4 required auths, a real trigger. Ships in weeks.",
       "ensemble": "15-50 connectors. Spine + independent ribs. Ships rib by rib over a quarter.",
       "mesh": "150+ read-only sensors on one spine. Blast radius 0 by construction."
     },
-    "economics_disclaimer": "Vendor pricing and reclaimed-hours figures are ASSUMED estimates, not quotes. Build hours assume a competent developer who already knows the stack. Tune rates in engine/score.py WEIGHTS.",
+    "economics_disclaimer": "Vendor pricing and build-hour figures are ASSUMED estimates, not quotes, and as of Phase 3 nothing is SCORED on them — the operator-payback lens was removed entirely. hours_reclaimed_per_month and human_minutes_per_week were deleted from every system; build_hours, monthly_run_cost_usd, cost_per_run_usd and cold_start_days survive as descriptions of the build only.",
     "verified_constraints_applied": [
       "Gmail exposes NO send tool — every mail hop below is draft-only by construction",
       "Google Calendar exposes only semantic search_events — no enumeration, no writes",
@@ -15,7 +15,6 @@
       "All 5 observed Supabase projects are INACTIVE — the spine must be un-paused before any of this runs"
     ]
   },
-
   "systems": [
     {
       "id": "inbox_ledger",
@@ -23,15 +22,50 @@
       "tier_label": "buildable",
       "tagline": "Every thread that implies an obligation becomes exactly one task, forever, without duplicates.",
       "mode": "direct",
-      "connectors": ["Gmail", "Todoist", "Supabase", "Google Calendar"],
-      "archetypes": ["email", "task_pm", "database_warehouse", "calendar"],
+      "connectors": [
+        "Gmail",
+        "Todoist",
+        "Supabase",
+        "Google Calendar"
+      ],
+      "archetypes": [
+        "email",
+        "task_pm",
+        "database_warehouse",
+        "calendar"
+      ],
       "connector_count": 4,
       "required_auths": 3,
-      "join_keys": ["email", "timestamp", "url"],
+      "join_keys": [
+        "email",
+        "timestamp",
+        "url"
+      ],
       "ribs": [
-        {"name": "triage", "pattern": "Pipeline + Escalate", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 1},
-        {"name": "dedupe", "pattern": "Reconcile", "hops": 2, "claude": false, "side_effect": "create", "fan_in": 1},
-        {"name": "due-date inference", "pattern": "Enrich", "hops": 2, "claude": true, "side_effect": "read", "fan_in": 2}
+        {
+          "name": "triage",
+          "pattern": "Pipeline + Escalate",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 1
+        },
+        {
+          "name": "dedupe",
+          "pattern": "Reconcile",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "create",
+          "fan_in": 1
+        },
+        {
+          "name": "due-date inference",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "read",
+          "fan_in": 2
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "cron Worker polls Gmail every 30 min (deployed via wrangler — NOT through the Cloudflare connector)",
@@ -41,9 +75,7 @@
       "build_hours": 24,
       "monthly_run_cost_usd": 12,
       "cost_per_run_usd": 0.04,
-      "hours_reclaimed_per_month": 8,
       "cold_start_days": 1,
-      "human_minutes_per_week": 20,
       "degradation": "degrades",
       "ceiling_connectors": 8,
       "dedupe": "unique(source='gmail', source_id=thread_id, target='todoist') — upsert, never insert",
@@ -57,7 +89,7 @@
         "Upsert into crosswalk, then create Todoist tasks only for rows that inserted.",
         "Escalate rule: auto-create only for threads matching a narrow filter; everything else lands in a weekly review list."
       ],
-      "why_it_wins": "Highest certainty payback in the set. Zero send risk because Gmail physically cannot send here. One table, one cron, one judgment hop."
+      "why_it_wins": "Least that can go wrong in the set. Zero send risk because Gmail physically cannot send here. One table, one cron, one judgment hop."
     },
     {
       "id": "meeting_to_pipeline",
@@ -65,16 +97,63 @@
       "tier_label": "buildable",
       "tagline": "Every call updates the record and leaves a drafted follow-up waiting, joined on participant email.",
       "mode": "direct",
-      "connectors": ["Fireflies", "HubSpot", "Gmail", "Todoist", "Supabase", "Google Drive"],
-      "archetypes": ["meetings_transcripts", "crm_sales", "email", "task_pm", "database_warehouse", "file_storage"],
+      "connectors": [
+        "Fireflies",
+        "HubSpot",
+        "Gmail",
+        "Todoist",
+        "Supabase",
+        "Google Drive"
+      ],
+      "archetypes": [
+        "meetings_transcripts",
+        "crm_sales",
+        "email",
+        "task_pm",
+        "database_warehouse",
+        "file_storage"
+      ],
       "connector_count": 6,
       "required_auths": 4,
-      "join_keys": ["email", "timestamp", "url", "domain"],
+      "join_keys": [
+        "email",
+        "timestamp",
+        "url",
+        "domain"
+      ],
       "ribs": [
-        {"name": "transcript → summary", "pattern": "Pipeline", "hops": 2, "claude": true, "side_effect": "read", "fan_in": 1},
-        {"name": "participant → CRM record", "pattern": "Enrich", "hops": 3, "claude": false, "side_effect": "mutate", "fan_in": 2},
-        {"name": "follow-up draft", "pattern": "Materialize", "hops": 2, "claude": true, "side_effect": "create", "fan_in": 1},
-        {"name": "commitments → tasks", "pattern": "Pipeline", "hops": 2, "claude": true, "side_effect": "create", "fan_in": 1}
+        {
+          "name": "transcript → summary",
+          "pattern": "Pipeline",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "read",
+          "fan_in": 1
+        },
+        {
+          "name": "participant → CRM record",
+          "pattern": "Enrich",
+          "hops": 3,
+          "claude": false,
+          "side_effect": "mutate",
+          "fan_in": 2
+        },
+        {
+          "name": "follow-up draft",
+          "pattern": "Materialize",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 1
+        },
+        {
+          "name": "commitments → tasks",
+          "pattern": "Pipeline",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 1
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "cron Worker polls the meetings connector hourly for new transcripts",
@@ -84,9 +163,7 @@
       "build_hours": 44,
       "monthly_run_cost_usd": 38,
       "cost_per_run_usd": 0.11,
-      "hours_reclaimed_per_month": 14,
       "cold_start_days": 3,
-      "human_minutes_per_week": 45,
       "degradation": "degrades",
       "ceiling_connectors": 12,
       "dedupe": "unique(source='meeting', source_id=transcript_id) — one summary, one draft, one task set per call",
@@ -108,16 +185,61 @@
       "tier_label": "buildable",
       "tagline": "Two systems that should agree, compared nightly. Reports the gap; never touches the money.",
       "mode": "direct",
-      "connectors": ["Stripe", "Intuit QuickBooks", "Supabase", "Slack", "Google Drive"],
-      "archetypes": ["payments_banking", "accounting_billing", "database_warehouse", "chat_messaging", "file_storage"],
+      "connectors": [
+        "Stripe",
+        "Intuit QuickBooks",
+        "Supabase",
+        "Slack",
+        "Google Drive"
+      ],
+      "archetypes": [
+        "payments_banking",
+        "accounting_billing",
+        "database_warehouse",
+        "chat_messaging",
+        "file_storage"
+      ],
       "connector_count": 5,
       "required_auths": 4,
-      "join_keys": ["money", "timestamp", "email", "rows"],
+      "join_keys": [
+        "money",
+        "timestamp",
+        "email",
+        "rows"
+      ],
       "ribs": [
-        {"name": "normalise periods", "pattern": "Pipeline", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 2},
-        {"name": "diff", "pattern": "Reconcile", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 2},
-        {"name": "explain anomalies", "pattern": "Enrich", "hops": 2, "claude": true, "side_effect": "read", "fan_in": 1},
-        {"name": "digest", "pattern": "Digest", "hops": 2, "claude": true, "side_effect": "create", "fan_in": 3}
+        {
+          "name": "normalise periods",
+          "pattern": "Pipeline",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 2
+        },
+        {
+          "name": "diff",
+          "pattern": "Reconcile",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 2
+        },
+        {
+          "name": "explain anomalies",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "read",
+          "fan_in": 1
+        },
+        {
+          "name": "digest",
+          "pattern": "Digest",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 3
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "nightly cron Worker",
@@ -127,9 +249,7 @@
       "build_hours": 36,
       "monthly_run_cost_usd": 18,
       "cost_per_run_usd": 0.07,
-      "hours_reclaimed_per_month": 12,
       "cold_start_days": 2,
-      "human_minutes_per_week": 25,
       "degradation": "degrades",
       "ceiling_connectors": 10,
       "dedupe": "n/a — read-only up to the digest; the digest is keyed on (period, run_date)",
@@ -151,15 +271,55 @@
       "tier_label": "buildable",
       "tagline": "Voice-of-customer collapsed into themes with verbatim evidence, weekly, into the backlog.",
       "mode": "direct",
-      "connectors": ["Intercom", "G2", "Supabase", "Linear", "Notion", "Slack"],
-      "archetypes": ["support_cx", "vertical_ops", "database_warehouse", "task_pm", "notes_docs", "chat_messaging"],
+      "connectors": [
+        "Intercom",
+        "G2",
+        "Supabase",
+        "Linear",
+        "Notion",
+        "Slack"
+      ],
+      "archetypes": [
+        "support_cx",
+        "vertical_ops",
+        "database_warehouse",
+        "task_pm",
+        "notes_docs",
+        "chat_messaging"
+      ],
       "connector_count": 6,
       "required_auths": 5,
-      "join_keys": ["email", "text", "timestamp", "url"],
+      "join_keys": [
+        "email",
+        "text",
+        "timestamp",
+        "url"
+      ],
       "ribs": [
-        {"name": "ingest feedback", "pattern": "Pipeline", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 3},
-        {"name": "theme extraction", "pattern": "Enrich", "hops": 2, "claude": true, "side_effect": "read", "fan_in": 1},
-        {"name": "theme → backlog", "pattern": "Pipeline", "hops": 2, "claude": true, "side_effect": "create", "fan_in": 1}
+        {
+          "name": "ingest feedback",
+          "pattern": "Pipeline",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 3
+        },
+        {
+          "name": "theme extraction",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "read",
+          "fan_in": 1
+        },
+        {
+          "name": "theme → backlog",
+          "pattern": "Pipeline",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 1
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "weekly cron",
@@ -169,9 +329,7 @@
       "build_hours": 32,
       "monthly_run_cost_usd": 22,
       "cost_per_run_usd": 0.35,
-      "hours_reclaimed_per_month": 9,
       "cold_start_days": 14,
-      "human_minutes_per_week": 40,
       "degradation": "degrades",
       "ceiling_connectors": 14,
       "dedupe": "unique(source='theme', source_id=slug(theme_name), period)",
@@ -193,16 +351,64 @@
       "tier_label": "buildable",
       "tagline": "Shipping writes its own changelog, its own asset, and its own draft announcement.",
       "mode": "direct",
-      "connectors": ["GitHub", "Vercel", "Notion", "Canva", "Gmail", "Slack"],
-      "archetypes": ["code_context", "cloud_infra", "notes_docs", "design_visual", "email", "chat_messaging"],
+      "connectors": [
+        "GitHub",
+        "Vercel",
+        "Notion",
+        "Canva",
+        "Gmail",
+        "Slack"
+      ],
+      "archetypes": [
+        "code_context",
+        "cloud_infra",
+        "notes_docs",
+        "design_visual",
+        "email",
+        "chat_messaging"
+      ],
       "connector_count": 6,
       "required_auths": 5,
-      "join_keys": ["url", "code", "timestamp", "text", "image"],
+      "join_keys": [
+        "url",
+        "code",
+        "timestamp",
+        "text",
+        "image"
+      ],
       "ribs": [
-        {"name": "diff → changelog", "pattern": "Pipeline", "hops": 3, "claude": true, "side_effect": "read", "fan_in": 2},
-        {"name": "changelog → doc", "pattern": "Materialize", "hops": 2, "claude": false, "side_effect": "create", "fan_in": 1},
-        {"name": "changelog → visual", "pattern": "Materialize", "hops": 2, "claude": true, "side_effect": "create", "fan_in": 1},
-        {"name": "fan-out drafts", "pattern": "Fan-out", "hops": 2, "claude": true, "side_effect": "create", "fan_in": 1}
+        {
+          "name": "diff → changelog",
+          "pattern": "Pipeline",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "read",
+          "fan_in": 2
+        },
+        {
+          "name": "changelog → doc",
+          "pattern": "Materialize",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "create",
+          "fan_in": 1
+        },
+        {
+          "name": "changelog → visual",
+          "pattern": "Materialize",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 1
+        },
+        {
+          "name": "fan-out drafts",
+          "pattern": "Fan-out",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 1
+        }
       ],
       "trigger": "event",
       "trigger_mechanism": "GitHub deployment webhook — a genuine event trigger, not a poll",
@@ -212,9 +418,7 @@
       "build_hours": 40,
       "monthly_run_cost_usd": 15,
       "cost_per_run_usd": 0.18,
-      "hours_reclaimed_per_month": 6,
       "cold_start_days": 1,
-      "human_minutes_per_week": 15,
       "degradation": "partial",
       "ceiling_connectors": 12,
       "dedupe": "unique(source='deploy', source_id=deployment_id)",
@@ -236,19 +440,114 @@
       "tier_label": "ensemble",
       "tagline": "One spine, seven independent ribs. Every number that matters, reconciled nightly, in one place.",
       "mode": "bridge",
-      "connectors": ["Stripe", "Intuit QuickBooks", "HubSpot", "Intercom", "Shopify", "Shippo", "PostHog", "Semrush", "Fireflies", "Sentry", "Supabase", "Slack", "Gamma", "Google Drive", "Todoist", "Cloudflare Developer Platform", "Gmail", "Notion"],
-      "archetypes": ["payments_banking", "accounting_billing", "crm_sales", "support_cx", "ecommerce_logistics", "travel_booking", "bi_analytics", "marketing_analytics", "meetings_transcripts", "observability", "database_warehouse", "chat_messaging", "presentations", "file_storage", "task_pm", "cloud_infra", "email", "notes_docs"],
+      "connectors": [
+        "Stripe",
+        "Intuit QuickBooks",
+        "HubSpot",
+        "Intercom",
+        "Shopify",
+        "Shippo",
+        "PostHog",
+        "Semrush",
+        "Fireflies",
+        "Sentry",
+        "Supabase",
+        "Slack",
+        "Gamma",
+        "Google Drive",
+        "Todoist",
+        "Cloudflare Developer Platform",
+        "Gmail",
+        "Notion"
+      ],
+      "archetypes": [
+        "payments_banking",
+        "accounting_billing",
+        "crm_sales",
+        "support_cx",
+        "ecommerce_logistics",
+        "travel_booking",
+        "bi_analytics",
+        "marketing_analytics",
+        "meetings_transcripts",
+        "observability",
+        "database_warehouse",
+        "chat_messaging",
+        "presentations",
+        "file_storage",
+        "task_pm",
+        "cloud_infra",
+        "email",
+        "notes_docs"
+      ],
       "connector_count": 18,
       "required_auths": 12,
-      "join_keys": ["money", "email", "timestamp", "url", "rows", "domain", "geo"],
+      "join_keys": [
+        "money",
+        "email",
+        "timestamp",
+        "url",
+        "rows",
+        "domain",
+        "geo"
+      ],
       "ribs": [
-        {"name": "payments ⨝ accounting", "pattern": "Reconcile", "hops": 3, "claude": false, "side_effect": "read", "fan_in": 2},
-        {"name": "support ⨝ CRM → churn risk", "pattern": "Enrich", "hops": 3, "claude": true, "side_effect": "read", "fan_in": 2},
-        {"name": "funnel numbers", "pattern": "Digest", "hops": 3, "claude": false, "side_effect": "create", "fan_in": 4},
-        {"name": "orders → fulfilment", "pattern": "Mirror", "hops": 3, "claude": false, "side_effect": "mutate", "fan_in": 2},
-        {"name": "meetings → CRM notes", "pattern": "Enrich", "hops": 3, "claude": true, "side_effect": "mutate", "fan_in": 2},
-        {"name": "alerts → tasks", "pattern": "Escalate", "hops": 2, "claude": false, "side_effect": "create", "fan_in": 2},
-        {"name": "weekly deck", "pattern": "Materialize", "hops": 4, "claude": true, "side_effect": "create", "fan_in": 6}
+        {
+          "name": "payments ⨝ accounting",
+          "pattern": "Reconcile",
+          "hops": 3,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 2
+        },
+        {
+          "name": "support ⨝ CRM → churn risk",
+          "pattern": "Enrich",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "read",
+          "fan_in": 2
+        },
+        {
+          "name": "funnel numbers",
+          "pattern": "Digest",
+          "hops": 3,
+          "claude": false,
+          "side_effect": "create",
+          "fan_in": 4
+        },
+        {
+          "name": "orders → fulfilment",
+          "pattern": "Mirror",
+          "hops": 3,
+          "claude": false,
+          "side_effect": "mutate",
+          "fan_in": 2
+        },
+        {
+          "name": "meetings → CRM notes",
+          "pattern": "Enrich",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "mutate",
+          "fan_in": 2
+        },
+        {
+          "name": "alerts → tasks",
+          "pattern": "Escalate",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "create",
+          "fan_in": 2
+        },
+        {
+          "name": "weekly deck",
+          "pattern": "Materialize",
+          "hops": 4,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 6
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "one nightly cron on the spine drives all deterministic ribs; the weekly Materialize rib runs Sunday",
@@ -258,9 +557,7 @@
       "build_hours": 190,
       "monthly_run_cost_usd": 140,
       "cost_per_run_usd": 0.9,
-      "hours_reclaimed_per_month": 40,
       "cold_start_days": 30,
-      "human_minutes_per_week": 90,
       "degradation": "degrades",
       "ceiling_connectors": 45,
       "dedupe": "per-rib: (source_system, source_id, target) unique in one shared crosswalk table",
@@ -282,18 +579,103 @@
       "tier_label": "ensemble",
       "tagline": "Intake to invoice as one tracked object — the agency operating system.",
       "mode": "bridge",
-      "connectors": ["Jotform", "HubSpot", "Linear", "Google Drive", "Canva", "Gamma", "PandaDoc", "Intuit QuickBooks", "Stripe", "Slack", "Supabase", "Fireflies", "Google Calendar", "Todoist", "Gmail", "Notion", "Cloudflare Developer Platform"],
-      "archetypes": ["forms_surveys", "crm_sales", "task_pm", "file_storage", "design_visual", "presentations", "esignature_docs", "accounting_billing", "payments_banking", "chat_messaging", "database_warehouse", "meetings_transcripts", "calendar", "email", "notes_docs", "cloud_infra"],
+      "connectors": [
+        "Jotform",
+        "HubSpot",
+        "Linear",
+        "Google Drive",
+        "Canva",
+        "Gamma",
+        "PandaDoc",
+        "Intuit QuickBooks",
+        "Stripe",
+        "Slack",
+        "Supabase",
+        "Fireflies",
+        "Google Calendar",
+        "Todoist",
+        "Gmail",
+        "Notion",
+        "Cloudflare Developer Platform"
+      ],
+      "archetypes": [
+        "forms_surveys",
+        "crm_sales",
+        "task_pm",
+        "file_storage",
+        "design_visual",
+        "presentations",
+        "esignature_docs",
+        "accounting_billing",
+        "payments_banking",
+        "chat_messaging",
+        "database_warehouse",
+        "meetings_transcripts",
+        "calendar",
+        "email",
+        "notes_docs",
+        "cloud_infra"
+      ],
       "connector_count": 17,
       "required_auths": 13,
-      "join_keys": ["email", "project", "file", "url", "money", "timestamp", "domain"],
+      "join_keys": [
+        "email",
+        "project",
+        "file",
+        "url",
+        "money",
+        "timestamp",
+        "domain"
+      ],
       "ribs": [
-        {"name": "intake → CRM + project", "pattern": "Pipeline", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 1},
-        {"name": "kickoff call → scope doc", "pattern": "Materialize", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 2},
-        {"name": "scope → proposal + deck", "pattern": "Fan-out", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 1},
-        {"name": "proposal → signature", "pattern": "Trigger→Action", "hops": 2, "claude": false, "side_effect": "irreversible", "fan_in": 1},
-        {"name": "signed → invoice", "pattern": "Pipeline", "hops": 3, "claude": false, "side_effect": "irreversible", "fan_in": 1},
-        {"name": "delivery status digest", "pattern": "Digest", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 5}
+        {
+          "name": "intake → CRM + project",
+          "pattern": "Pipeline",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 1
+        },
+        {
+          "name": "kickoff call → scope doc",
+          "pattern": "Materialize",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 2
+        },
+        {
+          "name": "scope → proposal + deck",
+          "pattern": "Fan-out",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 1
+        },
+        {
+          "name": "proposal → signature",
+          "pattern": "Trigger→Action",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "irreversible",
+          "fan_in": 1
+        },
+        {
+          "name": "signed → invoice",
+          "pattern": "Pipeline",
+          "hops": 3,
+          "claude": false,
+          "side_effect": "irreversible",
+          "fan_in": 1
+        },
+        {
+          "name": "delivery status digest",
+          "pattern": "Digest",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 5
+        }
       ],
       "trigger": "event",
       "trigger_mechanism": "form submission webhook starts the object; each stage transition fires the next rib",
@@ -303,9 +685,7 @@
       "build_hours": 220,
       "monthly_run_cost_usd": 180,
       "cost_per_run_usd": 1.4,
-      "hours_reclaimed_per_month": 46,
       "cold_start_days": 21,
-      "human_minutes_per_week": 120,
       "degradation": "partial",
       "ceiling_connectors": 40,
       "dedupe": "one `engagement` row is the spine object; every artifact carries engagement_id. Naming convention `client-project-YYYYMMDD` across Drive, Linear and Canva turns the weak `project` key into a strong one.",
@@ -327,17 +707,88 @@
       "tier_label": "ensemble",
       "tagline": "Sourcing to signed offer, with the interview record as the join key.",
       "mode": "bridge",
-      "connectors": ["Ashby", "Indeed", "LinkedIn-adjacent enrichment", "Metaview", "Google Calendar", "Gmail", "DocuSign", "Supabase", "Slack", "Notion", "Todoist", "Deel", "Cloudflare Developer Platform", "Google Drive"],
-      "archetypes": ["hr_recruiting", "job_search", "prospecting_enrichment", "meetings_transcripts", "calendar", "email", "esignature_docs", "database_warehouse", "chat_messaging", "notes_docs", "task_pm", "file_storage", "cloud_infra"],
+      "connectors": [
+        "Ashby",
+        "Indeed",
+        "LinkedIn-adjacent enrichment",
+        "Metaview",
+        "Google Calendar",
+        "Gmail",
+        "DocuSign",
+        "Supabase",
+        "Slack",
+        "Notion",
+        "Todoist",
+        "Deel",
+        "Cloudflare Developer Platform",
+        "Google Drive"
+      ],
+      "archetypes": [
+        "hr_recruiting",
+        "job_search",
+        "prospecting_enrichment",
+        "meetings_transcripts",
+        "calendar",
+        "email",
+        "esignature_docs",
+        "database_warehouse",
+        "chat_messaging",
+        "notes_docs",
+        "task_pm",
+        "file_storage",
+        "cloud_infra"
+      ],
       "connector_count": 14,
       "required_auths": 10,
-      "join_keys": ["email", "timestamp", "file", "url", "person", "company"],
+      "join_keys": [
+        "email",
+        "timestamp",
+        "file",
+        "url",
+        "person",
+        "company"
+      ],
       "ribs": [
-        {"name": "sourcing fan-in", "pattern": "Enrich", "hops": 3, "claude": true, "side_effect": "read", "fan_in": 4},
-        {"name": "interview → structured scorecard", "pattern": "Pipeline", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 2},
-        {"name": "scheduling", "pattern": "Trigger→Action", "hops": 3, "claude": false, "side_effect": "mutate", "fan_in": 2},
-        {"name": "offer → signature", "pattern": "Trigger→Action", "hops": 3, "claude": false, "side_effect": "irreversible", "fan_in": 1},
-        {"name": "pipeline digest", "pattern": "Digest", "hops": 2, "claude": true, "side_effect": "create", "fan_in": 4}
+        {
+          "name": "sourcing fan-in",
+          "pattern": "Enrich",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "read",
+          "fan_in": 4
+        },
+        {
+          "name": "interview → structured scorecard",
+          "pattern": "Pipeline",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 2
+        },
+        {
+          "name": "scheduling",
+          "pattern": "Trigger→Action",
+          "hops": 3,
+          "claude": false,
+          "side_effect": "mutate",
+          "fan_in": 2
+        },
+        {
+          "name": "offer → signature",
+          "pattern": "Trigger→Action",
+          "hops": 3,
+          "claude": false,
+          "side_effect": "irreversible",
+          "fan_in": 1
+        },
+        {
+          "name": "pipeline digest",
+          "pattern": "Digest",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 4
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "daily cron + webhook on application received",
@@ -347,9 +798,7 @@
       "build_hours": 160,
       "monthly_run_cost_usd": 110,
       "cost_per_run_usd": 0.8,
-      "hours_reclaimed_per_month": 30,
       "cold_start_days": 14,
-      "human_minutes_per_week": 150,
       "degradation": "degrades",
       "ceiling_connectors": 30,
       "dedupe": "unique(candidate_email, req_id) — the whole pipeline keys on candidate email",
@@ -371,18 +820,105 @@
       "tier_label": "ensemble",
       "tagline": "Everything published about your market, collapsed into what changed since yesterday.",
       "mode": "bridge",
-      "connectors": ["Semrush", "Ahrefs", "Similarweb", "Exa", "Tavily", "Meltwater", "CB Insights", "PitchBook Premium", "Profound", "Peec AI", "G2", "Apify", "Supabase", "Slack", "Notion", "Gamma", "Cloudflare Developer Platform", "Google Drive", "Mixpanel", "Harmonic", "Crustdata", "Sumble"],
-      "archetypes": ["marketing_analytics", "web_search", "market_data", "prospecting_enrichment", "browser_automation", "database_warehouse", "chat_messaging", "notes_docs", "presentations", "cloud_infra", "file_storage", "bi_analytics", "vertical_ops"],
+      "connectors": [
+        "Semrush",
+        "Ahrefs",
+        "Similarweb",
+        "Exa",
+        "Tavily",
+        "Meltwater",
+        "CB Insights",
+        "PitchBook Premium",
+        "Profound",
+        "Peec AI",
+        "G2",
+        "Apify",
+        "Supabase",
+        "Slack",
+        "Notion",
+        "Gamma",
+        "Cloudflare Developer Platform",
+        "Google Drive",
+        "Mixpanel",
+        "Harmonic",
+        "Crustdata",
+        "Sumble"
+      ],
+      "archetypes": [
+        "marketing_analytics",
+        "web_search",
+        "market_data",
+        "prospecting_enrichment",
+        "browser_automation",
+        "database_warehouse",
+        "chat_messaging",
+        "notes_docs",
+        "presentations",
+        "cloud_infra",
+        "file_storage",
+        "bi_analytics",
+        "vertical_ops"
+      ],
       "connector_count": 22,
       "required_auths": 14,
-      "join_keys": ["domain", "url", "company", "rows", "timestamp", "money", "text"],
+      "join_keys": [
+        "domain",
+        "url",
+        "company",
+        "rows",
+        "timestamp",
+        "money",
+        "text"
+      ],
       "ribs": [
-        {"name": "SEO/share-of-voice fan-in", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 5},
-        {"name": "funding & corporate events", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 4},
-        {"name": "AI-search visibility", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 3},
-        {"name": "no-API sources", "pattern": "Pipeline", "hops": 3, "claude": true, "side_effect": "read", "fan_in": 2},
-        {"name": "delta detection", "pattern": "Reconcile", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 1},
-        {"name": "what-changed brief", "pattern": "Digest", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 6}
+        {
+          "name": "SEO/share-of-voice fan-in",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 5
+        },
+        {
+          "name": "funding & corporate events",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 4
+        },
+        {
+          "name": "AI-search visibility",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 3
+        },
+        {
+          "name": "no-API sources",
+          "pattern": "Pipeline",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "read",
+          "fan_in": 2
+        },
+        {
+          "name": "delta detection",
+          "pattern": "Reconcile",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 1
+        },
+        {
+          "name": "what-changed brief",
+          "pattern": "Digest",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 6
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "daily cron; heavy sources weekly",
@@ -392,9 +928,7 @@
       "build_hours": 150,
       "monthly_run_cost_usd": 900,
       "cost_per_run_usd": 1.2,
-      "hours_reclaimed_per_month": 34,
       "cold_start_days": 30,
-      "human_minutes_per_week": 60,
       "degradation": "degrades",
       "ceiling_connectors": 90,
       "dedupe": "unique(entity_domain, metric, captured_at) — snapshot table; the delta is computed, never stored twice",
@@ -418,17 +952,88 @@
       "mode": "bridge",
       "connector_count": 205,
       "connectors": [],
-      "archetypes": ["market_data", "research_science", "marketing_analytics", "gov_public_data", "web_search", "bi_analytics", "prospecting_enrichment", "job_search"],
+      "archetypes": [
+        "market_data",
+        "research_science",
+        "marketing_analytics",
+        "gov_public_data",
+        "web_search",
+        "bi_analytics",
+        "prospecting_enrichment",
+        "job_search"
+      ],
       "required_auths": 24,
-      "join_keys": ["ticker", "domain", "company", "money", "timestamp", "url", "rows", "geo", "email", "phone", "file", "image"],
+      "join_keys": [
+        "ticker",
+        "domain",
+        "company",
+        "money",
+        "timestamp",
+        "url",
+        "rows",
+        "geo",
+        "email",
+        "phone",
+        "file",
+        "image"
+      ],
       "ribs": [
-        {"name": "financial sensors", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 53},
-        {"name": "research sensors", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 36},
-        {"name": "marketing sensors", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 32},
-        {"name": "public-data sensors", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 14},
-        {"name": "hiring-signal sensors", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 8},
-        {"name": "cross-sensor correlation", "pattern": "Reconcile", "hops": 3, "claude": true, "side_effect": "read", "fan_in": 5},
-        {"name": "thesis brief", "pattern": "Digest", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 6}
+        {
+          "name": "financial sensors",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 53
+        },
+        {
+          "name": "research sensors",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 36
+        },
+        {
+          "name": "marketing sensors",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 32
+        },
+        {
+          "name": "public-data sensors",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 14
+        },
+        {
+          "name": "hiring-signal sensors",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 8
+        },
+        {
+          "name": "cross-sensor correlation",
+          "pattern": "Reconcile",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "read",
+          "fan_in": 5
+        },
+        {
+          "name": "thesis brief",
+          "pattern": "Digest",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 6
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "tiered cron — tick data hourly, fundamentals daily, research weekly",
@@ -438,9 +1043,7 @@
       "build_hours": 420,
       "monthly_run_cost_usd": 2400,
       "cost_per_run_usd": 3.5,
-      "hours_reclaimed_per_month": 90,
       "cold_start_days": 60,
-      "human_minutes_per_week": 120,
       "degradation": "self-heals",
       "ceiling_connectors": 293,
       "dedupe": "unique(sensor_id, entity_key, captured_at) — every sensor writes the same shape",
@@ -464,14 +1067,72 @@
       "mode": "bridge",
       "connector_count": 293,
       "connectors": [],
-      "archetypes": ["market_data", "research_science", "bi_analytics", "marketing_analytics", "legal", "gov_public_data", "web_search", "code_context", "prospecting_enrichment", "job_search", "meetings_transcripts", "weather_geo", "observability", "security"],
+      "archetypes": [
+        "market_data",
+        "research_science",
+        "bi_analytics",
+        "marketing_analytics",
+        "legal",
+        "gov_public_data",
+        "web_search",
+        "code_context",
+        "prospecting_enrichment",
+        "job_search",
+        "meetings_transcripts",
+        "weather_geo",
+        "observability",
+        "security"
+      ],
       "required_auths": 40,
-      "join_keys": ["ticker", "domain", "company", "money", "timestamp", "url", "rows", "geo", "email", "phone", "file", "image", "code", "media"],
+      "join_keys": [
+        "ticker",
+        "domain",
+        "company",
+        "money",
+        "timestamp",
+        "url",
+        "rows",
+        "geo",
+        "email",
+        "phone",
+        "file",
+        "image",
+        "code",
+        "media"
+      ],
       "ribs": [
-        {"name": "universal sensor fan-in", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 293},
-        {"name": "entity resolution", "pattern": "Reconcile", "hops": 3, "claude": true, "side_effect": "read", "fan_in": 8},
-        {"name": "anomaly surface", "pattern": "Escalate", "hops": 2, "claude": true, "side_effect": "create", "fan_in": 6},
-        {"name": "situation brief", "pattern": "Digest", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 10}
+        {
+          "name": "universal sensor fan-in",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 293
+        },
+        {
+          "name": "entity resolution",
+          "pattern": "Reconcile",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "read",
+          "fan_in": 8
+        },
+        {
+          "name": "anomaly surface",
+          "pattern": "Escalate",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 6
+        },
+        {
+          "name": "situation brief",
+          "pattern": "Digest",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 10
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "tiered cron by sensor volatility",
@@ -481,9 +1142,7 @@
       "build_hours": 900,
       "monthly_run_cost_usd": 5000,
       "cost_per_run_usd": 8.0,
-      "hours_reclaimed_per_month": 110,
       "cold_start_days": 90,
-      "human_minutes_per_week": 180,
       "degradation": "self-heals",
       "ceiling_connectors": 293,
       "dedupe": "unique(sensor_id, entity_key, captured_at)",
@@ -505,14 +1164,59 @@
       "mode": "bridge",
       "connector_count": 119,
       "connectors": [],
-      "archetypes": ["security", "legal", "gov_public_data", "market_data", "observability", "identity_verification", "code_context"],
+      "archetypes": [
+        "security",
+        "legal",
+        "gov_public_data",
+        "market_data",
+        "observability",
+        "identity_verification",
+        "code_context"
+      ],
       "required_auths": 16,
-      "join_keys": ["domain", "company", "url", "rows", "timestamp", "email", "code", "money"],
+      "join_keys": [
+        "domain",
+        "company",
+        "url",
+        "rows",
+        "timestamp",
+        "email",
+        "code",
+        "money"
+      ],
       "ribs": [
-        {"name": "security posture sensors", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 22},
-        {"name": "regulatory & case-law sensors", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 32},
-        {"name": "counterparty & sanctions sensors", "pattern": "Enrich", "hops": 2, "claude": false, "side_effect": "read", "fan_in": 20},
-        {"name": "materiality judgment", "pattern": "Escalate", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 4}
+        {
+          "name": "security posture sensors",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 22
+        },
+        {
+          "name": "regulatory & case-law sensors",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 32
+        },
+        {
+          "name": "counterparty & sanctions sensors",
+          "pattern": "Enrich",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "read",
+          "fan_in": 20
+        },
+        {
+          "name": "materiality judgment",
+          "pattern": "Escalate",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 4
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "daily cron; sanctions and breach feeds hourly",
@@ -522,9 +1226,7 @@
       "build_hours": 280,
       "monthly_run_cost_usd": 1500,
       "cost_per_run_usd": 2.2,
-      "hours_reclaimed_per_month": 55,
       "cold_start_days": 30,
-      "human_minutes_per_week": 90,
       "degradation": "self-heals",
       "ceiling_connectors": 180,
       "dedupe": "unique(sensor_id, subject_key, finding_hash) — a finding is reported once until it changes",
@@ -546,16 +1248,78 @@
       "tier_label": "ensemble",
       "tagline": "The whole connected stack, working as one thing, on the connectors already authorised.",
       "mode": "direct",
-      "connectors": ["Gmail", "Google Calendar", "Google Drive", "Todoist", "Supabase", "Cloudflare Developer Platform", "Canva", "Vercel", "GitHub", "tldraw", "Anthropic Economic Index", "Three.js 3D Viewer"],
-      "archetypes": ["email", "calendar", "file_storage", "task_pm", "database_warehouse", "cloud_infra", "design_visual", "dev_deploy", "code_context", "diagramming", "gov_public_data"],
+      "connectors": [
+        "Gmail",
+        "Google Calendar",
+        "Google Drive",
+        "Todoist",
+        "Supabase",
+        "Cloudflare Developer Platform",
+        "Canva",
+        "Vercel",
+        "GitHub",
+        "tldraw",
+        "Anthropic Economic Index",
+        "Three.js 3D Viewer"
+      ],
+      "archetypes": [
+        "email",
+        "calendar",
+        "file_storage",
+        "task_pm",
+        "database_warehouse",
+        "cloud_infra",
+        "design_visual",
+        "dev_deploy",
+        "code_context",
+        "diagramming",
+        "gov_public_data"
+      ],
       "connector_count": 12,
       "required_auths": 8,
-      "join_keys": ["email", "timestamp", "url", "file", "project", "rows", "code", "image"],
+      "join_keys": [
+        "email",
+        "timestamp",
+        "url",
+        "file",
+        "project",
+        "rows",
+        "code",
+        "image"
+      ],
       "ribs": [
-        {"name": "morning digest", "pattern": "Digest", "hops": 3, "claude": true, "side_effect": "read", "fan_in": 4},
-        {"name": "inbox → tasks", "pattern": "Pipeline", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 1},
-        {"name": "artifact materialisation", "pattern": "Materialize", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 2},
-        {"name": "weekly review", "pattern": "Digest", "hops": 3, "claude": true, "side_effect": "create", "fan_in": 5}
+        {
+          "name": "morning digest",
+          "pattern": "Digest",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "read",
+          "fan_in": 4
+        },
+        {
+          "name": "inbox → tasks",
+          "pattern": "Pipeline",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 1
+        },
+        {
+          "name": "artifact materialisation",
+          "pattern": "Materialize",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 2
+        },
+        {
+          "name": "weekly review",
+          "pattern": "Digest",
+          "hops": 3,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 5
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "cron Worker — deployed via wrangler, since the Cloudflare connector cannot deploy Workers",
@@ -565,9 +1329,7 @@
       "build_hours": 60,
       "monthly_run_cost_usd": 30,
       "cost_per_run_usd": 0.25,
-      "hours_reclaimed_per_month": 18,
       "cold_start_days": 3,
-      "human_minutes_per_week": 30,
       "degradation": "degrades",
       "ceiling_connectors": 20,
       "dedupe": "one crosswalk keyed on (source_system, source_id, target_system)",
@@ -590,16 +1352,62 @@
       "tier_label": "buildable",
       "tagline": "The map maintains itself: the registry re-derives, verification decays, the graph stays honest.",
       "mode": "direct",
-      "connectors": ["GitHub", "Cloudflare Developer Platform", "Supabase", "Vercel", "Slack"],
-      "archetypes": ["code_context", "cloud_infra", "database_warehouse", "dev_deploy", "chat_messaging"],
+      "connectors": [
+        "GitHub",
+        "Cloudflare Developer Platform",
+        "Supabase",
+        "Vercel",
+        "Slack"
+      ],
+      "archetypes": [
+        "code_context",
+        "cloud_infra",
+        "database_warehouse",
+        "dev_deploy",
+        "chat_messaging"
+      ],
       "connector_count": 5,
       "required_auths": 4,
-      "join_keys": ["code", "url", "rows", "timestamp", "text"],
+      "join_keys": [
+        "code",
+        "url",
+        "rows",
+        "timestamp",
+        "text"
+      ],
       "ribs": [
-        {"name": "re-derive registry", "pattern": "Pipeline", "hops": 2, "claude": false, "side_effect": "create", "fan_in": 1},
-        {"name": "confidence decay", "pattern": "Reconcile", "hops": 2, "claude": false, "side_effect": "mutate", "fan_in": 1},
-        {"name": "verification backlog digest", "pattern": "Digest", "hops": 2, "claude": true, "side_effect": "create", "fan_in": 2},
-        {"name": "publish map", "pattern": "Materialize", "hops": 2, "claude": false, "side_effect": "create", "fan_in": 1}
+        {
+          "name": "re-derive registry",
+          "pattern": "Pipeline",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "create",
+          "fan_in": 1
+        },
+        {
+          "name": "confidence decay",
+          "pattern": "Reconcile",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "mutate",
+          "fan_in": 1
+        },
+        {
+          "name": "verification backlog digest",
+          "pattern": "Digest",
+          "hops": 2,
+          "claude": true,
+          "side_effect": "create",
+          "fan_in": 2
+        },
+        {
+          "name": "publish map",
+          "pattern": "Materialize",
+          "hops": 2,
+          "claude": false,
+          "side_effect": "create",
+          "fan_in": 1
+        }
       ],
       "trigger": "scheduled",
       "trigger_mechanism": "weekly cron + GitHub push webhook",
@@ -609,9 +1417,7 @@
       "build_hours": 20,
       "monthly_run_cost_usd": 5,
       "cost_per_run_usd": 0.02,
-      "hours_reclaimed_per_month": 4,
       "cold_start_days": 1,
-      "human_minutes_per_week": 10,
       "degradation": "self-heals",
       "ceiling_connectors": 8,
       "dedupe": "the registry rebuild is idempotent by construction — same dump in, same JSON out",

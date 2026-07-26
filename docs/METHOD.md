@@ -439,3 +439,228 @@ second, sharper held-out test of the name-based rules that must still cover the 
 `engine/discover.py` (beam search over 47 archetypes) is deleted. `engine/combine.py` supersedes it
 and searches the real space; keeping a second, weaker searcher around would only invite someone to
 run it.
+
+---
+
+# Phase 3 — parameter schemas, and the bill for tool names
+
+## 19. What was harvested, and the ceiling that replaced the old ceiling
+
+`ToolSearch` returns the full JSONSchema for any deferred tool: parameter names, types,
+required flags, enum values, and the description prose including stated limitations. **178 tool
+schemas were read across the 11 connectors this session is connected to** and transcribed into
+`data/schemas/raw/*.jsonl`, an append-only cache in the same spirit as the Phase 2 harvest.
+
+| | count |
+|---|---|
+| Tool schemas read | 178 |
+| Connectors covered | 11 of 820 (**1.3%**) |
+| Parameters | 481 top-level, 680 readings including nested object fields |
+| Coverage vs the Phase 2 tool lists | 178 of 180 |
+
+The two missing tools are Cloudflare's `accounts_list` and `set_active_account`. They were in the
+Phase 2 observation and are **not** in this session's deferred list. That is session-to-session
+drift in what a connector exposes, it is recorded rather than smoothed over, and `--delta` prints a
+caveat because it is exactly the gap that makes Cloudflare's `company` key look invented.
+
+**This is a different ceiling from Phase 2's and it does not move it.** Phase 2 capped at 475/820
+because `SearchMcpRegistry` had diverged from the live registry — a *source* limit, proven with a
+one-name-per-call negative control. Phase 3 caps at 11/820 because `ToolSearch` only sees
+connectors the session is *connected to*, and connecting 800 accounts is not a thing a session can
+do. Neither ceiling is beaten by the other. Schemas are a **depth** upgrade for eleven connectors
+and a sharper held-out test for the other 453.
+
+## 20. What parameters upgrade, and what they cannot
+
+**Upgraded: `consumes`.** A tool's input parameters *are* the things that can be written into it.
+`Gmail.create_draft` takes `to`/`cc`/`bcc`, `subject`, `body`, `htmlBody`, `attachments` and
+`replyToMessageId` — so it consumes `email`, `text` and `file`, and the tool *name* contains none
+of those three nouns.
+
+**Not upgraded: `emits`.** MCP tool schemas describe **inputs only**. There is no output schema to
+read, so `emits` is still derived from tool names everywhere in this atlas, including on these
+eleven. Any `emits` figure quoted anywhere is a Phase 2 figure.
+
+Two things fall out that names cannot express at all:
+
+- **`selectors`** — the keys a *read* tool can be addressed by. `Google Calendar.search_events`
+  accepts `query`, `pageSize` and `pageToken`: the calendar is addressable by free text and
+  nothing else. A connector whose reads take only its own opaque ids cannot be entered from
+  outside by anyone not already holding an id, which is a join constraint the edge model never had
+  a way to say.
+- **`preconditions`** — mandatory ordering *inside* one connector. **15 of them across 4
+  connectors.** Two vendors independently guard money the same way: `get_purchase_quote` is the
+  only source of the `idempotencyKey` that every Vercel `buy_*` requires, and Supabase's
+  `create_project` needs a `confirm_cost_id` that comes from `confirm_cost`, which itself says to
+  call `get_cost` first. Canva has four more, including `read-design` → `edit-design`. None of
+  these are visible in a tool name, and each one is a step that must succeed before a composed
+  system can act.
+
+## 21. The second held-out test — what a name costs
+
+Phase 2's held-out test was six hand-picked claims and it passed 6/6. This is the harder version:
+on the 11 connectors where a name-derived and a parameter-derived `consumes` both exist,
+parameters are the reference and names are the estimate.
+
+| | value |
+|---|---|
+| (connector, key) claims compared | 59 |
+| Both agree | 21 |
+| Names claim, parameters do not — **invented** | 4 |
+| Parameters claim, names do not — **missed** | 34 |
+| **Precision** | **0.840** |
+| **Recall** | **0.382** |
+| F1 | 0.525 |
+
+**Read it this way: when a tool name claims a key it is right 84% of the time, but it sees under
+40% of what the connector actually accepts.** The name-based model is not noisy, it is *blind* —
+it errs overwhelmingly by omission, not by invention. Every one of the 34 misses is a real inbound
+edge that the 453-connector harvested graph does not draw.
+
+Because parameters improve two things at once — which keys a tool takes, and whether it is a
+writer at all — `--delta` also reports the comparison with the read/write split pinned to Phase
+2's name-derived version. **30 of the 34 misses come from key extraction alone; the other 4 need
+the tool reclassified as a writer first.**
+
+Side-effect class agrees on 8 of 11. The three disagreements are all schema-only findings:
+
+1. **Canva is `irreversible`, not `mutate`.** `edit-design`'s operations include `delete_element`
+   and its description says commit is IRREVERSIBLE; `merge-designs` carries `delete_pages` and
+   "CANNOT BE UNDONE". `data/verified_tools.json` recorded "no delete" as ground truth. **That
+   ground truth was wrong**, and only the schema shows it.
+2. **tldraw is `mutate`, not `read`** — and this retires Phase 2's documented failure case.
+   `exec` carries no verb and no noun, so name inference could only ever score it `read`. Its
+   schema has a required `code` string. Phase 2 said "name-based inference has a floor, and this
+   is it"; the floor is where it was, but schemas are underneath it.
+3. **Three.js is `mutate`, not `read`**, by the same `code`-parameter rule.
+
+## 22. Rules that were removed by measurement, not by argument
+
+Three rules in `engine/schema.py` were cut or narrowed after being counted. Recording them because
+the counting is the method, and a rule that survives only because nobody measured it is the
+failure mode this project keeps re-learning.
+
+- **Verb-scanning prose: removed.** Reading tool descriptions for verbs pushed Google Drive from
+  `create` to `mutate` — its description cross-references other tools by name, and Gmail's
+  read-only `list_labels` names three mutate verbs the same way. Prose is now scanned only for a
+  seven-word irreversibility list (`irreversible`, `undone`, `permanently`, `destroys`, …) which
+  has no other meaning.
+- **Verb-scanning every type string: narrowed to action parameters.** It fired 30 times, changed
+  **zero** connector classes, and at tool level was right 3 times and wrong twice — reading
+  `LabelColor` as the verb "label" and `DRAFT_VIEW_FULL` as the verb "draft". Restricted to
+  parameters whose *value selects what the tool does* (`action`, `operation`, `labelOption`,
+  `finalize`), it keeps both real wins and drops both false positives. `eventType` is pointedly
+  excluded: `find-activity`'s enum lists `deleted` as something to filter for, not to do.
+- **Bag-of-tokens parameter mapping: replaced by phrase-first.** Canva's mandatory `user_intent`
+  telemetry string fires 30 times and its `user` token was being read as the `person` key, giving
+  Canva a person sink that does not exist.
+
+Two silent-drop bugs in the nested-type reader are worth the same treatment. The first matched
+only bracket groups containing no further delimiters, so Todoist's
+`object{type:absolute,taskId,due{date,…},…}` never matched and the whole outer level vanished —
+which showed up as `PARAM_KEYS["due"]` reading as a dead rule. The second stripped `[...]` as a
+numeric range annotation and swallowed every `oneOf[...]` union whole, taking all three Todoist
+reminder variants with it. **Both were found by reading the dead-rule list, not the code.**
+`--rules` now reports 0 dead entries in both dictionaries and 1 unmapped parameter of 680.
+
+## 23. The third profile axis — runtime
+
+The graph had no notion of *how a connector runs*, and `trigger_action` was standing in for it
+with "is the middle node an `automation_hub`" — an archetype guess doing a capability's job.
+
+Measuring it against 178 schemas immediately deletes the interesting category. **There is no
+subscribe, webhook, callback or notification-target parameter in any of the 178 tools.** Nothing
+here is event-emitting; "schedulable" is therefore not a property of a connector either, because
+anything readable can be put behind a cron. The axis that *is* real, and is visible in parameters,
+is whether a poll can ask **what changed**:
+
+| mode | count | meaning |
+|---|---|---|
+| `poll_windowed` | 2 | a read tool takes a typed time-range parameter — Todoist, Vercel |
+| `poll_windowed_dsl` | 2 | the time filter exists only inside a query-string language — Gmail's `newer_than:`, Drive's `modifiedTime >` |
+| `poll_blind` | 7 | every poll returns the same undifferentiated set |
+| `event_push` | **0** | measured, not assumed |
+
+**Google Calendar is `poll_blind`, and it is the sharp case:** `search_events` has no date
+parameter of any kind, so "when a meeting is booked, do X" is not buildable from the calendar at
+any polling frequency. The dedupe burden has to move into the composing system's own state.
+
+An earlier version of this rule matched name tokens and scored Calendar the *most* pollable
+connector in the directory, because `search_events` contains the token `events` — the domain noun,
+not a change log. Deriving a schema-grade axis from names is self-defeating; the rule reads
+parameters and parameter descriptions only.
+
+`profile.py` approximates the same axis from names for the 453 connectors with no schemas, and
+these 11 are the only place that approximation can be scored. **It gets 8 of 11** — barely better
+than chance on a two-way split. It misses Gmail (DSL operators are invisible in names), over-claims
+Supabase (`get_logs` has no time parameter at all — it is fixed at 24 hours), and under-claims
+Vercel (`get_web_analytics` takes `since`/`until` but its name has no temporal token). Directory-
+wide runtime figures carry that error bar.
+
+### What it does to `trigger_action`
+
+The motif now counts two ways, and the ratio is the finding:
+
+| model | hub-fired | self-fired |
+|---|---|---|
+| harvested | 2,030,181 | **5,306** |
+| evidence | 27,924 | **1,572** |
+
+**Self-fired trigger→action chains are 0.26% of hub-fired ones.** Almost nothing in this directory
+can notice its own change, so almost every unattended pattern needs an automation hub in the
+middle — not for routing, but purely to supply the firing. This extends Phase 2's ordering result:
+composition is limited by what can be written into, and *automation* is limited by what can be
+noticed changing.
+
+Note that `runtime` is name-derived for all but 11 connectors, so both columns carry the 8/11 error
+bar above. `engine/combine.py` prints that caveat next to the count rather than in a footnote.
+
+## 24. The operator-payback lens is gone from the scorer
+
+Phase 2 removed the payback framing from the UI. `engine/score.py` kept computing it, so the 14
+authored systems were still *ranked* by a composite whose heaviest axis (0.30) was hours reclaimed
+per month, valued at an assumed hourly rate against an assumed build cost. A number that changes
+when you change your salary is not a fact about a composition, and the unit of work here is the
+directory, not an account.
+
+`LEVERAGE` is deleted, not rescaled. `payback` and `cold_start` are gone along with
+`HOURLY_RATE_USD` and `VALUE_PER_HOUR_USD`; `hours_reclaimed_per_month` and
+`human_minutes_per_week` are deleted from all 14 systems in `data/systems.json`. What replaces it
+is **`ROBUSTNESS`** — will this combination keep running — built from the four axes that were
+always properties of the composition rather than its owner, plus one Phase 3 made measurable:
+
+| axis | weight |
+|---|---|
+| trigger | 0.30 |
+| degradation | 0.22 |
+| auth_surface | 0.18 |
+| blast_radius | 0.18 |
+| **preconditions** | **0.12** |
+
+`build_hours`, `monthly_run_cost_usd`, `cost_per_run_usd` and `cold_start_days` survive as
+descriptive fields. Nothing scores on them, and the UI labels that block "described, not scored".
+
+**`trigger_reality` is also no longer taken on the author's word.** Each system's claimed trigger
+is checked against the measured runtime of its own source connectors, with three outcomes rather
+than two — the third exists because getting it wrong the first time invented a finding. *Support
+Signal → Roadmap* claims `scheduled` while all six of its named sources are `poll_blind`: it fires,
+but re-reads the same set every time, and its dedupe burden is real. The three mesh systems are
+specified at archetype level with **no named connectors at all**, so there is nothing to check
+their claim against; they are reported `unmeasurable`, not failed. Flagging missing evidence as a
+failure would have been a fabricated result in exactly the shape this project keeps warning about.
+
+## 25. What Phase 3 still does not do
+
+- **`emits` is untouched.** Input schemas cannot see return shapes. Every emits-derived figure —
+  key scarcity, out-degree, donor rankings — is still name-grade.
+- **809 connectors have no schemas and will not get them from a session.** The `evidence` model
+  remains the honest one to quote, and it is still name-grade for 453 of its 464 members.
+- **Preconditions are recorded but not yet enforced in path-finding.** `graph.py` will still route
+  through `buy_domain` without noting that `get_purchase_quote` has to precede it. The data is in
+  `data/schema_profiles.json`; the pathfinder does not read it.
+- **`selectors` are not yet edges.** The fact that Calendar is addressable only by free text is
+  reported, not modelled — the edge model still says an edge exists if `emits(A) ∩ consumes(B)` is
+  non-empty, with no check that B can actually be *addressed* with what A holds.
+- **The 11 are not a random sample.** They are the connectors this account happens to have
+  connected, skewed toward developer tools. The 84%/38% precision/recall figures are measured on
+  them and generalise only as far as that skew allows.

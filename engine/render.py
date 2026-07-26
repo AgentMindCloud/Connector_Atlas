@@ -92,12 +92,13 @@ def build(include_weak=False, model="harvested"):
     analysis["counts"]["verified"] = sum(1 for c in conns if c.get("confidence") == "VERIFIED")
 
     sysdoc = json.load(open(os.path.join(ROOT, "data", "systems.json"), encoding="utf-8"))
+    sctx = S.build_ctx(arches, conns)
     systems = []
     for s in sysdoc["systems"]:
         s = dict(s)
-        s["score"] = S.evaluate(s, None)
+        s["score"] = S.evaluate(s, sctx)
         systems.append(s)
-    systems.sort(key=lambda s: -s["score"]["LEVERAGE"])
+    systems.sort(key=lambda s: -s["score"]["ROBUSTNESS"])
 
     # The combinatorial layer: the pair matrix (class-compressed but lossless),
     # the motif census, the triple census, and the inherited-vs-harvested diff.
@@ -129,6 +130,7 @@ def build(include_weak=False, model="harvested"):
                     "byShape": dict(sorted(tnamed.items(), key=lambda t: -t[1]))},
         "questions": X.questions(xconns, xclasses, xindex, xsizes, xadj, xkeys),
         "diff": X.diff(),
+        "schema": schema_payload(),
         "model": model,
         "archetypes": {k: {"label": v["label"], "emits": sorted(set(v["emits"]) - G.WEAK),
                            "consumes": sorted(set(v["consumes"]) - G.WEAK),
@@ -143,6 +145,35 @@ def build(include_weak=False, model="harvested"):
         "strongKeys": sorted(G.STRONG),
         "hubArches": sorted(G.HUB_ARCHES),
         "fallbackArches": sorted(G.FALLBACK_ARCHES),
+    }
+
+
+def schema_payload():
+    """Phase 3's parameter-schema layer, for the fifth lab view.
+
+    Returns None when the delta has not been computed, so the view can say the
+    measurement is missing rather than render an empty table that reads as a
+    finding. Regenerate with: python3 engine/schema.py --derive --delta
+    """
+    dp = os.path.join(ROOT, "out", "schema_delta.json")
+    sp = os.path.join(ROOT, "data", "schema_profiles.json")
+    if not (os.path.exists(dp) and os.path.exists(sp)):
+        return None
+    delta = json.load(open(dp, encoding="utf-8"))
+    prof = json.load(open(sp, encoding="utf-8"))["connectors"]
+    return {
+        "agreement": delta["agreement"],
+        "sideEffects": delta["side_effects"],
+        "connectors": delta["connectors"],
+        "selectors": delta["selectors"],
+        "preconditions": delta["preconditions"],
+        "runtime": delta.get("runtime", {}),
+        "profiles": {v["name"]: {"nTools": v["n_tools"], "nParams": v["n_params"],
+                                 "consumes": v["consumes"], "selectors": v["selectors"],
+                                 "runtime": v["runtime"],
+                                 "clsName": v["side_effects_name"],
+                                 "clsSchema": v["side_effects_schema"]}
+                     for v in prof.values()},
     }
 
 

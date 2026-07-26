@@ -1,12 +1,11 @@
 {
  "weights": {
-  "leverage": {
-   "payback": 0.3,
-   "trigger": 0.22,
-   "degradation": 0.15,
-   "auth_surface": 0.13,
-   "cold_start": 0.1,
-   "blast_radius": 0.1
+  "robustness": {
+   "trigger": 0.3,
+   "degradation": 0.22,
+   "auth_surface": 0.18,
+   "blast_radius": 0.18,
+   "preconditions": 0.12
   },
   "capability": {
    "key_coverage": 0.26,
@@ -34,11 +33,145 @@
    0
   ]
  ],
- "rate_assumptions": {
-  "build_hourly_usd": 60,
-  "value_per_hour_usd": 45
+ "_schema": {
+  "note": "Phase 3 removed the operator-payback lens. LEVERAGE is gone; ROBUSTNESS replaces it and scores nothing on assumed rates or reclaimed hours. See engine/score.py for what changed."
  },
  "systems": [
+  {
+   "id": "risk_radar",
+   "name": "Risk & Compliance Radar",
+   "tier_label": "mesh",
+   "tagline": "119 read-only sensors watching for the thing that ends the company.",
+   "mode": "bridge",
+   "connector_count": 119,
+   "connectors": [],
+   "archetypes": [
+    "security",
+    "legal",
+    "gov_public_data",
+    "market_data",
+    "observability",
+    "identity_verification",
+    "code_context"
+   ],
+   "required_auths": 16,
+   "join_keys": [
+    "domain",
+    "company",
+    "url",
+    "rows",
+    "timestamp",
+    "email",
+    "code",
+    "money"
+   ],
+   "ribs": [
+    {
+     "name": "security posture sensors",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 22
+    },
+    {
+     "name": "regulatory & case-law sensors",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 32
+    },
+    {
+     "name": "counterparty & sanctions sensors",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 20
+    },
+    {
+     "name": "materiality judgment",
+     "pattern": "Escalate",
+     "hops": 3,
+     "claude": true,
+     "side_effect": "create",
+     "fan_in": 4
+    }
+   ],
+   "trigger": "scheduled",
+   "trigger_mechanism": "daily cron; sanctions and breach feeds hourly",
+   "feedback_closure": true,
+   "state_tables": 6,
+   "uses_memory": true,
+   "build_hours": 280,
+   "monthly_run_cost_usd": 1500,
+   "cost_per_run_usd": 2.2,
+   "cold_start_days": 30,
+   "degradation": "self-heals",
+   "ceiling_connectors": 180,
+   "dedupe": "unique(sensor_id, subject_key, finding_hash) — a finding is reported once until it changes",
+   "weakest_link": "Alert fatigue is the failure mode, not missed signal. 119 sensors will generate more findings than any human will read, and a radar nobody reads is worse than none because it manufactures false confidence. The materiality rib is the entire product — everything else is plumbing.",
+   "proof": "Run the materiality judgment against 30 days of historical findings and check what it would have escalated against what actually mattered. If the precision is bad, the mesh is a liability.",
+   "confidence": "DIRECTORY",
+   "build_plan": [
+    "Findings table with a stable finding_hash so the same issue is not re-reported daily.",
+    "Every sensor is read-only and independent — this archetype set was chosen because none of it can write.",
+    "The materiality rib runs Claude against the findings delta with an explicit written threshold.",
+    "Escalate above the threshold; everything else accumulates silently and is reviewed weekly.",
+    "Note identity_verification only became a usable archetype after the routing fix — it had zero members before."
+   ],
+   "why_it_wins": "The one mesh where the judgment rib is worth more than all the sensors combined — and the design makes that explicit rather than hiding it.",
+   "score": {
+    "evaluators": {
+     "blast_radius": 1,
+     "auth_surface": 16,
+     "trigger_reality": 3,
+     "fan_in_depth_ratio": 10.67,
+     "precondition_edges": 0,
+     "state_gravity": 8,
+     "judgment_share": 0.25,
+     "degradation_grace": 3
+    },
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [],
+     "verdict": "unmeasurable",
+     "supported": false,
+     "note": "specified at archetype level with no named connectors, so the runtime axis has nothing to check the trigger claim against"
+    },
+    "descriptive_not_scored": {
+     "build_hours": 280,
+     "monthly_run_cost_usd": 1500,
+     "cost_per_run_usd": 2.2,
+     "cold_start_days": 30,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
+    },
+    "precondition_coverage": "0/0 connectors have measured schemas",
+    "subscores": {
+     "robustness": {
+      "trigger": 100,
+      "degradation": 100,
+      "auth_surface": 27,
+      "blast_radius": 67,
+      "preconditions": 100
+     },
+     "capability": {
+      "key_coverage": 53,
+      "fan_in": 87,
+      "closure": 100,
+      "cross_cluster": 60,
+      "ceiling": 88
+     }
+    },
+    "ROBUSTNESS": 80.9,
+    "CAPABILITY": 76.2,
+    "COMBINED": 78.6,
+    "tier_robustness": "S",
+    "tier_capability": "A",
+    "tier": "S"
+   }
+  },
   {
    "id": "inbox_ledger",
    "name": "Inbox → Commitment Ledger",
@@ -98,9 +231,7 @@
    "build_hours": 24,
    "monthly_run_cost_usd": 12,
    "cost_per_run_usd": 0.04,
-   "hours_reclaimed_per_month": 8,
    "cold_start_days": 1,
-   "human_minutes_per_week": 20,
    "degradation": "degrades",
    "ceiling_connectors": 8,
    "dedupe": "unique(source='gmail', source_id=thread_id, target='todoist') — upsert, never insert",
@@ -114,43 +245,45 @@
     "Upsert into crosswalk, then create Todoist tasks only for rows that inserted.",
     "Escalate rule: auto-create only for threads matching a narrow filter; everything else lands in a weekly review list."
    ],
-   "why_it_wins": "Highest certainty payback in the set. Zero send risk because Gmail physically cannot send here. One table, one cron, one judgment hop.",
+   "why_it_wins": "Least that can go wrong in the set. Zero send risk because Gmail physically cannot send here. One table, one cron, one judgment hop.",
    "score": {
     "evaluators": {
      "blast_radius": 1,
      "auth_surface": 3,
      "trigger_reality": 3,
      "fan_in_depth_ratio": 0.67,
-     "cold_start_days": 1,
-     "cost_per_run_usd": 0.04,
+     "precondition_edges": 4,
      "state_gravity": 1,
      "judgment_share": 0.67,
      "degradation_grace": 2
     },
-    "requested_axes": {
-     "technical_difficulty": 19.5,
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [
+      "poll_windowed_dsl",
+      "poll_windowed",
+      "poll_blind",
+      "poll_blind"
+     ],
+     "verdict": "supported",
+     "supported": true,
+     "note": null
+    },
+    "descriptive_not_scored": {
      "build_hours": 24,
-     "build_cost_usd": 1440,
      "monthly_run_cost_usd": 12,
-     "time_to_value_days": 1,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 20,
-     "claude_share": 0.67
+     "cost_per_run_usd": 0.04,
+     "cold_start_days": 1,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
     },
-    "economics": {
-     "monthly_value_usd": 360,
-     "net_monthly_usd": 348,
-     "breakeven_months": 4.1,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
+    "precondition_coverage": "4/4 connectors have measured schemas",
     "subscores": {
-     "leverage": {
-      "payback": 72,
+     "robustness": {
       "trigger": 100,
       "degradation": 67,
       "auth_surface": 88,
-      "cold_start": 95,
-      "blast_radius": 67
+      "blast_radius": 67,
+      "preconditions": 67
      },
      "capability": {
       "key_coverage": 20,
@@ -160,10 +293,10 @@
       "ceiling": 20
      }
     },
-    "LEVERAGE": 81.3,
+    "ROBUSTNESS": 80.6,
     "CAPABILITY": 23.6,
-    "COMBINED": 52.5,
-    "tier_leverage": "S",
+    "COMBINED": 52.1,
+    "tier_robustness": "S",
     "tier_capability": "C",
     "tier": "S"
    }
@@ -238,9 +371,7 @@
    "build_hours": 36,
    "monthly_run_cost_usd": 18,
    "cost_per_run_usd": 0.07,
-   "hours_reclaimed_per_month": 12,
    "cold_start_days": 2,
-   "human_minutes_per_week": 25,
    "degradation": "degrades",
    "ceiling_connectors": 10,
    "dedupe": "n/a — read-only up to the digest; the digest is keyed on (period, run_date)",
@@ -261,36 +392,39 @@
      "auth_surface": 4,
      "trigger_reality": 3,
      "fan_in_depth_ratio": 1.5,
-     "cold_start_days": 2,
-     "cost_per_run_usd": 0.07,
+     "precondition_edges": 3,
      "state_gravity": 2,
      "judgment_share": 0.5,
      "degradation_grace": 2
     },
-    "requested_axes": {
-     "technical_difficulty": 23.9,
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_windowed_dsl"
+     ],
+     "verdict": "supported",
+     "supported": true,
+     "note": null
+    },
+    "descriptive_not_scored": {
      "build_hours": 36,
-     "build_cost_usd": 2160,
      "monthly_run_cost_usd": 18,
-     "time_to_value_days": 2,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 25,
-     "claude_share": 0.5
+     "cost_per_run_usd": 0.07,
+     "cold_start_days": 2,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
     },
-    "economics": {
-     "monthly_value_usd": 540,
-     "net_monthly_usd": 522,
-     "breakeven_months": 4.1,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
+    "precondition_coverage": "2/5 connectors have measured schemas",
     "subscores": {
-     "leverage": {
-      "payback": 72,
+     "robustness": {
       "trigger": 100,
       "degradation": 67,
       "auth_surface": 80,
-      "cold_start": 92,
-      "blast_radius": 67
+      "blast_radius": 67,
+      "preconditions": 75
      },
      "capability": {
       "key_coverage": 27,
@@ -300,12 +434,322 @@
       "ceiling": 24
      }
     },
-    "LEVERAGE": 80.0,
+    "ROBUSTNESS": 80.0,
     "CAPABILITY": 28.3,
     "COMBINED": 54.2,
-    "tier_leverage": "S",
+    "tier_robustness": "S",
     "tier_capability": "C",
     "tier": "S"
+   }
+  },
+  {
+   "id": "market_omniscience",
+   "name": "Market Omniscience Mesh",
+   "tier_label": "mesh",
+   "tagline": "205 read-only sensors on one spine. Blast radius zero. This is what 150+ connectors is actually for.",
+   "mode": "bridge",
+   "connector_count": 205,
+   "connectors": [],
+   "archetypes": [
+    "market_data",
+    "research_science",
+    "marketing_analytics",
+    "gov_public_data",
+    "web_search",
+    "bi_analytics",
+    "prospecting_enrichment",
+    "job_search"
+   ],
+   "required_auths": 24,
+   "join_keys": [
+    "ticker",
+    "domain",
+    "company",
+    "money",
+    "timestamp",
+    "url",
+    "rows",
+    "geo",
+    "email",
+    "phone",
+    "file",
+    "image"
+   ],
+   "ribs": [
+    {
+     "name": "financial sensors",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 53
+    },
+    {
+     "name": "research sensors",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 36
+    },
+    {
+     "name": "marketing sensors",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 32
+    },
+    {
+     "name": "public-data sensors",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 14
+    },
+    {
+     "name": "hiring-signal sensors",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 8
+    },
+    {
+     "name": "cross-sensor correlation",
+     "pattern": "Reconcile",
+     "hops": 3,
+     "claude": true,
+     "side_effect": "read",
+     "fan_in": 5
+    },
+    {
+     "name": "thesis brief",
+     "pattern": "Digest",
+     "hops": 3,
+     "claude": true,
+     "side_effect": "create",
+     "fan_in": 6
+    }
+   ],
+   "trigger": "scheduled",
+   "trigger_mechanism": "tiered cron — tick data hourly, fundamentals daily, research weekly",
+   "feedback_closure": true,
+   "state_tables": 9,
+   "uses_memory": true,
+   "build_hours": 420,
+   "monthly_run_cost_usd": 2400,
+   "cost_per_run_usd": 3.5,
+   "cold_start_days": 60,
+   "degradation": "self-heals",
+   "ceiling_connectors": 293,
+   "dedupe": "unique(sensor_id, entity_key, captured_at) — every sensor writes the same shape",
+   "weakest_link": "Nobody needs 205 sensors. The design is correct and the marginal sensor is near-worthless — value saturates somewhere around 20-30 well-chosen sources. What this system proves is the *architecture*: that read-only fan-in scales without compounding risk. Treat 205 as the ceiling you can safely approach, not the target you should hit.",
+   "proof": "Add sensors 1, 2 and 3; confirm each writes the normalised shape and that killing sensor 2 does not affect 1 or 3. That independence is the entire claim — prove it at N=3, and N=205 follows by induction.",
+   "confidence": "DIRECTORY",
+   "build_plan": [
+    "One normalised observation table: (sensor_id, entity_key, metric, value, unit, captured_at, source_url). Every sensor conforms; no sensor gets a bespoke schema.",
+    "One adapter per sensor, each independently deployable and independently killable.",
+    "A sensor registry table with a staleness threshold per sensor — the mesh reports its own health, which is what makes degradation self-healing rather than silent.",
+    "Claude never touches raw sensor output. It reads the correlation table only.",
+    "Add sensors in order of marginal information gain, and stop when the brief stops changing."
+   ],
+   "why_it_wins": "The honest answer to 'can a system benefit from 150+ connectors'. Yes — but only in this topology. Every rib is read-only and independent, so failure is additive, not multiplicative. A 200-sensor mesh has a smaller blast radius than a 7-hop write chain.",
+   "score": {
+    "evaluators": {
+     "blast_radius": 1,
+     "auth_surface": 24,
+     "trigger_reality": 3,
+     "fan_in_depth_ratio": 17.67,
+     "precondition_edges": 0,
+     "state_gravity": 11,
+     "judgment_share": 0.29,
+     "degradation_grace": 3
+    },
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [],
+     "verdict": "unmeasurable",
+     "supported": false,
+     "note": "specified at archetype level with no named connectors, so the runtime axis has nothing to check the trigger claim against"
+    },
+    "descriptive_not_scored": {
+     "build_hours": 420,
+     "monthly_run_cost_usd": 2400,
+     "cost_per_run_usd": 3.5,
+     "cold_start_days": 60,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
+    },
+    "precondition_coverage": "0/0 connectors have measured schemas",
+    "subscores": {
+     "robustness": {
+      "trigger": 100,
+      "degradation": 100,
+      "auth_surface": 22,
+      "blast_radius": 67,
+      "preconditions": 100
+     },
+     "capability": {
+      "key_coverage": 80,
+      "fan_in": 97,
+      "closure": 100,
+      "cross_cluster": 65,
+      "ceiling": 100
+     }
+    },
+    "ROBUSTNESS": 79.9,
+    "CAPABILITY": 87.8,
+    "COMBINED": 83.8,
+    "tier_robustness": "S",
+    "tier_capability": "S",
+    "tier": "S"
+   }
+  },
+  {
+   "id": "maximum_safe_mesh",
+   "name": "Maximum Safe Mesh — the 293 ceiling",
+   "tier_label": "mesh",
+   "tagline": "Every read-only connector in the directory, at once. The hard upper bound on a zero-risk system.",
+   "mode": "bridge",
+   "connector_count": 293,
+   "connectors": [],
+   "archetypes": [
+    "market_data",
+    "research_science",
+    "bi_analytics",
+    "marketing_analytics",
+    "legal",
+    "gov_public_data",
+    "web_search",
+    "code_context",
+    "prospecting_enrichment",
+    "job_search",
+    "meetings_transcripts",
+    "weather_geo",
+    "observability",
+    "security"
+   ],
+   "required_auths": 40,
+   "join_keys": [
+    "ticker",
+    "domain",
+    "company",
+    "money",
+    "timestamp",
+    "url",
+    "rows",
+    "geo",
+    "email",
+    "phone",
+    "file",
+    "image",
+    "code",
+    "media"
+   ],
+   "ribs": [
+    {
+     "name": "universal sensor fan-in",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 293
+    },
+    {
+     "name": "entity resolution",
+     "pattern": "Reconcile",
+     "hops": 3,
+     "claude": true,
+     "side_effect": "read",
+     "fan_in": 8
+    },
+    {
+     "name": "anomaly surface",
+     "pattern": "Escalate",
+     "hops": 2,
+     "claude": true,
+     "side_effect": "create",
+     "fan_in": 6
+    },
+    {
+     "name": "situation brief",
+     "pattern": "Digest",
+     "hops": 3,
+     "claude": true,
+     "side_effect": "create",
+     "fan_in": 10
+    }
+   ],
+   "trigger": "scheduled",
+   "trigger_mechanism": "tiered cron by sensor volatility",
+   "feedback_closure": true,
+   "state_tables": 12,
+   "uses_memory": true,
+   "build_hours": 900,
+   "monthly_run_cost_usd": 5000,
+   "cost_per_run_usd": 8.0,
+   "cold_start_days": 90,
+   "degradation": "self-heals",
+   "ceiling_connectors": 293,
+   "dedupe": "unique(sensor_id, entity_key, captured_at)",
+   "weakest_link": "This is a boundary object, not a build. It exists to answer 'how far does this go' with a number derived from the registry rather than from imagination: 293 connectors carry side_effects=read, so 293 is the largest system that cannot break anything it touches. The 294th connector is a write, and the moment you add it the blast-radius argument collapses and you are back to designing chains.",
+   "proof": "The claim is structural, not empirical: query the registry for side_effects='read' and count. engine/graph.py reports it as read_only_ceiling.",
+   "confidence": "DIRECTORY",
+   "build_plan": [
+    "Not a build plan — a bound. Use it to decide where a real mesh should stop.",
+    "The practical lesson: pick the 20-30 sensors whose marginal information is highest and stop there.",
+    "The structural lesson: read-only breadth is free; write depth is expensive. Design accordingly."
+   ],
+   "why_it_wins": "It is the only number in this whole exercise that is a fact about the directory rather than a judgment about a design.",
+   "score": {
+    "evaluators": {
+     "blast_radius": 1,
+     "auth_surface": 40,
+     "trigger_reality": 3,
+     "fan_in_depth_ratio": 97.67,
+     "precondition_edges": 0,
+     "state_gravity": 14,
+     "judgment_share": 0.75,
+     "degradation_grace": 3
+    },
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [],
+     "verdict": "unmeasurable",
+     "supported": false,
+     "note": "specified at archetype level with no named connectors, so the runtime axis has nothing to check the trigger claim against"
+    },
+    "descriptive_not_scored": {
+     "build_hours": 900,
+     "monthly_run_cost_usd": 5000,
+     "cost_per_run_usd": 8.0,
+     "cold_start_days": 90,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
+    },
+    "precondition_coverage": "0/0 connectors have measured schemas",
+    "subscores": {
+     "robustness": {
+      "trigger": 100,
+      "degradation": 100,
+      "auth_surface": 10,
+      "blast_radius": 67,
+      "preconditions": 100
+     },
+     "capability": {
+      "key_coverage": 93,
+      "fan_in": 100,
+      "closure": 100,
+      "cross_cluster": 85,
+      "ceiling": 100
+     }
+    },
+    "ROBUSTNESS": 77.8,
+    "CAPABILITY": 95.6,
+    "COMBINED": 86.7,
+    "tier_robustness": "A",
+    "tier_capability": "S",
+    "tier": "A"
    }
   },
   {
@@ -379,9 +823,7 @@
    "build_hours": 20,
    "monthly_run_cost_usd": 5,
    "cost_per_run_usd": 0.02,
-   "hours_reclaimed_per_month": 4,
    "cold_start_days": 1,
-   "human_minutes_per_week": 10,
    "degradation": "self-heals",
    "ceiling_connectors": 8,
    "dedupe": "the registry rebuild is idempotent by construction — same dump in, same JSON out",
@@ -401,36 +843,39 @@
      "auth_surface": 4,
      "trigger_reality": 3,
      "fan_in_depth_ratio": 1.0,
-     "cold_start_days": 1,
-     "cost_per_run_usd": 0.02,
+     "precondition_edges": 8,
      "state_gravity": 2,
      "judgment_share": 0.25,
      "degradation_grace": 3
     },
-    "requested_axes": {
-     "technical_difficulty": 18.0,
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [
+      "unmeasured",
+      "poll_blind",
+      "poll_blind",
+      "poll_windowed",
+      "poll_blind"
+     ],
+     "verdict": "supported",
+     "supported": true,
+     "note": null
+    },
+    "descriptive_not_scored": {
      "build_hours": 20,
-     "build_cost_usd": 1200,
      "monthly_run_cost_usd": 5,
-     "time_to_value_days": 1,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 10,
-     "claude_share": 0.25
+     "cost_per_run_usd": 0.02,
+     "cold_start_days": 1,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
     },
-    "economics": {
-     "monthly_value_usd": 180,
-     "net_monthly_usd": 175,
-     "breakeven_months": 6.9,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
+    "precondition_coverage": "3/5 connectors have measured schemas",
     "subscores": {
-     "leverage": {
-      "payback": 56,
+     "robustness": {
       "trigger": 100,
       "degradation": 100,
       "auth_surface": 80,
-      "cold_start": 95,
-      "blast_radius": 33
+      "blast_radius": 33,
+      "preconditions": 45
      },
      "capability": {
       "key_coverage": 27,
@@ -440,10 +885,10 @@
       "ceiling": 20
      }
     },
-    "LEVERAGE": 77.2,
+    "ROBUSTNESS": 77.8,
     "CAPABILITY": 42.8,
-    "COMBINED": 60.0,
-    "tier_leverage": "A",
+    "COMBINED": 60.3,
+    "tier_robustness": "A",
     "tier_capability": "C",
     "tier": "A"
    }
@@ -520,9 +965,7 @@
    "build_hours": 44,
    "monthly_run_cost_usd": 38,
    "cost_per_run_usd": 0.11,
-   "hours_reclaimed_per_month": 14,
    "cold_start_days": 3,
-   "human_minutes_per_week": 45,
    "degradation": "degrades",
    "ceiling_connectors": 12,
    "dedupe": "unique(source='meeting', source_id=transcript_id) — one summary, one draft, one task set per call",
@@ -543,36 +986,40 @@
      "auth_surface": 4,
      "trigger_reality": 3,
      "fan_in_depth_ratio": 0.67,
-     "cold_start_days": 3,
-     "cost_per_run_usd": 0.11,
+     "precondition_edges": 4,
      "state_gravity": 4,
      "judgment_share": 0.75,
      "degradation_grace": 2
     },
-    "requested_axes": {
-     "technical_difficulty": 26.8,
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [
+      "poll_blind",
+      "poll_blind",
+      "poll_windowed_dsl",
+      "poll_windowed",
+      "poll_blind",
+      "poll_windowed_dsl"
+     ],
+     "verdict": "supported",
+     "supported": true,
+     "note": null
+    },
+    "descriptive_not_scored": {
      "build_hours": 44,
-     "build_cost_usd": 2640,
      "monthly_run_cost_usd": 38,
-     "time_to_value_days": 3,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 45,
-     "claude_share": 0.75
+     "cost_per_run_usd": 0.11,
+     "cold_start_days": 3,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
     },
-    "economics": {
-     "monthly_value_usd": 630,
-     "net_monthly_usd": 592,
-     "breakeven_months": 4.5,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
+    "precondition_coverage": "4/6 connectors have measured schemas",
     "subscores": {
-     "leverage": {
-      "payback": 70,
+     "robustness": {
       "trigger": 100,
       "degradation": 67,
       "auth_surface": 80,
-      "cold_start": 90,
-      "blast_radius": 33
+      "blast_radius": 33,
+      "preconditions": 67
      },
      "capability": {
       "key_coverage": 27,
@@ -582,11 +1029,213 @@
       "ceiling": 29
      }
     },
-    "LEVERAGE": 75.8,
+    "ROBUSTNESS": 73.1,
     "CAPABILITY": 31.3,
-    "COMBINED": 53.5,
-    "tier_leverage": "A",
+    "COMBINED": 52.2,
+    "tier_robustness": "A",
     "tier_capability": "C",
+    "tier": "A"
+   }
+  },
+  {
+   "id": "competitive_desk",
+   "name": "Competitive Intelligence Desk",
+   "tier_label": "ensemble",
+   "tagline": "Everything published about your market, collapsed into what changed since yesterday.",
+   "mode": "bridge",
+   "connectors": [
+    "Semrush",
+    "Ahrefs",
+    "Similarweb",
+    "Exa",
+    "Tavily",
+    "Meltwater",
+    "CB Insights",
+    "PitchBook Premium",
+    "Profound",
+    "Peec AI",
+    "G2",
+    "Apify",
+    "Supabase",
+    "Slack",
+    "Notion",
+    "Gamma",
+    "Cloudflare Developer Platform",
+    "Google Drive",
+    "Mixpanel",
+    "Harmonic",
+    "Crustdata",
+    "Sumble"
+   ],
+   "archetypes": [
+    "marketing_analytics",
+    "web_search",
+    "market_data",
+    "prospecting_enrichment",
+    "browser_automation",
+    "database_warehouse",
+    "chat_messaging",
+    "notes_docs",
+    "presentations",
+    "cloud_infra",
+    "file_storage",
+    "bi_analytics",
+    "vertical_ops"
+   ],
+   "connector_count": 22,
+   "required_auths": 14,
+   "join_keys": [
+    "domain",
+    "url",
+    "company",
+    "rows",
+    "timestamp",
+    "money",
+    "text"
+   ],
+   "ribs": [
+    {
+     "name": "SEO/share-of-voice fan-in",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 5
+    },
+    {
+     "name": "funding & corporate events",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 4
+    },
+    {
+     "name": "AI-search visibility",
+     "pattern": "Enrich",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 3
+    },
+    {
+     "name": "no-API sources",
+     "pattern": "Pipeline",
+     "hops": 3,
+     "claude": true,
+     "side_effect": "read",
+     "fan_in": 2
+    },
+    {
+     "name": "delta detection",
+     "pattern": "Reconcile",
+     "hops": 2,
+     "claude": false,
+     "side_effect": "read",
+     "fan_in": 1
+    },
+    {
+     "name": "what-changed brief",
+     "pattern": "Digest",
+     "hops": 3,
+     "claude": true,
+     "side_effect": "create",
+     "fan_in": 6
+    }
+   ],
+   "trigger": "scheduled",
+   "trigger_mechanism": "daily cron; heavy sources weekly",
+   "feedback_closure": true,
+   "state_tables": 6,
+   "uses_memory": true,
+   "build_hours": 150,
+   "monthly_run_cost_usd": 900,
+   "cost_per_run_usd": 1.2,
+   "cold_start_days": 30,
+   "degradation": "degrades",
+   "ceiling_connectors": 90,
+   "dedupe": "unique(entity_domain, metric, captured_at) — snapshot table; the delta is computed, never stored twice",
+   "weakest_link": "Cost, and it is not the tokens. This tier of market-data and SEO connectors carries four-figure monthly subscription floors. The run cost line above is dominated by vendor licences, and that number is ASSUMED — verify before committing. A cheaper version using only Exa + Tavily + one SEO source captures most of the value.",
+   "proof": "Snapshot three competitor domains for two consecutive days; confirm the delta table shows only real movement and no phantom churn from vendor-side rounding.",
+   "confidence": "DIRECTORY",
+   "build_plan": [
+    "Snapshot-and-diff is the whole architecture. Store daily snapshots, compute deltas, never store the delta.",
+    "All sensor ribs are read-only and independent — add sources without touching existing ones.",
+    "Browser automation is the last-resort rib for sources with no API; treat its output as untrusted input.",
+    "Claude writes only the brief, from the delta table — never from raw sensor output.",
+    "Start with three sources and add one per week; the brief must stay under a page or it stops being read."
+   ],
+   "why_it_wins": "Pure fan-in on read-only sensors, so it scales safely — but it is the clearest case where the binding constraint is vendor licence cost, not engineering.",
+   "score": {
+    "evaluators": {
+     "blast_radius": 1,
+     "auth_surface": 14,
+     "trigger_reality": 3,
+     "fan_in_depth_ratio": 2.0,
+     "precondition_edges": 3,
+     "state_gravity": 8,
+     "judgment_share": 0.33,
+     "degradation_grace": 2
+    },
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [
+      "poll_blind",
+      "poll_windowed",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "unmeasured",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "unmeasured",
+      "poll_blind",
+      "poll_windowed_dsl",
+      "poll_blind",
+      "poll_blind",
+      "unmeasured",
+      "poll_windowed"
+     ],
+     "verdict": "supported",
+     "supported": true,
+     "note": null
+    },
+    "descriptive_not_scored": {
+     "build_hours": 150,
+     "monthly_run_cost_usd": 900,
+     "cost_per_run_usd": 1.2,
+     "cold_start_days": 30,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
+    },
+    "precondition_coverage": "3/22 connectors have measured schemas",
+    "subscores": {
+     "robustness": {
+      "trigger": 100,
+      "degradation": 67,
+      "auth_surface": 31,
+      "blast_radius": 67,
+      "preconditions": 75
+     },
+     "capability": {
+      "key_coverage": 40,
+      "fan_in": 51,
+      "closure": 100,
+      "cross_cluster": 82,
+      "ceiling": 70
+     }
+    },
+    "ROBUSTNESS": 71.3,
+    "CAPABILITY": 65.8,
+    "COMBINED": 68.5,
+    "tier_robustness": "A",
+    "tier_capability": "A",
     "tier": "A"
    }
   },
@@ -677,9 +1326,7 @@
    "build_hours": 60,
    "monthly_run_cost_usd": 30,
    "cost_per_run_usd": 0.25,
-   "hours_reclaimed_per_month": 18,
    "cold_start_days": 3,
-   "human_minutes_per_week": 30,
    "degradation": "degrades",
    "ceiling_connectors": 20,
    "dedupe": "one crosswalk keyed on (source_system, source_id, target_system)",
@@ -701,36 +1348,46 @@
      "auth_surface": 8,
      "trigger_reality": 3,
      "fan_in_depth_ratio": 1.67,
-     "cold_start_days": 3,
-     "cost_per_run_usd": 0.25,
+     "precondition_edges": 15,
      "state_gravity": 5,
      "judgment_share": 1.0,
      "degradation_grace": 2
     },
-    "requested_axes": {
-     "technical_difficulty": 32.7,
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [
+      "poll_windowed_dsl",
+      "poll_blind",
+      "poll_windowed_dsl",
+      "poll_windowed",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_windowed",
+      "unmeasured",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind"
+     ],
+     "verdict": "supported",
+     "supported": true,
+     "note": null
+    },
+    "descriptive_not_scored": {
      "build_hours": 60,
-     "build_cost_usd": 3600,
      "monthly_run_cost_usd": 30,
-     "time_to_value_days": 3,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 30,
-     "claude_share": 1.0
+     "cost_per_run_usd": 0.25,
+     "cold_start_days": 3,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
     },
-    "economics": {
-     "monthly_value_usd": 810,
-     "net_monthly_usd": 780,
-     "breakeven_months": 4.6,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
+    "precondition_coverage": "11/12 connectors have measured schemas",
     "subscores": {
-     "leverage": {
-      "payback": 69,
+     "robustness": {
       "trigger": 100,
       "degradation": 67,
       "auth_surface": 52,
-      "cold_start": 90,
-      "blast_radius": 67
+      "blast_radius": 67,
+      "preconditions": 22
      },
      "capability": {
       "key_coverage": 53,
@@ -740,10 +1397,10 @@
       "ceiling": 39
      }
     },
-    "LEVERAGE": 75.2,
+    "ROBUSTNESS": 68.7,
     "CAPABILITY": 61.6,
-    "COMBINED": 68.4,
-    "tier_leverage": "A",
+    "COMBINED": 65.2,
+    "tier_robustness": "A",
     "tier_capability": "B",
     "tier": "A"
    }
@@ -812,9 +1469,7 @@
    "build_hours": 32,
    "monthly_run_cost_usd": 22,
    "cost_per_run_usd": 0.35,
-   "hours_reclaimed_per_month": 9,
    "cold_start_days": 14,
-   "human_minutes_per_week": 40,
    "degradation": "degrades",
    "ceiling_connectors": 14,
    "dedupe": "unique(source='theme', source_id=slug(theme_name), period)",
@@ -833,38 +1488,42 @@
     "evaluators": {
      "blast_radius": 1,
      "auth_surface": 5,
-     "trigger_reality": 3,
+     "trigger_reality": 2,
      "fan_in_depth_ratio": 1.5,
-     "cold_start_days": 14,
-     "cost_per_run_usd": 0.35,
+     "precondition_edges": 3,
      "state_gravity": 4,
      "judgment_share": 0.67,
      "degradation_grace": 2
     },
-    "requested_axes": {
-     "technical_difficulty": 22.4,
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind"
+     ],
+     "verdict": "blind",
+     "supported": false,
+     "note": "claims an unattended trigger but every measured source connector is poll_blind — the schedule fires and re-reads the same undifferentiated set, so dedupe moves into the system's own state tables"
+    },
+    "descriptive_not_scored": {
      "build_hours": 32,
-     "build_cost_usd": 1920,
      "monthly_run_cost_usd": 22,
-     "time_to_value_days": 14,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 40,
-     "claude_share": 0.67
+     "cost_per_run_usd": 0.35,
+     "cold_start_days": 14,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
     },
-    "economics": {
-     "monthly_value_usd": 405,
-     "net_monthly_usd": 383,
-     "breakeven_months": 5.0,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
+    "precondition_coverage": "1/6 connectors have measured schemas",
     "subscores": {
-     "leverage": {
-      "payback": 67,
-      "trigger": 100,
+     "robustness": {
+      "trigger": 67,
       "degradation": 67,
       "auth_surface": 72,
-      "cold_start": 71,
-      "blast_radius": 67
+      "blast_radius": 67,
+      "preconditions": 75
      },
      "capability": {
       "key_coverage": 20,
@@ -874,10 +1533,10 @@
       "ceiling": 33
      }
     },
-    "LEVERAGE": 75.1,
+    "ROBUSTNESS": 68.6,
     "CAPABILITY": 30.0,
-    "COMBINED": 52.6,
-    "tier_leverage": "A",
+    "COMBINED": 49.3,
+    "tier_robustness": "A",
     "tier_capability": "C",
     "tier": "A"
    }
@@ -955,9 +1614,7 @@
    "build_hours": 40,
    "monthly_run_cost_usd": 15,
    "cost_per_run_usd": 0.18,
-   "hours_reclaimed_per_month": 6,
    "cold_start_days": 1,
-   "human_minutes_per_week": 15,
    "degradation": "partial",
    "ceiling_connectors": 12,
    "dedupe": "unique(source='deploy', source_id=deployment_id)",
@@ -978,36 +1635,40 @@
      "auth_surface": 5,
      "trigger_reality": 3,
      "fan_in_depth_ratio": 0.67,
-     "cold_start_days": 1,
-     "cost_per_run_usd": 0.18,
+     "precondition_edges": 11,
      "state_gravity": 1,
      "judgment_share": 0.75,
      "degradation_grace": 1
     },
-    "requested_axes": {
-     "technical_difficulty": 25.3,
+    "trigger_check": {
+     "claimed": "event",
+     "source_runtimes": [
+      "unmeasured",
+      "poll_windowed",
+      "poll_blind",
+      "poll_blind",
+      "poll_windowed_dsl",
+      "poll_blind"
+     ],
+     "verdict": "supported",
+     "supported": true,
+     "note": null
+    },
+    "descriptive_not_scored": {
      "build_hours": 40,
-     "build_cost_usd": 2400,
      "monthly_run_cost_usd": 15,
-     "time_to_value_days": 1,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 15,
-     "claude_share": 0.75
+     "cost_per_run_usd": 0.18,
+     "cold_start_days": 1,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
     },
-    "economics": {
-     "monthly_value_usd": 270,
-     "net_monthly_usd": 255,
-     "breakeven_months": 9.4,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
+    "precondition_coverage": "3/6 connectors have measured schemas",
     "subscores": {
-     "leverage": {
-      "payback": 46,
+     "robustness": {
       "trigger": 100,
       "degradation": 33,
       "auth_surface": 72,
-      "cold_start": 95,
-      "blast_radius": 67
+      "blast_radius": 67,
+      "preconditions": 32
      },
      "capability": {
       "key_coverage": 27,
@@ -1017,10 +1678,10 @@
       "ceiling": 29
      }
     },
-    "LEVERAGE": 66.3,
+    "ROBUSTNESS": 66.2,
     "CAPABILITY": 31.3,
-    "COMBINED": 48.8,
-    "tier_leverage": "A",
+    "COMBINED": 48.7,
+    "tier_robustness": "A",
     "tier_capability": "C",
     "tier": "A"
    }
@@ -1148,9 +1809,7 @@
    "build_hours": 190,
    "monthly_run_cost_usd": 140,
    "cost_per_run_usd": 0.9,
-   "hours_reclaimed_per_month": 40,
    "cold_start_days": 30,
-   "human_minutes_per_week": 90,
    "degradation": "degrades",
    "ceiling_connectors": 45,
    "dedupe": "per-rib: (source_system, source_id, target) unique in one shared crosswalk table",
@@ -1171,36 +1830,52 @@
      "auth_surface": 12,
      "trigger_reality": 3,
      "fan_in_depth_ratio": 1.5,
-     "cold_start_days": 30,
-     "cost_per_run_usd": 0.9,
+     "precondition_edges": 4,
      "state_gravity": 9,
      "judgment_share": 0.43,
      "degradation_grace": 2
     },
-    "requested_axes": {
-     "technical_difficulty": 57.2,
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "unmeasured",
+      "poll_windowed_dsl",
+      "poll_windowed",
+      "poll_blind",
+      "poll_windowed_dsl",
+      "poll_blind"
+     ],
+     "verdict": "supported",
+     "supported": true,
+     "note": null
+    },
+    "descriptive_not_scored": {
      "build_hours": 190,
-     "build_cost_usd": 11400,
      "monthly_run_cost_usd": 140,
-     "time_to_value_days": 30,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 90,
-     "claude_share": 0.43
+     "cost_per_run_usd": 0.9,
+     "cold_start_days": 30,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
     },
-    "economics": {
-     "monthly_value_usd": 1800,
-     "net_monthly_usd": 1660,
-     "breakeven_months": 6.9,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
+    "precondition_coverage": "5/18 connectors have measured schemas",
     "subscores": {
-     "leverage": {
-      "payback": 56,
+     "robustness": {
       "trigger": 100,
       "degradation": 67,
       "auth_surface": 38,
-      "cold_start": 50,
-      "blast_radius": 33
+      "blast_radius": 33,
+      "preconditions": 67
      },
      "capability": {
       "key_coverage": 47,
@@ -1210,12 +1885,12 @@
       "ceiling": 56
      }
     },
-    "LEVERAGE": 62.2,
+    "ROBUSTNESS": 65.6,
     "CAPABILITY": 66.9,
-    "COMBINED": 64.6,
-    "tier_leverage": "B",
+    "COMBINED": 66.3,
+    "tier_robustness": "A",
     "tier_capability": "A",
-    "tier": "B"
+    "tier": "A"
    }
   },
   {
@@ -1315,9 +1990,7 @@
    "build_hours": 160,
    "monthly_run_cost_usd": 110,
    "cost_per_run_usd": 0.8,
-   "hours_reclaimed_per_month": 30,
    "cold_start_days": 14,
-   "human_minutes_per_week": 150,
    "degradation": "degrades",
    "ceiling_connectors": 30,
    "dedupe": "unique(candidate_email, req_id) — the whole pipeline keys on candidate email",
@@ -1338,36 +2011,48 @@
      "auth_surface": 10,
      "trigger_reality": 3,
      "fan_in_depth_ratio": 1.33,
-     "cold_start_days": 14,
-     "cost_per_run_usd": 0.8,
+     "precondition_edges": 4,
      "state_gravity": 6,
      "judgment_share": 0.6,
      "degradation_grace": 2
     },
-    "requested_axes": {
-     "technical_difficulty": 52.5,
+    "trigger_check": {
+     "claimed": "scheduled",
+     "source_runtimes": [
+      "poll_blind",
+      "poll_blind",
+      "unmeasured",
+      "poll_blind",
+      "poll_blind",
+      "poll_windowed_dsl",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_windowed",
+      "poll_blind",
+      "poll_blind",
+      "poll_windowed_dsl"
+     ],
+     "verdict": "supported",
+     "supported": true,
+     "note": null
+    },
+    "descriptive_not_scored": {
      "build_hours": 160,
-     "build_cost_usd": 9600,
      "monthly_run_cost_usd": 110,
-     "time_to_value_days": 14,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 150,
-     "claude_share": 0.6
+     "cost_per_run_usd": 0.8,
+     "cold_start_days": 14,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
     },
-    "economics": {
-     "monthly_value_usd": 1350,
-     "net_monthly_usd": 1240,
-     "breakeven_months": 7.7,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
+    "precondition_coverage": "6/14 connectors have measured schemas",
     "subscores": {
-     "leverage": {
-      "payback": 53,
+     "robustness": {
       "trigger": 100,
       "degradation": 67,
       "auth_surface": 45,
-      "cold_start": 71,
-      "blast_radius": 0
+      "blast_radius": 0,
+      "preconditions": 67
      },
      "capability": {
       "key_coverage": 33,
@@ -1377,504 +2062,11 @@
       "ceiling": 46
      }
     },
-    "LEVERAGE": 60.8,
+    "ROBUSTNESS": 60.9,
     "CAPABILITY": 59.3,
-    "COMBINED": 60.0,
-    "tier_leverage": "B",
+    "COMBINED": 60.1,
+    "tier_robustness": "B",
     "tier_capability": "B",
-    "tier": "B"
-   }
-  },
-  {
-   "id": "risk_radar",
-   "name": "Risk & Compliance Radar",
-   "tier_label": "mesh",
-   "tagline": "119 read-only sensors watching for the thing that ends the company.",
-   "mode": "bridge",
-   "connector_count": 119,
-   "connectors": [],
-   "archetypes": [
-    "security",
-    "legal",
-    "gov_public_data",
-    "market_data",
-    "observability",
-    "identity_verification",
-    "code_context"
-   ],
-   "required_auths": 16,
-   "join_keys": [
-    "domain",
-    "company",
-    "url",
-    "rows",
-    "timestamp",
-    "email",
-    "code",
-    "money"
-   ],
-   "ribs": [
-    {
-     "name": "security posture sensors",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 22
-    },
-    {
-     "name": "regulatory & case-law sensors",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 32
-    },
-    {
-     "name": "counterparty & sanctions sensors",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 20
-    },
-    {
-     "name": "materiality judgment",
-     "pattern": "Escalate",
-     "hops": 3,
-     "claude": true,
-     "side_effect": "create",
-     "fan_in": 4
-    }
-   ],
-   "trigger": "scheduled",
-   "trigger_mechanism": "daily cron; sanctions and breach feeds hourly",
-   "feedback_closure": true,
-   "state_tables": 6,
-   "uses_memory": true,
-   "build_hours": 280,
-   "monthly_run_cost_usd": 1500,
-   "cost_per_run_usd": 2.2,
-   "hours_reclaimed_per_month": 55,
-   "cold_start_days": 30,
-   "human_minutes_per_week": 90,
-   "degradation": "self-heals",
-   "ceiling_connectors": 180,
-   "dedupe": "unique(sensor_id, subject_key, finding_hash) — a finding is reported once until it changes",
-   "weakest_link": "Alert fatigue is the failure mode, not missed signal. 119 sensors will generate more findings than any human will read, and a radar nobody reads is worse than none because it manufactures false confidence. The materiality rib is the entire product — everything else is plumbing.",
-   "proof": "Run the materiality judgment against 30 days of historical findings and check what it would have escalated against what actually mattered. If the precision is bad, the mesh is a liability.",
-   "confidence": "DIRECTORY",
-   "build_plan": [
-    "Findings table with a stable finding_hash so the same issue is not re-reported daily.",
-    "Every sensor is read-only and independent — this archetype set was chosen because none of it can write.",
-    "The materiality rib runs Claude against the findings delta with an explicit written threshold.",
-    "Escalate above the threshold; everything else accumulates silently and is reviewed weekly.",
-    "Note identity_verification only became a usable archetype after the routing fix — it had zero members before."
-   ],
-   "why_it_wins": "The one mesh where the judgment rib is worth more than all the sensors combined — and the design makes that explicit rather than hiding it.",
-   "score": {
-    "evaluators": {
-     "blast_radius": 1,
-     "auth_surface": 16,
-     "trigger_reality": 3,
-     "fan_in_depth_ratio": 10.67,
-     "cold_start_days": 30,
-     "cost_per_run_usd": 2.2,
-     "state_gravity": 8,
-     "judgment_share": 0.25,
-     "degradation_grace": 3
-    },
-    "requested_axes": {
-     "technical_difficulty": 66.6,
-     "build_hours": 280,
-     "build_cost_usd": 16800,
-     "monthly_run_cost_usd": 1500,
-     "time_to_value_days": 30,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 90,
-     "claude_share": 0.25
-    },
-    "economics": {
-     "monthly_value_usd": 2475,
-     "net_monthly_usd": 975,
-     "breakeven_months": 17.2,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
-    "subscores": {
-     "leverage": {
-      "payback": 24,
-      "trigger": 100,
-      "degradation": 100,
-      "auth_surface": 27,
-      "cold_start": 50,
-      "blast_radius": 67
-     },
-     "capability": {
-      "key_coverage": 53,
-      "fan_in": 87,
-      "closure": 100,
-      "cross_cluster": 60,
-      "ceiling": 88
-     }
-    },
-    "LEVERAGE": 59.4,
-    "CAPABILITY": 76.2,
-    "COMBINED": 67.8,
-    "tier_leverage": "B",
-    "tier_capability": "A",
-    "tier": "B"
-   }
-  },
-  {
-   "id": "market_omniscience",
-   "name": "Market Omniscience Mesh",
-   "tier_label": "mesh",
-   "tagline": "205 read-only sensors on one spine. Blast radius zero. This is what 150+ connectors is actually for.",
-   "mode": "bridge",
-   "connector_count": 205,
-   "connectors": [],
-   "archetypes": [
-    "market_data",
-    "research_science",
-    "marketing_analytics",
-    "gov_public_data",
-    "web_search",
-    "bi_analytics",
-    "prospecting_enrichment",
-    "job_search"
-   ],
-   "required_auths": 24,
-   "join_keys": [
-    "ticker",
-    "domain",
-    "company",
-    "money",
-    "timestamp",
-    "url",
-    "rows",
-    "geo",
-    "email",
-    "phone",
-    "file",
-    "image"
-   ],
-   "ribs": [
-    {
-     "name": "financial sensors",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 53
-    },
-    {
-     "name": "research sensors",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 36
-    },
-    {
-     "name": "marketing sensors",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 32
-    },
-    {
-     "name": "public-data sensors",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 14
-    },
-    {
-     "name": "hiring-signal sensors",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 8
-    },
-    {
-     "name": "cross-sensor correlation",
-     "pattern": "Reconcile",
-     "hops": 3,
-     "claude": true,
-     "side_effect": "read",
-     "fan_in": 5
-    },
-    {
-     "name": "thesis brief",
-     "pattern": "Digest",
-     "hops": 3,
-     "claude": true,
-     "side_effect": "create",
-     "fan_in": 6
-    }
-   ],
-   "trigger": "scheduled",
-   "trigger_mechanism": "tiered cron — tick data hourly, fundamentals daily, research weekly",
-   "feedback_closure": true,
-   "state_tables": 9,
-   "uses_memory": true,
-   "build_hours": 420,
-   "monthly_run_cost_usd": 2400,
-   "cost_per_run_usd": 3.5,
-   "hours_reclaimed_per_month": 90,
-   "cold_start_days": 60,
-   "human_minutes_per_week": 120,
-   "degradation": "self-heals",
-   "ceiling_connectors": 293,
-   "dedupe": "unique(sensor_id, entity_key, captured_at) — every sensor writes the same shape",
-   "weakest_link": "Nobody needs 205 sensors. The design is correct and the marginal sensor is near-worthless — value saturates somewhere around 20-30 well-chosen sources. What this system proves is the *architecture*: that read-only fan-in scales without compounding risk. Treat 205 as the ceiling you can safely approach, not the target you should hit.",
-   "proof": "Add sensors 1, 2 and 3; confirm each writes the normalised shape and that killing sensor 2 does not affect 1 or 3. That independence is the entire claim — prove it at N=3, and N=205 follows by induction.",
-   "confidence": "DIRECTORY",
-   "build_plan": [
-    "One normalised observation table: (sensor_id, entity_key, metric, value, unit, captured_at, source_url). Every sensor conforms; no sensor gets a bespoke schema.",
-    "One adapter per sensor, each independently deployable and independently killable.",
-    "A sensor registry table with a staleness threshold per sensor — the mesh reports its own health, which is what makes degradation self-healing rather than silent.",
-    "Claude never touches raw sensor output. It reads the correlation table only.",
-    "Add sensors in order of marginal information gain, and stop when the brief stops changing."
-   ],
-   "why_it_wins": "The honest answer to 'can a system benefit from 150+ connectors'. Yes — but only in this topology. Every rib is read-only and independent, so failure is additive, not multiplicative. A 200-sensor mesh has a smaller blast radius than a 7-hop write chain.",
-   "score": {
-    "evaluators": {
-     "blast_radius": 1,
-     "auth_surface": 24,
-     "trigger_reality": 3,
-     "fan_in_depth_ratio": 17.67,
-     "cold_start_days": 60,
-     "cost_per_run_usd": 3.5,
-     "state_gravity": 11,
-     "judgment_share": 0.29,
-     "degradation_grace": 3
-    },
-    "requested_axes": {
-     "technical_difficulty": 72.4,
-     "build_hours": 420,
-     "build_cost_usd": 25200,
-     "monthly_run_cost_usd": 2400,
-     "time_to_value_days": 60,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 120,
-     "claude_share": 0.29
-    },
-    "economics": {
-     "monthly_value_usd": 4050,
-     "net_monthly_usd": 1650,
-     "breakeven_months": 15.3,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
-    "subscores": {
-     "leverage": {
-      "payback": 28,
-      "trigger": 100,
-      "degradation": 100,
-      "auth_surface": 22,
-      "cold_start": 35,
-      "blast_radius": 67
-     },
-     "capability": {
-      "key_coverage": 80,
-      "fan_in": 97,
-      "closure": 100,
-      "cross_cluster": 65,
-      "ceiling": 100
-     }
-    },
-    "LEVERAGE": 58.4,
-    "CAPABILITY": 87.8,
-    "COMBINED": 73.1,
-    "tier_leverage": "B",
-    "tier_capability": "S",
-    "tier": "B"
-   }
-  },
-  {
-   "id": "competitive_desk",
-   "name": "Competitive Intelligence Desk",
-   "tier_label": "ensemble",
-   "tagline": "Everything published about your market, collapsed into what changed since yesterday.",
-   "mode": "bridge",
-   "connectors": [
-    "Semrush",
-    "Ahrefs",
-    "Similarweb",
-    "Exa",
-    "Tavily",
-    "Meltwater",
-    "CB Insights",
-    "PitchBook Premium",
-    "Profound",
-    "Peec AI",
-    "G2",
-    "Apify",
-    "Supabase",
-    "Slack",
-    "Notion",
-    "Gamma",
-    "Cloudflare Developer Platform",
-    "Google Drive",
-    "Mixpanel",
-    "Harmonic",
-    "Crustdata",
-    "Sumble"
-   ],
-   "archetypes": [
-    "marketing_analytics",
-    "web_search",
-    "market_data",
-    "prospecting_enrichment",
-    "browser_automation",
-    "database_warehouse",
-    "chat_messaging",
-    "notes_docs",
-    "presentations",
-    "cloud_infra",
-    "file_storage",
-    "bi_analytics",
-    "vertical_ops"
-   ],
-   "connector_count": 22,
-   "required_auths": 14,
-   "join_keys": [
-    "domain",
-    "url",
-    "company",
-    "rows",
-    "timestamp",
-    "money",
-    "text"
-   ],
-   "ribs": [
-    {
-     "name": "SEO/share-of-voice fan-in",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 5
-    },
-    {
-     "name": "funding & corporate events",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 4
-    },
-    {
-     "name": "AI-search visibility",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 3
-    },
-    {
-     "name": "no-API sources",
-     "pattern": "Pipeline",
-     "hops": 3,
-     "claude": true,
-     "side_effect": "read",
-     "fan_in": 2
-    },
-    {
-     "name": "delta detection",
-     "pattern": "Reconcile",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 1
-    },
-    {
-     "name": "what-changed brief",
-     "pattern": "Digest",
-     "hops": 3,
-     "claude": true,
-     "side_effect": "create",
-     "fan_in": 6
-    }
-   ],
-   "trigger": "scheduled",
-   "trigger_mechanism": "daily cron; heavy sources weekly",
-   "feedback_closure": true,
-   "state_tables": 6,
-   "uses_memory": true,
-   "build_hours": 150,
-   "monthly_run_cost_usd": 900,
-   "cost_per_run_usd": 1.2,
-   "hours_reclaimed_per_month": 34,
-   "cold_start_days": 30,
-   "human_minutes_per_week": 60,
-   "degradation": "degrades",
-   "ceiling_connectors": 90,
-   "dedupe": "unique(entity_domain, metric, captured_at) — snapshot table; the delta is computed, never stored twice",
-   "weakest_link": "Cost, and it is not the tokens. This tier of market-data and SEO connectors carries four-figure monthly subscription floors. The run cost line above is dominated by vendor licences, and that number is ASSUMED — verify before committing. A cheaper version using only Exa + Tavily + one SEO source captures most of the value.",
-   "proof": "Snapshot three competitor domains for two consecutive days; confirm the delta table shows only real movement and no phantom churn from vendor-side rounding.",
-   "confidence": "DIRECTORY",
-   "build_plan": [
-    "Snapshot-and-diff is the whole architecture. Store daily snapshots, compute deltas, never store the delta.",
-    "All sensor ribs are read-only and independent — add sources without touching existing ones.",
-    "Browser automation is the last-resort rib for sources with no API; treat its output as untrusted input.",
-    "Claude writes only the brief, from the delta table — never from raw sensor output.",
-    "Start with three sources and add one per week; the brief must stay under a page or it stops being read."
-   ],
-   "why_it_wins": "Pure fan-in on read-only sensors, so it scales safely — but it is the clearest case where the binding constraint is vendor licence cost, not engineering.",
-   "score": {
-    "evaluators": {
-     "blast_radius": 1,
-     "auth_surface": 14,
-     "trigger_reality": 3,
-     "fan_in_depth_ratio": 2.0,
-     "cold_start_days": 30,
-     "cost_per_run_usd": 1.2,
-     "state_gravity": 8,
-     "judgment_share": 0.33,
-     "degradation_grace": 2
-    },
-    "requested_axes": {
-     "technical_difficulty": 50.9,
-     "build_hours": 150,
-     "build_cost_usd": 9000,
-     "monthly_run_cost_usd": 900,
-     "time_to_value_days": 30,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 60,
-     "claude_share": 0.33
-    },
-    "economics": {
-     "monthly_value_usd": 1530,
-     "net_monthly_usd": 630,
-     "breakeven_months": 14.3,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
-    "subscores": {
-     "leverage": {
-      "payback": 30,
-      "trigger": 100,
-      "degradation": 67,
-      "auth_surface": 31,
-      "cold_start": 50,
-      "blast_radius": 67
-     },
-     "capability": {
-      "key_coverage": 40,
-      "fan_in": 51,
-      "closure": 100,
-      "cross_cluster": 82,
-      "ceiling": 70
-     }
-    },
-    "LEVERAGE": 56.8,
-    "CAPABILITY": 65.8,
-    "COMBINED": 61.3,
-    "tier_leverage": "B",
-    "tier_capability": "A",
     "tier": "B"
    }
   },
@@ -1990,9 +2182,7 @@
    "build_hours": 220,
    "monthly_run_cost_usd": 180,
    "cost_per_run_usd": 1.4,
-   "hours_reclaimed_per_month": 46,
    "cold_start_days": 21,
-   "human_minutes_per_week": 120,
    "degradation": "partial",
    "ceiling_connectors": 40,
    "dedupe": "one `engagement` row is the spine object; every artifact carries engagement_id. Naming convention `client-project-YYYYMMDD` across Drive, Linear and Canva turns the weak `project` key into a strong one.",
@@ -2013,36 +2203,51 @@
      "auth_surface": 13,
      "trigger_reality": 3,
      "fan_in_depth_ratio": 1.67,
-     "cold_start_days": 21,
-     "cost_per_run_usd": 1.4,
+     "precondition_edges": 10,
      "state_gravity": 7,
      "judgment_share": 0.67,
      "degradation_grace": 1
     },
-    "requested_axes": {
-     "technical_difficulty": 61.9,
+    "trigger_check": {
+     "claimed": "event",
+     "source_runtimes": [
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_windowed_dsl",
+      "poll_blind",
+      "unmeasured",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_blind",
+      "poll_windowed",
+      "poll_windowed_dsl",
+      "poll_blind",
+      "poll_blind"
+     ],
+     "verdict": "supported",
+     "supported": true,
+     "note": null
+    },
+    "descriptive_not_scored": {
      "build_hours": 220,
-     "build_cost_usd": 13200,
      "monthly_run_cost_usd": 180,
-     "time_to_value_days": 21,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 120,
-     "claude_share": 0.67
+     "cost_per_run_usd": 1.4,
+     "cold_start_days": 21,
+     "note": "vendor pricing and build hours are ASSUMED estimates. Phase 3 removed them from scoring; they are kept because they describe the build, not because they rank it."
     },
-    "economics": {
-     "monthly_value_usd": 2070,
-     "net_monthly_usd": 1890,
-     "breakeven_months": 7.0,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
+    "precondition_coverage": "7/17 connectors have measured schemas",
     "subscores": {
-     "leverage": {
-      "payback": 56,
+     "robustness": {
       "trigger": 100,
       "degradation": 33,
       "auth_surface": 35,
-      "cold_start": 62,
-      "blast_radius": 0
+      "blast_radius": 0,
+      "preconditions": 35
      },
      "capability": {
       "key_coverage": 47,
@@ -2052,162 +2257,11 @@
       "ceiling": 53
      }
     },
-    "LEVERAGE": 54.5,
+    "ROBUSTNESS": 47.8,
     "CAPABILITY": 65.9,
-    "COMBINED": 60.2,
-    "tier_leverage": "B",
+    "COMBINED": 56.8,
+    "tier_robustness": "C",
     "tier_capability": "A",
-    "tier": "B"
-   }
-  },
-  {
-   "id": "maximum_safe_mesh",
-   "name": "Maximum Safe Mesh — the 293 ceiling",
-   "tier_label": "mesh",
-   "tagline": "Every read-only connector in the directory, at once. The hard upper bound on a zero-risk system.",
-   "mode": "bridge",
-   "connector_count": 293,
-   "connectors": [],
-   "archetypes": [
-    "market_data",
-    "research_science",
-    "bi_analytics",
-    "marketing_analytics",
-    "legal",
-    "gov_public_data",
-    "web_search",
-    "code_context",
-    "prospecting_enrichment",
-    "job_search",
-    "meetings_transcripts",
-    "weather_geo",
-    "observability",
-    "security"
-   ],
-   "required_auths": 40,
-   "join_keys": [
-    "ticker",
-    "domain",
-    "company",
-    "money",
-    "timestamp",
-    "url",
-    "rows",
-    "geo",
-    "email",
-    "phone",
-    "file",
-    "image",
-    "code",
-    "media"
-   ],
-   "ribs": [
-    {
-     "name": "universal sensor fan-in",
-     "pattern": "Enrich",
-     "hops": 2,
-     "claude": false,
-     "side_effect": "read",
-     "fan_in": 293
-    },
-    {
-     "name": "entity resolution",
-     "pattern": "Reconcile",
-     "hops": 3,
-     "claude": true,
-     "side_effect": "read",
-     "fan_in": 8
-    },
-    {
-     "name": "anomaly surface",
-     "pattern": "Escalate",
-     "hops": 2,
-     "claude": true,
-     "side_effect": "create",
-     "fan_in": 6
-    },
-    {
-     "name": "situation brief",
-     "pattern": "Digest",
-     "hops": 3,
-     "claude": true,
-     "side_effect": "create",
-     "fan_in": 10
-    }
-   ],
-   "trigger": "scheduled",
-   "trigger_mechanism": "tiered cron by sensor volatility",
-   "feedback_closure": true,
-   "state_tables": 12,
-   "uses_memory": true,
-   "build_hours": 900,
-   "monthly_run_cost_usd": 5000,
-   "cost_per_run_usd": 8.0,
-   "hours_reclaimed_per_month": 110,
-   "cold_start_days": 90,
-   "human_minutes_per_week": 180,
-   "degradation": "self-heals",
-   "ceiling_connectors": 293,
-   "dedupe": "unique(sensor_id, entity_key, captured_at)",
-   "weakest_link": "This is a boundary object, not a build. It exists to answer 'how far does this go' with a number derived from the registry rather than from imagination: 293 connectors carry side_effects=read, so 293 is the largest system that cannot break anything it touches. The 294th connector is a write, and the moment you add it the blast-radius argument collapses and you are back to designing chains.",
-   "proof": "The claim is structural, not empirical: query the registry for side_effects='read' and count. engine/graph.py reports it as read_only_ceiling.",
-   "confidence": "DIRECTORY",
-   "build_plan": [
-    "Not a build plan — a bound. Use it to decide where a real mesh should stop.",
-    "The practical lesson: pick the 20-30 sensors whose marginal information is highest and stop there.",
-    "The structural lesson: read-only breadth is free; write depth is expensive. Design accordingly."
-   ],
-   "why_it_wins": "It is the only number in this whole exercise that is a fact about the directory rather than a judgment about a design.",
-   "score": {
-    "evaluators": {
-     "blast_radius": 1,
-     "auth_surface": 40,
-     "trigger_reality": 3,
-     "fan_in_depth_ratio": 97.67,
-     "cold_start_days": 90,
-     "cost_per_run_usd": 8.0,
-     "state_gravity": 14,
-     "judgment_share": 0.75,
-     "degradation_grace": 3
-    },
-    "requested_axes": {
-     "technical_difficulty": 88.5,
-     "build_hours": 900,
-     "build_cost_usd": 54000,
-     "monthly_run_cost_usd": 5000,
-     "time_to_value_days": 90,
-     "automation_share": 1.0,
-     "human_minutes_per_week": 180,
-     "claude_share": 0.75
-    },
-    "economics": {
-     "monthly_value_usd": 4950,
-     "net_monthly_usd": -50,
-     "breakeven_months": null,
-     "assumptions": "build @ $60/h, reclaimed time @ $45/h — ASSUMED, tune in WEIGHTS"
-    },
-    "subscores": {
-     "leverage": {
-      "payback": 0,
-      "trigger": 100,
-      "degradation": 100,
-      "auth_surface": 10,
-      "cold_start": 20,
-      "blast_radius": 67
-     },
-     "capability": {
-      "key_coverage": 93,
-      "fan_in": 100,
-      "closure": 100,
-      "cross_cluster": 85,
-      "ceiling": 100
-     }
-    },
-    "LEVERAGE": 47.0,
-    "CAPABILITY": 95.6,
-    "COMBINED": 71.3,
-    "tier_leverage": "C",
-    "tier_capability": "S",
     "tier": "C"
    }
   }

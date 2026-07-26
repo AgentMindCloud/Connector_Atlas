@@ -245,6 +245,9 @@ def motifs(conns, classes, cindex, sizes, adj):
     cls_mutates = [any(rank[c["side_effects"]] >= rank["mutate"] for c in m)
                    for _, m in classes]
     cls_irrev = [any(c["side_effects"] == "irreversible" for c in m) for _, m in classes]
+    # Third axis: how many members of each profile class can be polled for change.
+    n_pollable = [sum(1 for c in m if c.get("runtime", "unmeasured") not in
+                      ("poll_blind", "unmeasured")) for _, m in classes]
     n_writes = [sum(1 for c in m if rank[c["side_effects"]] >= rank["create"])
                 for _, m in classes]
     n_mut = [sum(1 for c in m if rank[c["side_effects"]] >= rank["mutate"]) for _, m in classes]
@@ -294,20 +297,42 @@ def motifs(conns, classes, cindex, sizes, adj):
                                     "create or above -- the sink must be able to emit an artifact"},
                        **fan_report(dig_degs))
 
-    # 6. Trigger -> Action — needs something that fires it. Only the hub archetype
-    #    supplies that in this directory, so the motif is a 3-chain through a hub
-    #    ending at a connector that can act.
-    trig = 0
+    # 6. Trigger -> Action — needs something that fires it, and Phase 3 replaced
+    #    the proxy for that with a measurement.
+    #
+    #    Through Phase 2 this was "A -> HUB -> B where HUB is an automation_hub",
+    #    i.e. the firing mechanism was assumed to be a property of an ARCHETYPE.
+    #    The runtime axis makes it a property of the SOURCE: a trigger needs the
+    #    A end to answer "what changed since I last looked". Connectors whose
+    #    reads take no time filter cannot, at any polling frequency, so a chain
+    #    starting at one is not self-triggering however many hubs follow it.
+    #
+    #    Both counts are reported because they answer different questions.
+    #    hub_fired is the buildable-today number and needs a hub account.
+    #    self_fired needs no hub at all but needs A to be pollable for change.
+    trig_hub = 0
     for h in range(n):
         if not hub_cls[h]:
             continue
         srcs = sum(sizes[i] for i in range(n) if adj[i][h])
         sinks = sum(n_writes[k] for k in range(n) if adj[h][k])
-        trig += srcs * sizes[h] * sinks
-    M["trigger_action"] = {"encoding": "A -> HUB -> B where HUB is an automation_hub "
-                                       "connector and B can write; without a firing "
-                                       "mechanism the pattern is not instantiable",
-                           "count": trig}
+        trig_hub += srcs * sizes[h] * sinks
+    trig_self = 0
+    for i in range(n):
+        if not n_pollable[i]:
+            continue
+        sinks = sum(n_writes[k] for k in range(n) if adj[i][k])
+        trig_self += n_pollable[i] * sinks
+    M["trigger_action"] = {"encoding": "hub_fired: A -> HUB -> B, HUB an automation_hub "
+                                       "and B a writer. self_fired: A -> B where A is "
+                                       "pollable for change (runtime != poll_blind) and "
+                                       "B can write — no hub required.",
+                           "count": trig_hub + trig_self,
+                           "hub_fired": trig_hub,
+                           "self_fired": trig_self,
+                           "caveat": "runtime is name-derived for all but the 11 "
+                                     "schema-measured connectors, and scored 8/11 "
+                                     "against them — see engine/schema.py --delta"}
 
     # 7. Mirror — Reconcile where both sides can write back.
     mir = 0

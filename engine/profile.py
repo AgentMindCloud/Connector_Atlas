@@ -243,6 +243,7 @@ class Counter:
         self.noun = collections.Counter()
         self.fallback_text = 0
         self.unclassified = 0
+        self.poll = 0
 
 
 def classify_tool(tool, counts):
@@ -270,6 +271,40 @@ def classify_tool(tool, counts):
     return cls, keys
 
 
+# ---------------------------------------------------------------- runtime axis
+# The third axis, approximated at name grade for the 464 connectors that have no
+# schemas. engine/schema.py measures the same axis properly from parameters for
+# the 11 it can reach, and --heldout scores this approximation against those 11.
+#
+# The question is whether a poll can ask "what CHANGED", because that is what a
+# trigger costs. Only tokens that mean a time-filtered or append-only read are
+# here. `event` and `events` are deliberately ABSENT: Google Calendar's only tool
+# is `search_events`, it takes no date parameter of any kind, and an earlier
+# version of this set scored it the most pollable connector in the directory on
+# the strength of that one token.
+POLL_TOKENS = {
+    "recent", "since", "history", "log", "logs", "activity", "activities",
+    "changes", "changelog", "audit", "timeline", "updates", "latest",
+    "bydate", "daterange", "range", "completed", "recently",
+}
+
+
+def runtime_from_names(tool_list, counts):
+    """-> (mode, evidence). Name-grade, and weaker than the schema-grade version."""
+    ev = []
+    for t in tool_list:
+        cls, _ = classify_tool(t, counts)
+        if cls != "read":
+            continue
+        toks = set(tokens(t))
+        if toks & POLL_TOKENS:
+            ev.append(t)
+    if ev:
+        counts.poll += 1
+        return "poll_windowed", sorted(ev)
+    return "poll_blind", []
+
+
 def derive(tool_list, counts):
     """Reads feed `emits`, writes feed `consumes`. Nothing else feeds either."""
     emits, consumes, per_tool = set(), set(), []
@@ -280,10 +315,13 @@ def derive(tool_list, counts):
         if SIDE_RANK[cls] > SIDE_RANK[worst]:
             worst = cls
         (emits if cls == "read" else consumes).update(keys)
+    mode, mode_ev = runtime_from_names(tool_list, counts)
     return {
         "side_effects": worst,
         "emits": sorted(emits),
         "consumes": sorted(consumes),
+        "runtime": mode,
+        "runtime_evidence": mode_ev,
         "n_tools": len(tool_list),
         "_per_tool": per_tool,
     }
@@ -338,6 +376,10 @@ def build(counts):
             rec.update({
                 "side_effects": c["side_effects"],
                 "emits": sorted(c["emits"]), "consumes": sorted(c["consumes"]),
+                # No tool list, so the runtime axis is not merely unknown for these
+                # rows -- it is unmeasurable. Say so rather than defaulting them to
+                # poll_blind, which would read as a finding.
+                "runtime": "unmeasured", "runtime_evidence": [],
                 "n_tools": 0, "_per_tool": [],
             })
             rec["tier"] = "DIRECTORY"
@@ -383,6 +425,8 @@ def cmd_derive(args):
     print(f"consumes = 0 : {len(no_consume)} connectors  "
           f"({sum(1 for p in no_consume if p['tier'] != 'DIRECTORY')} of them on real tool evidence)")
     print(f"isolates     : {len(isolates)} emit nothing and consume nothing")
+    rt = collections.Counter(p["runtime"] for p in profiles.values())
+    print(f"runtime      : {dict(rt)}")
     print(f"unclassified : {counts.unclassified} tool names contained no known verb")
     print(f"text fallback: {counts.fallback_text} search-shaped tools with no noun")
     print("-> data/profiles.json")
@@ -507,6 +551,11 @@ def cmd_heldout(args):
               "carries no\n        noun and no destructive verb, so the derivation "
               "cannot see that this one\n        tool subsumes create, mutate and delete. "
               "Name-based inference has a floor,\n        and this is it.")
+        print("        RESOLVED IN PHASE 3, one level down: the schema for `exec` has a "
+              "required\n        `code` string, so engine/schema.py scores tldraw "
+              "mutate/consumes=code. The\n        floor is exactly where this says it is "
+              "— parameters are underneath it.\n        This check still fails, and "
+              "should: it tests NAMES, and names still lose.")
 
     print(f"\n  {hits} passed, {misses} failed of {hits + misses} checkable claims.")
     print("  Ground truth for each is recorded in data/verified_tools.json.")
