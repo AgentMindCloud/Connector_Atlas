@@ -12,6 +12,16 @@
 html,body{height:100%;overflow:hidden}
 body{background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:13px;
   -webkit-font-smoothing:antialiased}
+h1,h2{text-wrap:balance}
+.kv span:last-child,.bar .lb b,.row .ct{font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--cin-glow);outline-offset:2px;border-radius:6px}
+/* This page deliberately commits to one visual world: luminous edges on dark ground is
+   what keeps 1,610 overlapping arcs legible. A light theme would erase the signal, so
+   the single theme is a design decision, not an omission. */
+@media (prefers-reduced-motion:reduce){
+  .orb{animation:none}
+  *{transition-duration:.01ms !important}
+}
 
 /* living background */
 #orbs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
@@ -261,6 +271,8 @@ var pathout=document.getElementById("pathout");
 var st={yaw:0.7,pitch:-0.18,zoom:1,tz:1,hover:-1,sel:-1,hl:null,q:null,sys:null,
         drag:false,moved:0,lx:0,ly:0,mx:-1,my:-1,last:0,anim:null,
         showEdges:true,mode:"bridge",w:1280,h:800,dpr:1,tab:"A"};
+/* honour reduced-motion: no ambient drift, no fly-to easing */
+var REDUCED = matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function now(){return (performance&&performance.now)?performance.now():Date.now();}
 function resize(){
@@ -660,7 +672,9 @@ function focusArch(k){
   var c=cen[k];
   var yaw=Math.atan2(-c[0],c[2]), pit=Math.atan2(c[1],Math.hypot(c[0],c[2]));
   var d=yaw-st.yaw, T=Math.PI*2; d=((d+Math.PI)%T+T)%T-Math.PI;
-  st.anim={y0:st.yaw,p0:st.pitch,dy:d,dp:Math.max(-1.5,Math.min(1.5,pit))-st.pitch,t0:now(),dur:850};
+  var pt=Math.max(-1.5,Math.min(1.5,pit));
+  if(REDUCED){ st.yaw=yaw; st.pitch=pt; }
+  else st.anim={y0:st.yaw,p0:st.pitch,dy:d,dp:pt-st.pitch,t0:now(),dur:850};
   st.hl=k; st.sys=null; st.last=now();
 }
 document.getElementById("tA").onclick=function(){st.tab="A";this.classList.add("on");
@@ -736,7 +750,7 @@ var lastT=now();
     var ez=u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
     st.yaw=a2.y0+a2.dy*ez; st.pitch=a2.p0+a2.dp*ez;
     if(u>=1){st.anim=null;st.last=now();}
-  } else if(!st.drag&&st.hover<0&&t-st.last>2600){ st.yaw+=0.00009*dt; }
+  } else if(!REDUCED&&!st.drag&&st.hover<0&&t-st.last>2600){ st.yaw+=0.00009*dt; }
   st.zoom+=(st.tz-st.zoom)*Math.min(1,dt*0.012);
   if(!st.drag&&st.mx>=0){
     st.hover=pick(st.mx,st.my);
