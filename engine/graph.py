@@ -50,11 +50,22 @@ TIER_RANK = {"VERIFIED": 0, "DOCUMENTED": 1, "DIRECTORY": 2, "ASSUMED": 3}
 def load(model="inherited"):
     """Merge registry_full (archetype-inherited) with registry.json (curated wins).
 
-    model="harvested" then overlays data/profiles.json, which replaces emits/
-    consumes/side_effects with values derived from real tool names wherever tool
-    evidence exists. Connectors with no tool evidence keep the inherited profile
-    and are tagged DIRECTORY, so the two models stay comparable connector-for-
-    connector -- that comparability is the whole point of keeping one loader.
+    Three models, and the third exists because the second is a mixture:
+
+      inherited  every profile from its archetype. Session 1's model, kept as the
+                 baseline every harvested number is diffed against.
+      harvested  data/profiles.json overlaid. 464 connectors get profiles derived
+                 from real tool names; the other 357 still carry the archetype
+                 guess and are tagged DIRECTORY. Comparable connector-for-connector
+                 with `inherited`, which is what makes the diff meaningful.
+      evidence   DIRECTORY connectors DROPPED, not downgraded. Only connectors with
+                 real tool evidence are in the graph at all.
+
+    `harvested` mixes measured and inherited rows, so every aggregate over it
+    carries an asterisk. `evidence` is the model with no fiction in it: smaller,
+    and the only one whose numbers need no caveat about where they came from.
+    Neither supersedes the other -- `harvested` answers "what does the directory
+    look like", `evidence` answers "what do we actually know".
     """
     full = json.load(open(os.path.join(DATA, "registry_full.json"), encoding="utf-8"))
     arches = full["archetypes"]
@@ -79,7 +90,7 @@ def load(model="inherited"):
             base["curated"] = True
             conns[k] = base
 
-    if model == "harvested":
+    if model in ("harvested", "evidence"):
         pp = os.path.join(DATA, "profiles.json")
         if not os.path.exists(pp):
             raise SystemExit("data/profiles.json missing — run engine/profile.py --derive")
@@ -106,11 +117,23 @@ def load(model="inherited"):
             c.setdefault("tier", "DIRECTORY")
             c.setdefault("n_tools", 0)
             c.setdefault("authless", False)
-    return arches, list(conns.values())
+
+    out = list(conns.values())
+    if model == "evidence":
+        for c in out:
+            c.setdefault("tier", "DIRECTORY")
+        out = [c for c in out if c["tier"] in ("VERIFIED", "HARVESTED")]
+    return arches, out
 
 
 def validate(arches, conns):
-    """Hard-fail on any join key outside the vocabulary."""
+    """Hard-fail on any join key outside the vocabulary.
+
+    Always returns the real empty-archetype list. Whether an empty archetype is a
+    defect depends on the model -- under `evidence` whole archetypes legitimately
+    vanish because they have zero tool evidence -- so that judgement belongs to
+    the caller. Suppressing the list here would have made --validate print
+    "empty archetypes: none" while archetypes were in fact missing."""
     errs = []
     for name, prof in arches.items():
         for field in ("emits", "consumes"):
@@ -341,20 +364,26 @@ def main():
     ap.add_argument("--validate", action="store_true")
     ap.add_argument("--analyze", action="store_true")
     ap.add_argument("--include-weak", action="store_true")
-    ap.add_argument("--model", choices=("inherited", "harvested"), default="inherited")
+    ap.add_argument("--model", choices=("inherited", "harvested", "evidence"), default="inherited")
     ap.add_argument("--path", nargs=2, metavar=("SRC", "DST"))
     a = ap.parse_args()
 
     if a.validate:
         arches, conns = load(a.model)
         errs, empty = validate(arches, conns)
-        print(f"connectors: {len(conns)}   archetypes: {len(arches)}")
+        print(f"model: {a.model}   connectors: {len(conns)}   archetypes: {len(arches)}")
         if errs:
             print(f"FAIL — {len(errs)} key-vocabulary error(s):")
             for e in errs[:20]:
                 print("  " + e)
             return 1
         print("key vocabulary: OK (0 unknown keys)")
+        if a.model == "evidence":
+            # Expected here, and worth naming: these archetypes have no connector
+            # with tool evidence at all, which is itself a finding.
+            print(f"archetypes with no evidence-backed member: {len(empty)}"
+                  + (f" — {', '.join(sorted(empty))}" if empty else ""))
+            return 0
         print(f"empty archetypes: {empty or 'none'}")
         return 0 if not empty else 1
 

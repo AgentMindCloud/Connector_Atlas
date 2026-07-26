@@ -363,3 +363,79 @@ rarer. Composition is not limited by what can be read. It is limited by what can
 - **`data/systems.json` is demoted, not rewritten.** The 14 authored systems were scored under an
   operator-payback framing this project has dropped. The payback numbers are gone from the UI and
   the tab is labelled *examples*; the file itself still carries the old scores.
+
+## 16. The evidence-only model — and what it overturns
+
+`--model evidence` drops the 357 `DIRECTORY` connectors from the graph entirely rather than
+downgrading them. `harvested` mixes measured and inherited rows, so every aggregate over it carries
+an asterisk; `evidence` is the model with no fiction in it. Neither supersedes the other —
+`harvested` answers *what does the directory look like*, `evidence` answers *what do we actually
+know*. All three are computable from the same loader.
+
+| | inherited | harvested | **evidence** |
+|---|---|---|---|
+| Connectors | 821 | 821 | **464** |
+| Distinct join profiles | 62 | 236 | **190** |
+| Direct, native only | 67.69% | 23.82% | **5.73%** |
+| ≤2 hops, native only | 92.60% | 49.04% | **20.83%** |
+| Diameter | 3 | 3 | **4** |
+| Connected triples | 92.91% | 30.13% | **4.87%** |
+
+Three archetypes have **no evidence-backed member at all** — `ai_tools`, `browser_automation`,
+`desktop_local`. `--validate --model evidence` names them rather than passing silently.
+
+### The `url` result
+
+This is the finding that most damages the original model. Under inheritance, `url` was the single
+most load-bearing key in the graph: removing it destroyed **389 of 1,610 archetype edges (24%)**, and
+it ranked first on leverage by a wide margin.
+
+| Model | `url` leverage rank | Top key |
+|---|---|---|
+| inherited | **1st** (1,036) | url |
+| harvested | 1st (531) | url |
+| evidence | **7th** (48) | **rows** (152) |
+
+`url` was never load-bearing. It was *plausible* — nearly every archetype had it written into both
+emits and consumes because almost any web tool could conceivably hand back a link, and that guess
+propagated to 820 connectors. Real tool names barely mention urls. They mention rows, companies and
+projects. The keys that actually carry the graph are the ones that name records, not the ones that
+name locations.
+
+The same correction applies to the centrality results in §4: `automation_hub` topped betweenness and
+`CodeWords` topped out-degree in both earlier models, and both are `DIRECTORY` tier — they ranked on
+an inherited profile, not on evidence. Under `evidence` the top donors are Supabase and Todoist
+(both `VERIFIED`) and the top sink is Lucid. Every degree table now prints a tier badge for exactly
+this reason.
+
+## 17. Phase 3 — the schema question, answered
+
+**Parameter schemas are obtainable, but only for connected connectors.** `ToolSearch` returns the
+full JSONSchema for any deferred tool — parameter names, types, required fields, descriptions, and
+stated limitations. Verified live this session on two of the calibration connectors:
+
+- `Gmail.create_draft` — parameters `to`/`cc`/`bcc`, `subject`, `body`, `htmlBody`, `attachments`,
+  `replyToMessageId`. **No send parameter of any kind**, and the description states
+  "Creating drafts with attachments is not supported yet." The banked Gmail constraint now holds at
+  *schema* depth, not just name depth.
+- `GoogleCalendar.search_events` — required parameter `query`, plus `pageSize`/`pageToken`. **No
+  date-range parameters**, confirming the "semantic search only, no enumeration" constraint exactly.
+
+**Why this matters more than it looks.** `create_draft`'s parameters reveal that it consumes
+`email` (to/cc/bcc), `file` (attachments) and `text` (body) — none of which the tool *name*
+contains. Name-based derivation gets side-effect class right and gets `consumes` only
+approximately; parameters give `consumes` directly and precisely. That is the single biggest
+available quality upgrade to the profile model.
+
+**The scope limit is hard.** `ToolSearch` only covers tools in the current session's deferred list,
+which means connected connectors — about a dozen — not the 800+ directory. So schemas are a *depth*
+upgrade for a handful of connectors, not a *coverage* upgrade for the directory. Phase 3 should
+therefore be scoped as: extend `verified_tools.json` into a schema-carrying format, derive
+`consumes` from parameters for every connector the session can reach, and use the result as a
+second, sharper held-out test of the name-based rules that must still cover the other 450.
+
+## 18. Removed
+
+`engine/discover.py` (beam search over 47 archetypes) is deleted. `engine/combine.py` supersedes it
+and searches the real space; keeping a second, weaker searcher around would only invite someone to
+run it.

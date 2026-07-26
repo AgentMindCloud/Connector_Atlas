@@ -1,0 +1,549 @@
+{
+ "model": "evidence",
+ "connectors": 464,
+ "distinct_join_profiles": 190,
+ "pairs": {
+  "ordered_pairs_total": 214832,
+  "exhaustive": true,
+  "native_only": {
+   "-1": 165233,
+   "1": 12311,
+   "2": 32434,
+   "3": 4814,
+   "4": 40
+  },
+  "with_hubs": {
+   "-1": 164894,
+   "1": 12381,
+   "2": 32642,
+   "3": 4875,
+   "4": 40
+  },
+  "direct_pct": 5.73
+ },
+ "triples": {
+  "unordered_triples_total": 16542064,
+  "accounted_for": 16542064,
+  "exhaustive": true,
+  "connected": 805461,
+  "connected_pct": 4.87,
+  "by_shape": {
+   "fan-in  A,B->C": 417255,
+   "other  arcs=3 deg=((0, 2), (1, 1), (2, 0))": 79004,
+   "chain   A->B->C": 75253,
+   "fan-out A->B,C": 74650,
+   "other  arcs=4 deg=((0, 2), (2, 1), (2, 1))": 60188,
+   "other  arcs=3 deg=((0, 1), (1, 1), (2, 1))": 47804,
+   "other  arcs=3 deg=((1, 0), (1, 1), (1, 2))": 19563,
+   "other  arcs=4 deg=((1, 2), (1, 2), (2, 0))": 13859,
+   "other  arcs=6 deg=((2, 2), (2, 2), (2, 2))": 7424,
+   "other  arcs=5 deg=((1, 2), (2, 1), (2, 2))": 4749,
+   "other  arcs=4 deg=((1, 1), (1, 1), (2, 2))": 4059,
+   "other  arcs=4 deg=((1, 1), (1, 2), (2, 1))": 1396,
+   "cycle   A->B->C->A": 257
+  }
+ },
+ "motifs": {
+  "pipeline": {
+   "encoding": "ordered A->B->C, any three connectors (repeats allowed: two members of one class are two different connectors)",
+   "count": 461430
+  },
+  "enrich": {
+   "encoding": "for each connector S, subsets of its in-neighbourhood of size >= 2; summed over all S",
+   "instantiations_size_2_to_5": 58808500413,
+   "instantiations_all_sizes_log10": 81.0,
+   "max_degree": 269,
+   "nodes_with_degree_ge_2": 147
+  },
+  "reconcile": {
+   "encoding": "unordered pairs with edges in BOTH directions",
+   "count": 1093
+  },
+  "fan_out": {
+   "encoding": "for each connector A, subsets of its out-neighbourhood of size >= 2; summed over all A",
+   "instantiations_size_2_to_5": 1373571227,
+   "instantiations_all_sizes_log10": 32.2,
+   "max_degree": 106,
+   "nodes_with_degree_ge_2": 355
+  },
+  "digest": {
+   "encoding": "Enrich, restricted to sinks whose side-effect class is create or above -- the sink must be able to emit an artifact",
+   "instantiations_size_2_to_5": 58808500413,
+   "instantiations_all_sizes_log10": 81.0,
+   "max_degree": 269,
+   "nodes_with_degree_ge_2": 147
+  },
+  "trigger_action": {
+   "encoding": "A -> HUB -> B where HUB is an automation_hub connector and B can write; without a firing mechanism the pattern is not instantiable",
+   "count": 27924
+  },
+  "mirror": {
+   "encoding": "Reconcile pairs where BOTH connectors are mutate or above",
+   "count": 418
+  },
+  "materialize": {
+   "encoding": "edges A->B where B consumes `file` and B can write, i.e. the output lands somewhere durable",
+   "count": 3286
+  },
+  "escalate": {
+   "encoding": "A->B with B irreversible, where A also reaches a non-irreversible sink on the same join key -- so a 'automate below the threshold' policy has somewhere to go",
+   "count": 4142
+  }
+ },
+ "questions": {
+  "universal_donors": [
+   {
+    "example": "Supabase",
+    "tier": "VERIFIED",
+    "class_size": 1,
+    "emits": [
+     "code",
+     "company",
+     "money",
+     "project",
+     "rows",
+     "url"
+    ],
+    "consumes": [
+     "code",
+     "project",
+     "rows"
+    ],
+    "degree": 106
+   },
+   {
+    "example": "Todoist",
+    "tier": "VERIFIED",
+    "class_size": 1,
+    "emits": [
+     "company",
+     "file",
+     "project",
+     "rows",
+     "timestamp"
+    ],
+    "consumes": [
+     "project",
+     "rows",
+     "timestamp"
+    ],
+    "degree": 106
+   },
+   {
+    "example": "Miro",
+    "tier": "HARVESTED",
+    "class_size": 1,
+    "emits": [
+     "file",
+     "image",
+     "project",
+     "rows"
+    ],
+    "consumes": [
+     "file",
+     "image"
+    ],
+    "degree": 103
+   },
+   {
+    "example": "Legal Data Hunter",
+    "tier": "HARVESTED",
+    "class_size": 1,
+    "emits": [
+     "file",
+     "geo",
+     "project",
+     "rows"
+    ],
+    "consumes": [],
+    "degree": 98
+   },
+   {
+    "example": "LatchBio",
+    "tier": "HARVESTED",
+    "class_size": 1,
+    "emits": [
+     "file",
+     "project",
+     "rows"
+    ],
+    "consumes": [
+     "project"
+    ],
+    "degree": 94
+   },
+   {
+    "example": "Peec AI",
+    "tier": "HARVESTED",
+    "class_size": 1,
+    "emits": [
+     "company",
+     "domain",
+     "project",
+     "rows",
+     "url"
+    ],
+    "consumes": [],
+    "degree": 91
+   },
+   {
+    "example": "Cloudflare Developer Platform",
+    "tier": "VERIFIED",
+    "class_size": 1,
+    "emits": [
+     "code",
+     "company",
+     "file",
+     "rows",
+     "url"
+    ],
+    "consumes": [
+     "company",
+     "file",
+     "rows"
+    ],
+    "degree": 88
+   },
+   {
+    "example": "Klaviyo",
+    "tier": "HARVESTED",
+    "class_size": 1,
+    "emits": [
+     "company",
+     "project",
+     "rows",
+     "timestamp"
+    ],
+    "consumes": [
+     "file",
+     "project"
+    ],
+    "degree": 83
+   }
+  ],
+  "universal_sinks": [
+   {
+    "example": "Lucid",
+    "tier": "HARVESTED",
+    "class_size": 1,
+    "emits": [],
+    "consumes": [
+     "company",
+     "file",
+     "geo",
+     "image",
+     "rows",
+     "url"
+    ],
+    "degree": 269
+   },
+   {
+    "example": "Canva",
+    "tier": "VERIFIED",
+    "class_size": 1,
+    "emits": [
+     "company",
+     "file",
+     "image",
+     "rows"
+    ],
+    "consumes": [
+     "company",
+     "email",
+     "file",
+     "image",
+     "rows",
+     "url"
+    ],
+    "degree": 252
+   },
+   {
+    "example": "Cloudflare Developer Platform",
+    "tier": "VERIFIED",
+    "class_size": 1,
+    "emits": [
+     "code",
+     "company",
+     "file",
+     "rows",
+     "url"
+    ],
+    "consumes": [
+     "company",
+     "file",
+     "rows"
+    ],
+    "degree": 228
+   },
+   {
+    "example": "Rillet",
+    "tier": "HARVESTED",
+    "class_size": 1,
+    "emits": [],
+    "consumes": [
+     "company",
+     "money",
+     "rows"
+    ],
+    "degree": 215
+   },
+   {
+    "example": "Frontify",
+    "tier": "HARVESTED",
+    "class_size": 1,
+    "emits": [
+     "company"
+    ],
+    "consumes": [
+     "file",
+     "project",
+     "rows",
+     "url"
+    ],
+    "degree": 213
+   },
+   {
+    "example": "Todoist",
+    "tier": "VERIFIED",
+    "class_size": 1,
+    "emits": [
+     "company",
+     "file",
+     "project",
+     "rows",
+     "timestamp"
+    ],
+    "consumes": [
+     "project",
+     "rows",
+     "timestamp"
+    ],
+    "degree": 209
+   },
+   {
+    "example": "FactSet AI-Ready Data",
+    "tier": "HARVESTED",
+    "class_size": 1,
+    "emits": [],
+    "consumes": [
+     "company",
+     "geo",
+     "money",
+     "ticker",
+     "timestamp"
+    ],
+    "degree": 208
+   },
+   {
+    "example": "Sanity",
+    "tier": "HARVESTED",
+    "class_size": 1,
+    "emits": [],
+    "consumes": [
+     "email",
+     "file",
+     "project",
+     "rows"
+    ],
+    "degree": 208
+   }
+  ],
+  "isolates": {
+   "count": 80,
+   "definition": "no strong-key edge in either direction; weak keys (text/person/vendor_id) excluded",
+   "sample": [
+    "ActiveCampaign",
+    "AppFolio Realm-X",
+    "Audible",
+    "Benevity",
+    "Booking.com",
+    "CMS Coverage",
+    "ChEMBL",
+    "Clarivate IPOne CompuMark Trademarks",
+    "Consensus",
+    "Context7",
+    "Coteach",
+    "D&B Risk Analytics",
+    "DataHub",
+    "Diffit",
+    "Eedi",
+    "Embat",
+    "Eraser",
+    "Excalidraw",
+    "Fireflies",
+    "Gainsight (Staircase AI)",
+    "GoCardless",
+    "Google Compute Engine",
+    "Granted",
+    "GraphOS MCP Tools",
+    "Guidepoint"
+   ]
+  },
+  "cheapest_profile_upgrade": [
+   {
+    "connector": "Notion",
+    "class_size": 1,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   },
+   {
+    "connector": "Intercom",
+    "class_size": 80,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   },
+   {
+    "connector": "Lucid",
+    "class_size": 1,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   },
+   {
+    "connector": "Railway",
+    "class_size": 1,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   },
+   {
+    "connector": "Resend",
+    "class_size": 1,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   },
+   {
+    "connector": "Spotify",
+    "class_size": 1,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   },
+   {
+    "connector": "Teamtailor",
+    "class_size": 6,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   },
+   {
+    "connector": "Postman",
+    "class_size": 3,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   },
+   {
+    "connector": "Files.com",
+    "class_size": 1,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   },
+   {
+    "connector": "Roam Research",
+    "class_size": 2,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   },
+   {
+    "connector": "Phished",
+    "class_size": 1,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   },
+   {
+    "connector": "FactSet AI-Ready Data",
+    "class_size": 1,
+    "add_key": "rows",
+    "new_out_edges_each": 40
+   }
+  ],
+  "key_leverage": [
+   {
+    "key": "rows",
+    "reaches_as_emitter": 40,
+    "reachable_as_consumer": 112,
+    "new_pairs_if_universal_bridge": 152
+   },
+   {
+    "key": "company",
+    "reaches_as_emitter": 9,
+    "reachable_as_consumer": 104,
+    "new_pairs_if_universal_bridge": 113
+   },
+   {
+    "key": "project",
+    "reaches_as_emitter": 39,
+    "reachable_as_consumer": 71,
+    "new_pairs_if_universal_bridge": 110
+   },
+   {
+    "key": "file",
+    "reaches_as_emitter": 31,
+    "reachable_as_consumer": 61,
+    "new_pairs_if_universal_bridge": 92
+   },
+   {
+    "key": "timestamp",
+    "reaches_as_emitter": 12,
+    "reachable_as_consumer": 67,
+    "new_pairs_if_universal_bridge": 79
+   },
+   {
+    "key": "money",
+    "reaches_as_emitter": 18,
+    "reachable_as_consumer": 58,
+    "new_pairs_if_universal_bridge": 76
+   },
+   {
+    "key": "url",
+    "reaches_as_emitter": 21,
+    "reachable_as_consumer": 27,
+    "new_pairs_if_universal_bridge": 48
+   },
+   {
+    "key": "geo",
+    "reaches_as_emitter": 5,
+    "reachable_as_consumer": 34,
+    "new_pairs_if_universal_bridge": 39
+   },
+   {
+    "key": "email",
+    "reaches_as_emitter": 13,
+    "reachable_as_consumer": 18,
+    "new_pairs_if_universal_bridge": 31
+   },
+   {
+    "key": "code",
+    "reaches_as_emitter": 8,
+    "reachable_as_consumer": 22,
+    "new_pairs_if_universal_bridge": 30
+   },
+   {
+    "key": "image",
+    "reaches_as_emitter": 13,
+    "reachable_as_consumer": 13,
+    "new_pairs_if_universal_bridge": 26
+   },
+   {
+    "key": "media",
+    "reaches_as_emitter": 4,
+    "reachable_as_consumer": 18,
+    "new_pairs_if_universal_bridge": 22
+   },
+   {
+    "key": "ticker",
+    "reaches_as_emitter": 2,
+    "reachable_as_consumer": 16,
+    "new_pairs_if_universal_bridge": 18
+   },
+   {
+    "key": "domain",
+    "reaches_as_emitter": 2,
+    "reachable_as_consumer": 8,
+    "new_pairs_if_universal_bridge": 10
+   },
+   {
+    "key": "phone",
+    "reaches_as_emitter": 0,
+    "reachable_as_consumer": 1,
+    "new_pairs_if_universal_bridge": 1
+   }
+  ]
+ }
+}

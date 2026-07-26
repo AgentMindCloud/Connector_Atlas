@@ -8,7 +8,7 @@ combine.py — the combination space of 821 connectors, described honestly. Stdl
     python3 engine/combine.py --motifs       # the nine patterns, counted
     python3 engine/combine.py --questions    # donors, sinks, isolates, cheapest upgrades
     python3 engine/combine.py --diff         # inherited model vs harvested model
-    python3 engine/combine.py --model inherited|harvested     (default harvested)
+    python3 engine/combine.py --model inherited|harvested|evidence   (default harvested)
 
 Three regimes, because brute force dies at four
 ------------------------------------------------
@@ -503,7 +503,7 @@ def diff():
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--model", choices=("inherited", "harvested"), default="harvested")
+    ap.add_argument("--model", choices=("inherited", "harvested", "evidence"), default="harvested")
     for f in ("pairs", "triples", "motifs", "questions", "diff", "all"):
         ap.add_argument(f"--{f}", action="store_true")
     a = ap.parse_args()

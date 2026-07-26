@@ -13,14 +13,26 @@
 > | 2 · Derive profiles | done | `engine/profile.py`; held-out test 6/6; 62 → 236 distinct join profiles |
 > | 3 · Combinatorial engine | done | `engine/combine.py`; pairs and triples exhaustive and checked, motif census beyond |
 > | 4 · Surface it | done | four new views in the existing tool; browser-tested, 0 console errors |
-> | `discover.py` rewrite | **not done** | superseded by `combine.py`; the old file is dead code and should be deleted |
+> | `discover.py` rewrite | resolved by deletion | superseded by `combine.py`; the old beam search over 47 archetypes is gone |
 > | `score.py` reframing | partial | operator-payback stripped from the UI; `data/systems.json` still carries the old scores |
 >
-> **Three findings that contradict what this file predicted.** They are in METHOD.md §12–13 in full:
+> **Four findings that contradict what this file predicted.** METHOD.md §12–13 and §16 have them in full:
 > 1. `Fireflies → Todoist` is **no longer a direct edge** — its real tools emit only weak keys.
 > 2. Gmail's side-effect class really is **irreversible** (`delete_label` exists); the surviving
->    claim is the narrow one, that no send tool exists.
+>    claim is the narrow one, that no send tool exists — now confirmed at *schema* depth.
 > 3. Harvest coverage caps at 58% because the live registry and `registry_full.json` have diverged.
+> 4. **`url` was never the load-bearing key.** It ranked 1st on leverage under inheritance and 7th
+>    under evidence-only. The "removing `url` destroys 24% of edges" figure below is an artifact of
+>    the archetype guess, not a property of the directory. `rows` leads on real evidence.
+>
+> **Three models now, not two.** `--model inherited|harvested|evidence`. `harvested` mixes 464
+> measured connectors with 357 inherited ones, so its aggregates carry an asterisk; `evidence` drops
+> the inherited rows entirely and is the only model whose numbers need no caveat. Quote `evidence`
+> when the claim is about what is known, `harvested` when it is about the directory's shape.
+>
+> **Phase 3 is scoped** (METHOD.md §17): parameter schemas *are* obtainable via `ToolSearch`, but
+> only for connectors connected in-session — a depth upgrade for ~12 connectors, not a coverage
+> upgrade for 800. Parameters give `consumes` directly, which tool names only approximate.
 >
 > Branch: `claude/phase-2-continuation-5diogk`.
 
@@ -190,7 +202,7 @@ model; see METHOD.md §13 for the side-by-side. Direct reachability fell 67.69% 
 - **18,172 ordered pairs unreachable even through hubs** — 17,220 of them from **21 connectors that
   consume no strong key** (13 `education`, 6 `forms_surveys`, 2 curated). Forms being source-only is
   correct; education is under-modelled
-- **Key scarcity**: removing `url` destroys **389 of 1,610 edges (24%)**; `file` 181, `email` 126,
+- **Key scarcity** (⚠ artifact — see METHOD.md §16): removing `url` destroys **389 of 1,610 edges (24%)**; `file` 181, `email` 126,
   `timestamp` 115, `rows` 75, `geo` 23
 - Betweenness: `automation_hub` 48.1, `browser_automation` 23.1, `email` 21.7, `chat_messaging` 21.7
 - Degree: `automation_hub` 90; `email`/`chat_messaging`/`ecommerce_logistics` 87; `browser_automation` 84
