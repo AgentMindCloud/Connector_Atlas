@@ -1,0 +1,50 @@
+# ASKED: Hardline | Caretta | Zoom for Claude | Granola | AI TeamsMaestro | Trint | Fathom | Memoket | Otter.ai | tldv | Fellow.ai | SpeakApp | Webex Meetings | Quo | Circleback | Strety | Spinach AI | Sybill | Zocks | Voicenotes | Plaud | Minutes — Meeting Memory for AI | MeetGeek | Promocodes.com | Salesflare | Seismic | Outreach | Salesloft | Vibe Prospecting | folk | Attio | Crossbeam | Common Room | lemlist | Highspot | Leadsquared | Trussi AI | Meridian AI | SaaSify - Cloud Marketplaces GTM Platform | Day AI | Lightfield | Actively | Dex Personal CRM | Blinq | Zoho CRM | McAfee | Have I Been Pwned | Phished | Norton | Robtex Network Intelligence | Malwarebytes | Origin | Zylo | Ketryx | Apiiro Guardian | Scorechain | Socket | Zscaler MCP Server | Snyk Security | PanOS MCP | Vendr Software Pricing Tools
+Zoom for Claude	1ed68a66-c371-4d26-82dc-28e6c260ece8	0	search_meetings,recordings_list,get_meeting_assets,get_recording_resource,create_new_file_with_markdown
+Granola	4d608ca4-1664-4ddd-be1c-c88c0ea2ec7e	0	query_granola,list_meetings,get_meetings,get_meeting_transcript
+Fathom	954b8c86-38d8-431b-bdaf-85b14336989c	0	get_identity,list_teams,list_meetings,get_meeting_summary,get_meeting_transcript,find_person,search_meetings
+Mem	fab5214d-eb35-4038-8271-2a0be421a086	0	list_notes,create_note,search_notes,get_note,update_note,trash_note,restore_note,delete_note,+7 more
+Tines	bfbaa374-0528-4d49-8de8-bb0d0b92596c	0	
+Otter.ai	bb74915f-d284-4590-a208-ae06447b37af	0	get_user_info,search,fetch
+Fellow.ai	069b18da-5c89-4a66-941f-0cb6eae49a8d	0	get_action_items,get_meeting_participants,get_meeting_summary,get_meeting_transcript,search_meetings
+tldv	fe54565b-5acb-45b3-b27e-4f7d9752a257	0	get-meeting-metadata,get-meeting-notes,get-meeting-transcript,get-user-profile,search-meetings
+Webex Meetings	dfd27e26-02d5-4435-b775-28b0474067ff	0	webex-list-meetings,webex-create-meeting,webex-update-meeting,webex-delete-meeting,webex-get-meeting-status,webex-get-meeting-summary,webex-list-recordings,webex-list-transcripts
+Quo	5b1d1665-4793-4a8c-98cf-909e00e97a29	0	send-message,create-contact,update-contact,fetch-call-transcripts,fetch-messages,list-users,list-inboxes,list-contacts,+1 more
+Circleback	91c3f3e4-8c61-4f73-b912-96d035f69f24	0	SearchMeetings,SearchTranscripts,GetTranscriptsForMeetings,ReadMeetings,FindProfiles,FindDomains,SearchCalendarEvents,SearchEmails,+1 more
+tldraw	110f1913-34f3-443b-bd22-3c905fd246ec	1	
+Plaud	33b42d5b-de4e-43c6-ae45-135b15ec1791	0	list_files,get_file,get_note,get_transcript,get_current_user
+Spinach AI	50817992-a7f8-4ac2-bdc4-2f655b87168c	0	TestConnection,Search,Fetch
+Sybill	2273f645-4b1d-4842-a52f-c0032296ccad	0	ask_sybill,list_conversations,get_conversation,list_deals,get_deal
+Zocks	4f05b447-c6da-4f35-88f8-b078c21293bb	0	contacts_search_contacts,contacts_get_contact_details,meetings_list_past_sessions,meetings_list_upcoming_sessions,meetings_get_transcript,ai_results_list_results,ai_results_get_ai_result,ai_results_get_agent_result
+Goodnotes	e261228f-7eed-410a-b7b7-f4474dc592ba	1	draw_svg_image,generate_mermaid_diagram,create_markdown_text_document
+Nooks	57d3169d-032d-4bcc-b03c-ef0a91043e6a	0	
+ServiceNow	2096eddf-af8e-4ab1-9fd4-6669f100524e	0	
+Salesflare	6e8d7c79-70a3-469d-855f-a76341668f74	0	create_account,create_contact,create_opportunity,create_task,get_account_feed,list_accounts,list_contacts,list_opportunities,+8 more
+Salesloft	b88a0129-d984-4c48-87a1-acf028e9f035	0	account_by_id,conversation_by_id,conversation_recording_by_id,conversation_transcript_by_id,current_team,current_user,opportunity_by_id,person_by_id,+6 more
+Vibe Prospecting	1bdcb159-b6f0-4f13-bc08-fdb40b007828	0	autocomplete,enrich-business,enrich-prospects,estimate-cost,export-to-csv,fetch-businesses-events,fetch-entities,fetch-entities-statistics,+4 more
+Outreach	7b2bdb34-e318-4d50-893f-330a8e41d78c	0	fetch_kaia_meetings,emails_search,sequence_search_by_name,prospect_get_by_id,prospect_search_by_name,prospect_search_by_ext_id,account_get_by_id,account_search_by_name,+7 more
+Attio	ae5afdb9-e3c6-4b64-a13a-420e7a8d8124	0	create-note,create-record,create-task,get-call-recording,get-email-content,get-note-body,get-records-by-ids,list-attribute-definitions,+15 more
+Seismic	9feecd5e-241d-4ea1-8caa-289839a3ac04	0	generative_search_for_retrieving_contents,generative_search_for_answer_or_summary,generate_livesend_link
+Coteach	8f5a51c6-5664-40c8-8043-f0441252c878	0	CreateDiagrams
+Clay	a8159026-14b4-403a-933b-bd897a5b36ca	0	find-and-enrich-contacts-at-company,find-and-enrich-list-of-contacts,find-and-enrich-company,add-contact-data-points,add-company-data-points,get-credits-available,get-existing-search
+Crossbeam	42ce667a-962d-432c-b667-35f0266ac6b5	0	find_overlaps,find_overlap_partners,get_account_context,get_partner_context,get_ecosystem_activity,find_partner_recommendations,find_partner_contacts,get_partner_suggestions,+4 more
+Common Room	e56221b4-925f-48bb-9176-6cd6e8fae3c1	0	commonroom_get_catalog,commonroom_list_objects,commonroom_create_object,commonroom_update_object,commonroom_submit_feedback
+Highspot	9c052ba1-9319-48bf-8ccd-adb042a24dc2	0	search_content,get_content_answer,get_deal_answer,lookup_deal,get_content_recommendations,get_item_content,generate_pitch
+AWS Marketplace	2ed43e1e-f547-48a3-85cc-b9baa412d06b	0	ask_aws_marketplace,generate_aws_marketplace_file_upload_url,get_aws_marketplace_uploaded_files,delete_aws_marketplace_uploaded_file,get_aws_marketplace_recommendations_report,get_aws_marketplace_comparisons_report,get_aws_marketplace_evaluation_report,delete_aws_marketplace_conversation,+3 more
+Day AI	87d31b20-90c3-42ca-94a7-51270953869d	0	open_sidebar,get_share_url,analyze_before_create_or_update,create_or_update_person_organization,create_or_update_opportunity,create_or_update_pipeline_stage,update_property_definition,read_crm_schema,+17 more
+Lightfield	c1496483-94ab-4a4e-885c-d7d2696e6eeb	0	get_current_user,get_lightfield_api_details,read_from_lightfield,search_lightfield_api_docs,write_to_lightfield
+Actively	ce5e0577-7004-470c-91f8-5abdc9335ae3	0	generate_smart_fields,get_agent_decisions,get_agent_decisions_sections,get_agent_memory,get_agent_memory_sections,get_bulk_agent_decisions,get_bulk_agent_memory,get_recent_account_activity,+5 more
+Zoho CRM	fbc6ce8e-ac9d-4b09-8b74-a69fd456bc39	0	Get_Organization,Get_Modules,Get_Module,Get_Fields,Get_Layouts,Get_Layout,Get_Users,Get_User,+33 more
+BrightHire	024923b0-b122-4eb0-bb25-c3887bdaa9b9	0	search,get_scheduled_interviews,get_interview_context,get_interview_summary,get_call_ai_notes,get_transcripts,get_candidate_summary,get_scorecards,+3 more
+Lumin	b04d70ca-c220-4d15-b7c9-e2eb6ace0a2c	0	get_lumin_user_information,get_signature_request_on_lumin_by_id,cancel_signature_request_on_lumin_by_id,send_signature_request_on_lumin,upload_file_to_lumin,get_workspace_list_of_user_on_lumin,lumin_markdown2pdf
+Phished	dca5e54b-c05e-4c7f-8a00-bf01c9e74b71	0	create-administrator,create-allow-block-list-entry,create-button-response,create-department,create-domain,create-email-branding-template,create-landing-page,create-location,+88 more
+Have I Been Pwned	da758d89-9c8b-4f6c-a5bf-65eb14b9fc21	0	hibp_list_breaches,hibp_get_breach,hibp_get_latest_breach,hibp_list_data_classes,hibp_get_pwned_passwords_range,hibp_get_breached_account,hibp_get_breached_account_range,hibp_get_paste_account,+9 more
+Norton	80d22cbe-f339-4dd3-8d29-d9c04c4ae3f1	1	cybersafety_scam_check,cybersafety_threat_advisor,product_kb_support,message,email,troubleshooting,recommendations
+Malwarebytes	a31f2757-9039-41b6-96fa-a9c0b0945efb	1	reputation-check_link,reputation-check_phone,reputation-check_email,reputation-whois,reputation-report,reputation-scan_all
+Origin	4add6101-9562-4ebb-9ac7-ebdaabed6257	0	analytics_describe_schema,analytics_query
+Notion	69f3a300-cc60-48c4-b237-dfac56530dbf	0	search,fetch,create-pages,update-page,move-pages,duplicate-page,create-database,update-database,+5 more
+Sanity	118aa78d-5b78-4e2b-9191-7a6af7cf822e	0	add_cors_origin,create_dataset,create_documents_from_json,create_documents_from_markdown,create_project,create_version,deploy_schema,discard_drafts,+23 more
+Pylon	240b8712-17ed-4233-858a-9a872dec63b2	0	create_issue,get_account,get_contact,get_issue,get_issue_messages,get_user,search_accounts,search_issues,+2 more
+Ketryx	c190c061-702f-48da-97cb-6e32cedf47b0	0	find_projects,find_versions,get_kql_filter_context,list_configuration_items,resolve_references,get_item_records,get_items_change_history,hybrid_search_items,+1 more
+Sentry	46d6322a-5f75-4822-b739-f49261805e9c	0	whoami,find_organizations,find_teams,find_projects,find_issues,find_releases,find_tags,get_issue_details,+12 more
+CometChat	43a075af-66d8-479b-92e3-b80101d6eacb	1	search_cometchat_docs,fetch_cometchat_doc_page,get_cometchat_implementation_bundle
+PandaDoc	56998cd4-9a3a-4f40-8aa9-5019da8bf96e	0	pandadoc_documents_create,pandadoc_documents_create_from_markdown,pandadoc_documents_update,pandadoc_documents_send,pandadoc_documents_status_get,pandadoc_documents_status_change,pandadoc_documents_details_get,pandadoc_documents_summary_get,+3 more

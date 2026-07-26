@@ -1,0 +1,22 @@
+# ASKED: UseMyContext.ai | Traveler.md | SoupNet | Lace Labs | Basic Memory Cloud | Zsper | Mem0 | iknow.dev | Pathmode | MCP Memory | Perseus Vault — Persistent Memory for Claude (formerly Mimir/Mneme) | Atlassian Rovo | monday.com | Elixion | ClickUp | Runway (runway.team) | Adobe Workfront | TickTick | Process Street | SignalSync | Backlog | Saga — Project Tracker for AI Agents | ZoomInfo | Lusha | Contract-Factory — Sociétés & SIREN | OpenFunnel Agent Primitives | Harmonic | Zint | Global Database | Phoenix by HG Insights | Crustdata | iSpv | La Growth Machine | Snowflake | Google Cloud BigQuery | Databricks | dbt | ClickHouse | MotherDuck | Starburst | Streamkap | StackQL MCP Server | Ultipa
+Mem0	3119bc71-0dfd-48f8-a764-c2fca895325c	0	add_memory,search_memories,get_memories,get_memory,update_memory,delete_memory,delete_all_memories,list_entities,+3 more
+Atlassian Rovo	11ba10d9-477b-4988-bd1c-90a7fa680dc1	0	atlassianUserInfo,getAccessibleAtlassianResources,getConfluenceSpaces,getConfluencePage,getPagesInConfluenceSpace,getConfluencePageAncestors,getConfluencePageFooterComments,getConfluencePageInlineComments,+23 more
+monday.com	49e0f9ba-7d45-4fb6-b098-55eec956fbc6	0	delete_item,get_board_items_by_name,create_item,create_update,get_board_schema,get_users_by_name,change_item_column_values,move_item_to_group,+12 more
+ClickUp	aa5a2bca-4004-49ea-bc2b-978162587a3a	0	clickup_search,clickup_get_workspace_hierarchy,clickup_create_task,clickup_get_task,clickup_update_task,clickup_get_task_comments,clickup_create_task_comment,clickup_attach_task_file,+27 more
+Adobe Workfront	81d7db7c-e329-41ee-bc8e-48beceac2d68	0	approvals_find_document_version_by_name,approvals_get_document_by_version_id,approvals_get_documents_by_project,approvals_resolve_document_scope,approvals_get_approval_info,approvals_create_or_update_approval_workflow,approvals_create_approval_from_template,approvals_delete_approval_stage,+60 more
+TickTick	8998ee3e-3ade-49db-b4b1-bd888240c8d0	0	get_user_preference,get-user-preference,search_task,search-task,get_task_by_id,get-task-by-id,list_undone_tasks_by_time_query,list-undone-tasks-by-time-query,+84 more
+Process Street	bc7e0573-b43a-4f38-bb11-bd167110a895	0	assignTask,assignWorkflowRun,createDataSetRecord,createWorkflowRun,deleteDataSetRecord,deleteWorkflowRun,getDataSetRecord,getTask,+24 more
+ClickHouse	01adc2b5-5676-4dda-9e32-2cce63929d5c	0	get_organizations,get_organization_details,get_services_list,get_service_details,get_organization_cost,run_select_query,list_databases,list_tables,+5 more
+Honeycomb	63125588-06e1-4567-8130-f5a26ed1d20f	0	feedback,get_dataset,get_dataset_columns,get_environment,get_query_history,get_slos,get_team_info,get_trace,+5 more
+ZoomInfo	f2cdf1b8-2f75-48a4-8d8c-8d9cce1b8643	0	search_contacts,enrich_contact,search_companies,enrich_company,lookup
+Lusha	cb3b7f71-456f-4f8e-8a31-e77194d396ab	0	contacts_search,companies_search,prospecting_contact_search,prospecting_contact_enrich,prospecting_company_search,prospecting_company_enrich,prospecting_contact_filters,prospecting_company_filters,+16 more
+Harmonic	27e16103-e402-4223-b8b2-a7324bfdebab	0	enrich_company,enrich_person,get_saved_search_companies_results,get_saved_search_companies_net_new,get_saved_search_people_results,get_saved_search_people_net_new,get_saved_search_investors_results,get_saved_search_investors_net_new,+15 more
+Phoenix by HG Insights	0796df0d-3911-42f6-b47d-9b1c8b259300	0	company_technographic,company_firmographic,company_search,company_intent,company_spend,company_cloud_spend,company_contracts,company_fai,+7 more
+Snowflake	ee49809c-50e1-4b24-bc17-17ce8887bfdf	0	Cortex Agents,Cortex Search
+Google Cloud BigQuery	7c316b77-98a0-4dbb-8b54-a96ae26a884f	0	list_dataset_ids,get_dataset_info,list_table_ids,get_table_info,execute_sql
+Databricks	5f6045b0-e8c9-4ef7-ade5-f5030a69d4ba	0	<catalog_name>__<schema_name>__<function_name>,<catalog_name>__<schema_name>__<vectorindex_name>,query_space_<space_id>
+dbt	16e6608d-6830-48b2-b6a2-519f323bf8e3	0	execute_sql,text_to_sql,get_dimension_values,get_dimensions,get_entities,get_metrics_compiled_sql,list_metrics,list_saved_queries,+52 more
+MotherDuck	0929a5c7-38ce-40ab-8aad-af9ce34553c7	0	list_databases,list_shares,list_tables,list_columns,search_catalog,query,ask_docs_question,query_rw,+7 more
+Starburst	2a9d8e2f-f935-4b4a-bd78-ec81ba9f2125	0	readOnlyQuery
+Google Calendar	c2fb0109-d487-4051-94da-b58d091dc650	0	
+Google Drive	cdfa6b20-c249-4400-a5ce-09d175eb78f7	0	

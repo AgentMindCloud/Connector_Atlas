@@ -1,0 +1,26 @@
+# ASKED: DeviceLink | Remote Desktop Commander | Filesystem | Control Chrome | PowerPoint (By Anthropic) | Word (By Anthropic) | Desktop Commander | Windows-MCP | Fantastical | Read and Write Apple Notes | Control your Mac | Drafts | Read and Send iMessages | MacOS-MCP | Noteplan | Android-MCP | BusyCal | Dash | v0 | Lovable | WordPress.com | Emergent | Wix | Base44 | Deplixo | Caffeine | Aster Share | SAP Fiori MCP Server | SAPUI5 MCP Server | B12 Website Generator | SAP MDK MCP Server | SAP CAP MCP Server | Lindo AI | Replicant MCP | ElevenLabs | Hugging Face | Qencode | Descript | Roboflow | Audible | Cloudinary | Splice | estonian | ElevenLabs Player | Cloudglue | Cloudinary Asset Management | ElevenLabs Agents MCP App | Vybit Notifications | Resolume Arena MCP Server | Resolume Wire MCP Server | SVGator | Shutterstock | Mobbin | Fonts | BioRender | Brandfetch | swatchdog | zeroheight
+Egnyte	5b938bac-8286-4844-bc51-d303f7c6cbde	0	search,advanced_search,fetch,ask_document,summarize_document,list_filesystem_by_path,list_filesystem_by_id,download_file_by_path,+15 more
+Files.com	07ca4be9-1ada-48ff-a591-49737b152f45	0	Copy_File,Create_Bundle,Create_Bundle_Notification,Create_Bundle_Recipient,Create_Folder,Create_Group,Create_Permission,Create_User,+53 more
+AgentMail	a99a3b09-26fc-4251-a412-fa2593123267	0	auth_me,create_draft,create_inbox,delete_draft,delete_inbox,delete_thread,forward_message,get_attachment,+16 more
+Gmail	2701e52f-b826-4aaf-8b25-11f2a97c98b0	0	create_draft,get_thread,list_drafts,list_labels,search_threads
+DataHub	5ccb820e-419d-4683-9646-90ea294ada71	0	accept_or_reject_proposals,add_owners,add_related_terms,add_structured_properties,add_tags,add_terms,compare_glossary_term_versions,create_glossary_term,+26 more
+Craft	ebf5e222-450b-4658-b566-ddb82c4c8382	0	blocks_get,blocks_add,markdown_add,blocks_update,blocks_delete,blocks_move,blocks_revert,collections_list,+24 more
+Candid	875faf93-08c4-469c-980f-6f79f70f10d3	0	knowledge_resources,identify_mentioned_organizations,search_organizations,taxonomy_terms,identify_locations,current_date
+Smartsheet	688b7b3f-efc4-45a6-83af-d2760ef9e96f	0	search,list_workspaces,get_sheet_summary,add_rows,update_rows,delete_rows,get_columns,add_columns,+34 more
+v0	4a42060f-e997-4b2c-bc4b-60c0f417a9e4	0	createChat,getChat,getPreview,import-claude-design-from-url,listChats,listMessages,resolveTask,sendChatMessage
+WordPress.com	e6fc4c18-ea48-4752-9912-7a13bf9999ed	0	user-profile,user-sites,user-domains,user-achievements,user-connections,user-notifications,user-notifications-inbox,user-security,+8 more
+Lovable	1d9dadfe-0a7d-4a47-af18-101ae0ae0efd	0	get_me,list_workspaces,get_workspace,list_projects,get_project,create_project,deploy_project,remix_project,+27 more
+Wix	780a3621-8271-4822-bd0b-b9cab309375d	0	WixREADME,SearchWixWDSDocumentation,SearchWixRESTDocumentation,SearchWixSDKDocumentation,SearchBuildAppsDocumentation,SearchWixHeadlessDocumentation,ReadFullDocsArticle,ReadFullDocsMethodSchema,+4 more
+Base44	16ebc92d-b1db-473a-82ef-015426940c4c	0	create_base44_app,edit_base44_app,list_user_apps,list_entity_schemas,query_entities
+Workable	b788f00c-4417-40b2-9e3c-b0e916eb962f	0	get_candidates,get_candidate,disqualify_candidate,move_candidate,get_candidate_activities,get_candidate_activity,get_disqualification_reasons,add_comment,+37 more
+dot.	95f211c1-7c28-4a1c-9b2c-a63d2bf607ab	0	create_review_link,list_projects,get_feedback
+ElevenLabs	4a542638-16d2-4bd1-9937-efa473d3f2f0	0	calculate_agent_llm_usage,create_agent,delete_agent,duplicate_agent,get_agent,get_agent_knowledge_size,get_agent_link,get_agent_summaries,+3 more
+Hugging Face	37ed56d5-9d61-4fd4-ad00-b9134c694296	0	hf_whoami,space_search,model_search,model_details,paper_search,dataset_search,dataset_details,hf_doc_search,+2 more
+Descript	adcb61d5-8738-4724-a8e9-9cca7d525c3c	0	import_media,prompt_project_agent,get_job,list_jobs,cancel_job
+Audible	ca8bc23f-101c-4ff2-9f03-26a43302e2d0	1	Recommend
+Cloudinary	c93e842b-830f-4b4a-bbd1-6e3af0199a8f	0	upload-asset,asset-public_id-rename,download-asset,generate-archive,download-asset-backup,delete-asset,list-images,list-videos,+14 more
+Roboflow	dbbc26cf-80b0-4a85-9877-f85874282794	0	agent_chat,agent_conversation_get,agent_conversations_list,agent_workflow_publish,annotation_batches_get,annotation_batches_list,annotation_jobs_create,annotations_save,+59 more
+Splice	0c501c77-e4a2-40a6-8fe9-f386595a7976	0	describe_a_sound,create_stack,prompt_to_stack,share_stack,download_asset
+Brandfetch	76d2c5db-e971-4091-8901-ddb66088956c	0	brand_search,build_logo_urls,enrich_transaction,get_asset_base64,get_brand,get_brand_context
+Shutterstock	e7da5cf7-cfea-4ee4-a61b-8da6ae48594f	1	search
+BioRender	81cc5080-a204-4aa1-a694-fa868a3c8720	0	search-biorender,render-figure,custom-figure-get-preview-job,custom-figure-create-session,custom-figure-get-session,custom-figure-confirm-preview

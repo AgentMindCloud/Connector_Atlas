@@ -47,8 +47,15 @@ TIER_RANK = {"VERIFIED": 0, "DOCUMENTED": 1, "DIRECTORY": 2, "ASSUMED": 3}
 
 # ---------------------------------------------------------------- load / validate
 
-def load():
-    """Merge registry_full (archetype-inherited) with registry.json (curated wins)."""
+def load(model="inherited"):
+    """Merge registry_full (archetype-inherited) with registry.json (curated wins).
+
+    model="harvested" then overlays data/profiles.json, which replaces emits/
+    consumes/side_effects with values derived from real tool names wherever tool
+    evidence exists. Connectors with no tool evidence keep the inherited profile
+    and are tagged DIRECTORY, so the two models stay comparable connector-for-
+    connector -- that comparability is the whole point of keeping one loader.
+    """
     full = json.load(open(os.path.join(DATA, "registry_full.json"), encoding="utf-8"))
     arches = full["archetypes"]
     conns = {c["name"].lower(): dict(c) for c in full["connectors"]}
@@ -71,6 +78,34 @@ def load():
             base.setdefault("role", base.get("name", ""))
             base["curated"] = True
             conns[k] = base
+
+    if model == "harvested":
+        pp = os.path.join(DATA, "profiles.json")
+        if not os.path.exists(pp):
+            raise SystemExit("data/profiles.json missing — run engine/profile.py --derive")
+        prof = json.load(open(pp, encoding="utf-8"))["connectors"]
+        # Match on normalised NAME, not id. registry.json's curated entries
+        # overwrite `id` for the connectors they override, which silently dropped
+        # 5 of the 11 VERIFIED profiles when this keyed on id. Names are the one
+        # field both files agree on.
+        def nrm(s):
+            return "".join(ch for ch in (s or "").lower() if ch.isalnum())
+        by_name = {nrm(c.get("name")): c for c in conns.values()}
+        for cid, p in prof.items():
+            c = by_name.get(nrm(p["name"]))
+            if c is None:
+                continue
+            c["emits"] = list(p["emits"])
+            c["consumes"] = list(p["consumes"])
+            c["side_effects"] = p["side_effects"]
+            c["tier"] = p["tier"]
+            c["n_tools"] = p["n_tools"]
+            c["authless"] = p.get("authless", False)
+    else:
+        for c in conns.values():
+            c.setdefault("tier", "DIRECTORY")
+            c.setdefault("n_tools", 0)
+            c.setdefault("authless", False)
     return arches, list(conns.values())
 
 
@@ -229,8 +264,8 @@ def arch_edges(arches, include_weak=False):
 
 # ---------------------------------------------------------------- analysis
 
-def analyze(include_weak=False):
-    arches, conns = load()
+def analyze(include_weak=False, model="inherited"):
+    arches, conns = load(model)
     errs, empty = validate(arches, conns)
     if errs:
         raise SystemExit("KEY VOCABULARY ERRORS:\n  " + "\n  ".join(errs))
@@ -273,8 +308,12 @@ def analyze(include_weak=False):
     side = collections.Counter(c["side_effects"] for c in conns)
     conf = collections.Counter(c.get("confidence", "DIRECTORY") for c in conns)
 
+    tiers = collections.Counter(c.get("tier", "DIRECTORY") for c in conns)
     return {
-        "generated_from": "data/registry_full.json + data/registry.json",
+        "model": model,
+        "generated_from": "data/registry_full.json + data/registry.json"
+                          + (" + data/profiles.json" if model == "harvested" else ""),
+        "tiers": dict(tiers),
         "counts": {
             "connectors": len(conns),
             "archetypes": len(arches),
@@ -302,11 +341,12 @@ def main():
     ap.add_argument("--validate", action="store_true")
     ap.add_argument("--analyze", action="store_true")
     ap.add_argument("--include-weak", action="store_true")
+    ap.add_argument("--model", choices=("inherited", "harvested"), default="inherited")
     ap.add_argument("--path", nargs=2, metavar=("SRC", "DST"))
     a = ap.parse_args()
 
     if a.validate:
-        arches, conns = load()
+        arches, conns = load(a.model)
         errs, empty = validate(arches, conns)
         print(f"connectors: {len(conns)}   archetypes: {len(arches)}")
         if errs:
@@ -319,7 +359,7 @@ def main():
         return 0 if not empty else 1
 
     if a.path:
-        arches, conns = load()
+        arches, conns = load(a.model)
         by = {c["name"].lower(): c for c in conns}
         def find(q):
             q = q.lower()
@@ -338,11 +378,12 @@ def main():
         return 0
 
     if a.analyze:
-        res = analyze(a.include_weak)
+        res = analyze(a.include_weak, a.model)
         os.makedirs(OUT, exist_ok=True)
-        p = os.path.join(OUT, "analysis.json")
+        p = os.path.join(OUT, f"analysis_{a.model}.json")
         json.dump(res, open(p, "w", encoding="utf-8"), indent=1)
         c = res["counts"]
+        print(f"model: {res['model']}   tiers: {res['tiers']}")
         print(f"connectors {c['connectors']} | archetypes {c['archetypes']} | "
               f"distinct join profiles {c['distinct_join_profiles']} | "
               f"archetype edges {c['archetype_edges']}")

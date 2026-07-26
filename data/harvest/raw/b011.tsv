@@ -1,0 +1,34 @@
+# ASKED: Superhuman Docs | Roam Research | Laioutr | Glean | Document360 | DevRev | Zite | prox | Kuliko AI | MagicSchool AI | Mathify | Udemy Business | Brisk Teaching | Learning Commons | DataCamp | Ableton Knowledge | AskNeedl | In Practise | Graffiticode | Parallel Search | Tavily | Third Bridge | Guidepoint | Recooty | Ashby | Lattice | Tenzo AI | Shapes | isolved People Cloud | Celayix | incident.io | PagerDuty | Tsuga | Coralogix | MCP Instana Server | Miggo | Qase Test Management | Magic Patterns | Stark | Shadcn UI | React Spectrum (S2) | Sketch | React Aria | Lens Studio | Miro | MindMap | Mermaid Chart | CloudMindMaps | Eraser | Felt Maps | Jobs and Careers | JobDataLake | Checkatrade | Snagajob | ZipRecruiter | Upwork
+Roam Research	205baeff-860d-4119-a63e-329332d49c01	0	add_comment,append_to_daily_note,create_block,create_page,datalog_query,delete_block,delete_page,get_backlinks,+12 more
+Superhuman Docs	efca073e-2bd7-48bd-a133-ffd0e87e5d9f	0	tool_guide,name_match,url_convert,document_create,document_delete,document_outline,page_create,page_update,+24 more
+Glean	784c4da3-8956-462f-96c1-440c6a190dcc	0	search,code_search,employee_search,chat,gmail_search,outlook_search,meeting_lookup,read_document
+DevRev	78db989f-19e7-4ff3-8b66-5b5abf5208b2	0	create_issue,update_issue,get_issue,list_issues,create_ticket,update_ticket,get_ticket,get_enhancement,+6 more
+Superhuman Mail	c0449015-4acb-47b6-b9ac-e6e98e884328	0	get_attachment,mark_spam,list_splits,create_or_update_draft,create_or_update_event,discard_draft,get_availability,get_labels,+11 more
+Udemy Business	d4ba36c1-89dd-49ee-aea3-2317efccc424	0	search_courses,search_learning_paths,search_lectures,search_labs,get_course_curriculum
+Brisk Teaching	9bae1b8d-ec61-46ef-8aaf-b21aee5970e0	0	create_teaching_resource,create_boost_activity,generate_next_ideas,create_batch_feedback_assignment,list_standards,get_boost_activity,get_teacher_context,finalize_boost_activity,+1 more
+MagicSchool AI	eee0f02b-0ed6-4ebf-9980-3a299d8cf3bd	0	import_document_to_resource_library
+Learning Commons	6e94f5fc-5dc8-4f0a-9fcf-741bcab4e034	1	find_learning_components_from_standard,find_standards_progression_from_standard,find_standard_statement
+Benchling	b69522d1-0a10-415a-898b-4e4d706c9c87	0	benchling_agent,benchling_task_status
+Tavily	d8a25d2a-e5ea-4860-b990-277244df5417	0	tavily_search,tavily_extract,tavily_crawl,tavily_map,tavily_research
+Third Bridge	c8e8f367-5a12-4320-b715-eee2fbdd8088	0	third_bridge_content_query
+Guidepoint	e86f1abc-7986-49d6-aae9-c69c654b2ec5	0	search_library
+Ashby	dc1671e0-b14c-47b8-a625-e835ae4067ba	0	describe_object_fields,filter_records,search_records_by_name,get_record_details,get_candidate,get_interview_plan,get_interview_details,get_job_pipeline,+8 more
+Lattice	9830ad9d-3a53-469b-a45c-aef16b059aa5	0	whoami,find-employees,find-reports,find-ancestors,list-departments,get-draft-reviews,submit-review,find-reviews,+12 more
+Shapes	b9c73e61-98e6-4658-b946-0fd6c00accb3	0	get_employees,get_employee,get_current_user,get_employee_field_types,get_employee_field_values,get_entities,get_profile_picture,employee_insights,+26 more
+isolved People Cloud	ca1c0a83-14fc-4796-b6a2-f4c1ed6e2383	0	get_time_off_requests,get_time_off_summary,cancel_time_off_request,submit_time_off_request
+tldraw	02795770-2c02-42fe-888f-26769ca324a0	1	diagram_drawing_read_me,create_shapes,update_shapes,delete_shapes,read_checkpoint,save_checkpoint
+PagerDuty	fc41b5e5-97bc-4c80-af18-e3a9442b655b	0	add_note_to_incident,add_responders,add_team_member,append_event_orchestration_router_rule,create_alert_grouping_setting,create_incident,create_schedule,create_schedule_override,+56 more
+incident.io	1f80285c-87b3-496f-91b3-07ea8fc86488	0	alert_list,alert_show,alert_source_list,alert_stats,analysis_start,ask,ask_incident,ask_telemetry,+27 more
+Coralogix	a1d8f399-3c9f-44ca-aa70-8959be5c9f9c	0	get_alert_event_details_v1,read_dataprime_intro_docs_v1,get_logs_v1,get_traces_v1,get_schemas_v1,list_incidents_v1,get_incident_details_v1,metrics__list_v1,+8 more
+Magic Patterns	088e0355-cb01-44fa-ba0b-23525fde8d5a	0	get_design,read_files,update_design
+Stytch	b873d3db-0781-4a3d-9245-9c6213e6d785	0	createProject,listProjects,createRedirectURL,getAllRedirectURLs,updateRedirectURL,deleteRedirectURL,createPublicToken,getAllPublicTokens,+13 more
+Slack	597f662f-36de-437e-836e-5a81013cbfbe	0	slack_send_message,slack_search_public_and_private,slack_search_users,slack_search_channels,slack_search_public,slack_read_channel,slack_read_thread,slack_create_canvas,+3 more
+Miro	72480fb8-32ed-4075-b1c4-79e09c858b29	0	board_list_items,context_explore,context_get,diagram_create,diagram_get_dsl,doc_create,doc_get,doc_update,+23 more
+Mermaid Chart	de1df83d-e8f5-4498-a1e7-246cb9df999f	1	validate_and_render_mermaid_diagram
+Eraser	7643fc71-6be5-4bc1-8001-10d45239078d	0	get,list,search,generate,generateEdit,create,update,delete,+2 more
+Felt Maps	9133bf4a-0a23-402b-8b04-bd0a400fd5f9	0	who_am_i,create_map,get_map,update_map,delete_map,list_maps,share_map,get_map_layers,+26 more
+AirOps	3d915617-ebcc-489f-b603-57ec21f7d1d0	0	list_workspaces,list_brand_kits,get_brand_kit,list_brand_kit_competitors,list_personas,list_topics,list_aeo_prompts,get_prompt_answers,+4 more
+ZipRecruiter	8f48727e-897b-4012-8427-147b4ce5719a	1	search_jobs
+Upwork	3c145e58-0cb1-410d-9a27-a1767227d539	1	upwork_search_freelancers,upwork_display_freelancer_profile,upwork_prepare_job_post
+Checkatrade	61d98338-d26e-4b05-913f-b862001f6f71	1	bookExpressJobV1,findTradespeopleV1
+WorkOS	d3b03e81-aeaa-42bf-9c52-5270d5273b2d	0	list_operations,mutate,query,whoami

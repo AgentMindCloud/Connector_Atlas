@@ -1,5 +1,29 @@
 # PROJECT.md — read this first
 
+> **Phase 2 is done.** Harvest, derivation, the combinatorial engine and the new views all shipped.
+> The numbers below marked "inherited" are now the *baseline*, not the current state — every one of
+> them moved, most of them a long way. `docs/METHOD.md` sections 10–15 carry the Phase 2 results and
+> the caveats; this file is kept as the record of what Phase 2 set out to do and how that turned out.
+>
+> **Status against the plan:**
+>
+> | Step | State | Note |
+> |---|---|---|
+> | 1 · Harvest | done, under target | 475/820 (57.9%), not ≥90%. Source limit, proven by a one-name-per-call negative control |
+> | 2 · Derive profiles | done | `engine/profile.py`; held-out test 6/6; 62 → 236 distinct join profiles |
+> | 3 · Combinatorial engine | done | `engine/combine.py`; pairs and triples exhaustive and checked, motif census beyond |
+> | 4 · Surface it | done | four new views in the existing tool; browser-tested, 0 console errors |
+> | `discover.py` rewrite | **not done** | superseded by `combine.py`; the old file is dead code and should be deleted |
+> | `score.py` reframing | partial | operator-payback stripped from the UI; `data/systems.json` still carries the old scores |
+>
+> **Three findings that contradict what this file predicted.** They are in METHOD.md §12–13 in full:
+> 1. `Fireflies → Todoist` is **no longer a direct edge** — its real tools emit only weak keys.
+> 2. Gmail's side-effect class really is **irreversible** (`delete_label` exists); the surviving
+>    claim is the narrow one, that no send tool exists.
+> 3. Harvest coverage caps at 58% because the live registry and `registry_full.json` have diverged.
+>
+> Branch: `claude/phase-2-continuation-5diogk`.
+
 Handoff for a fresh Claude Code chat. The container is ephemeral; this file is the memory.
 
 ## What this project is
@@ -157,7 +181,8 @@ Extend the existing tool rather than starting over. New views:
 
 ## Numbers already established — do not re-derive
 
-Under the **inherited** model (the baseline every harvested number gets diffed against):
+Under the **inherited** model. Every one of these has now been re-measured under the harvested
+model; see METHOD.md §13 for the side-by-side. Direct reachability fell 67.69% → 23.82%.
 
 - 821 connectors · 47 archetypes · **62 distinct join profiles** · 1,610 archetype edges
 - Reachability, ordered pairs: native-only **67.69%** direct / 92.60% ≤2 hops / diameter 3;

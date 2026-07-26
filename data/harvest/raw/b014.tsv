@@ -1,0 +1,7 @@
+# Negative control, 2026-07-26. Eight names sampled from the miss list were re-queried
+# ONE NAME PER CALL, removing any possibility that 8-keyword batching diluted them.
+# Result: 0 of 8 returned an exact match (Attribution MCP, Promocodes.com, Lindo AI,
+# Jump, OpenFunnel Agent Primitives, MDN, Figaro Immobilier, SubImage). Three calls
+# returned an empty array outright. Conclusion: the miss list is directory drift
+# between registry_full.json's dump and the live registry, not a harvest defect.
+# ASKED: Attribution MCP | Promocodes.com | Lindo AI | Jump | OpenFunnel Agent Primitives | MDN | Figaro Immobilier | SubImage

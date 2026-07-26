@@ -1,0 +1,54 @@
+# ASKED: Mergr | AngelList | Webull | Oxford Economics | S&P Global - Deterministic Retrieval | PitchBook Premium | The Tie Fundraising and M&A | Multiples.vc | FactSet AI-Ready Data | Interactive Brokers (IBKR) | Similarweb | Pyth | viaNexus vAST | Morningstar | Carta | Alpha Vantage MCP Server | FinancialFilings | Daloopa | LSEG | CRE Agents (Vic) | FMP | SQD | Grasp | Bigdata.com | Crypto.com | MSCI | Clarity AI | CB Insights | Fiscal.ai | Speeda | CredCore - Tusk Liquid | MT Newswires | LunarCrush | CoinDesk | Cognitive Credit | Chronograph | IBISWorld | Aiera | ICE Data Services | Morningstar Credit Analytics | Canary Data | Blockscout | Moody's Credit MCP | Pinegap | Mantle Portal | Kpler | Fitch Solutions | Metal
+AngelList	dde63f10-f6b0-4246-a87c-a7cc62ce81b7	0	download_document,get_capital_account,get_capital_call,get_close,get_company,get_deployment,get_distribution,get_document,+20 more
+PitchBook Premium	79c545e3-8878-4557-bcbb-3add11c86890	0	pitchbook_search,pitchbook_get_profile,pitchbook_get_company_deals,pitchbook_get_company_investors,pitchbook_get_company_financials,pitchbook_get_deal_participants,pitchbook_get_deal_cap_table,pitchbook_get_investor_funds,+8 more
+Oxford Economics	1bc4c26c-2611-4cb0-8aeb-cd0f93622c2c	0	EconomicAnalysis,EconomicData
+S&P Global - Deterministic Retrieval	d965405c-3467-4046-b5b3-e8fb8ed235eb	0	get_latest,get_n_quarters_ago,get_business_relationship_from_identifiers,get_capitalization_from_identifiers,get_info_from_identifiers,get_company_other_names_from_identifiers,get_company_summary_from_identifiers,get_company_description_from_identifiers,+14 more
+Mercury	9c04294a-d69c-47e9-9fa6-6a0e780caf3a	0	load_account,load_transaction,load_recipient,load_account_statement,load_accounts_card
+Webflow	092d0ef3-9fc6-4101-8f7e-c2b80e58a065	0	ask_webflow_ai,asset_tool,data_agent_instructions_tool,data_analyze_tool,data_assets_tool,data_cms_tool,data_comments_tool,data_component_builder,+20 more
+Interactive Brokers (IBKR)	d445461d-2337-4e00-b285-b43d111d2912	0	get_account_balances,get_account_positions,get_account_summary,get_order_instructions,get_orders,get_portfolio_allocation,get_price_history,get_price_snapshot,+2 more
+FactSet AI-Ready Data	f2da5b67-41bc-4ce9-8eb8-f18ab09bde5a	0	FactSet_CalendarEvents,FactSet_EntityReference,FactSet_EstimatesConsensus,FactSet_Fundamentals,FactSet_FundsETF,FactSet_FundsScreener,FactSet_GeoRev,FactSet_GlobalPrices,+8 more
+Similarweb	80862d08-1022-4d86-816d-ee9b500d6b90	0	get-websites-traffic-and-engagement,get-websites-traffic-sources,get-websites-website-rank,get-website-content-subdomains-agg,get-websites-similar-sites-agg,get-websites-referrals-agg,get-websites-audience-interests-agg,get-websites-audience-overlap-agg,+14 more
+viaNexus vAST	01c43f47-7757-4ae7-91f2-310eff8bb58d	0	current_date,get_rule,create_rule,delete_rule,search,fetch
+Morningstar	2e98be30-8dba-486e-94a9-9a01d34678e2	0	morningstar-id-lookup-tool,morningstar-data-tool,morningstar-analyst-research-tool,morningstar-articles-tool,morningstar-screener-tool,morningstar-fund-holdings-tool
+Carta	4b463f8b-6db0-4d0e-9693-8b39f37e4447	0	welcome,discover,fetch,list_contexts,set_context,list_accounts,get_current_user,cap_table_chart,+1 more
+Alpha Vantage MCP Server	0f1d77a7-9e03-438a-824d-d66c6dd0f0d5	0	AD,ADD_TWO_NUMBERS,ADOSC,ADX,ADXR,ALL_COMMODITIES,ALUMINUM,ANALYTICS_FIXED_WINDOW,+118 more
+Morningstar Credit Analytics	740dd9b1-b6ea-46b2-936f-6b9c6f19a366	0	DealSearch,DealDetail,DealLoans,DealBonds,DealTopLoansSummary,DealLossForecast,DealCommentary,DealNoteworthyMetrics,+14 more
+Clarity AI	3bb23b8e-f796-4156-991b-e3f4e0b25fff	1	search_securities,sfdr20_check,sfdr20_check_by_query,interpret_sfdr20_result
+Canary Data	f4435e97-3469-40d3-9aea-f8f3c5f79752	0	new_accounting_issue
+Canva	6a7ce592-8442-4d69-bab8-f4a03431f1ab	0	
+Craft	321e7482-76cd-4dae-89b8-5e37fb4b3cd1	0	
+Daloopa	67e0ebd7-f7c3-4917-b8f9-dc8c8cdcce13	0	discover_companies,discover_company_series,get_company_fundamentals
+LSEG	5f26bc32-8582-4df7-ab88-19c507f8505b	0	fx_spot_price,fx_forward_price,bond_price,bond_future_price,option_value,ir_swap,interest_rate_curve,credit_curve,+12 more
+FMP	887934eb-b7e7-429a-b5e3-3523b9c3d45d	0	ESG,Fundraisers,analyst,calendar,chart,commitmentOfTraders,commodity,company,+19 more
+Bigdata.com	e463df16-b3d7-4bb9-953d-b652a073c764	0	bigdata_company_tearsheet,bigdata_country_tearsheet,bigdata_events_calendar,bigdata_market_tearsheet,bigdata_search,find_companies
+Grasp	c6911aa0-7aea-4f16-ab31-8944044e2863	0	grasp_create_table,grasp_import_table,grasp_compose_table,grasp_update_table,grasp_add_research_column,grasp_read_docs,grasp_check_job_status,grasp_cancel_job,+8 more
+Ramp	61bac03c-3f98-4b3c-affb-1b99533fa82c	0	execute_query,clear_table,load_spend_export,load_spend_exports,load_purchase_orders,load_cards,load_limits,load_entities,+9 more
+Close	3e12bb5c-11e5-409c-8e73-64d4b625b498	0	mcp.read,activity_search,fetch_contact,fetch_email_template,fetch_lead_smart_view,fetch_lead_status,fetch_lead,fetch_opportunity_status,+47 more
+Booking.com	487a895f-84d3-4c21-925f-c6c3552b94cc	1	accommodations_search
+Krisp	0543a3d3-3312-440f-ae60-789953179770	0	date_time,get_multiple_documents,get_user_preferences,list_action_items,list_activities,list_upcoming_meetings,search_meetings
+Grain	a034aa1a-a6b5-418e-9fa3-43cf80e2a611	0	myself,list_meetings,list_attended_meetings,fetch_meeting,fetch_meeting_notes,fetch_meeting_transcript,search_persons,search_companies,+13 more
+Crypto.com	7248e592-d083-435e-9617-aebab348fe30	1	get_trades,get_mark_price,get_instruments,get_instrument,get_index_price,Get_candlestick,Get_tickers,Get_ticker,+1 more
+MSCI	2cc10749-99cb-4853-a9d7-b2292ec589fc	0	execute_index_gql_schema,get_index_gql_schema_fragments,get_pci_measure_detail,get_pci_user_profiles,get_pa_help,get_tpm_context,get_tpm_logins,get_tpm_transparency_analysis,+18 more
+CB Insights	e7952077-b4e6-49f7-8670-ca53f8d50c40	0	api_chatcbi,api_rag,company_advanced_search,get_company_acquisitions,get_company_competitors,get_company_exits,get_company_funding,get_company_investments,+7 more
+Fiscal.ai	9620ff48-f0d9-4f7f-bda0-4d7240894538	0	api_docs,execute_code
+MT Newswires	441c79ad-8a68-4d73-9263-7cfcadd5d8cf	0	current_date,search,fetch,create_rule,create_rules,delete_rule
+Gainsight (CS)	c86b8af8-5c5c-4f7e-a280-2b0b16f2de64	0	manage_cockpit_actions,manage_success_plan_actions,resolve_user,resolve_company,resolve_relationship,get_records,create_timeline_activity,fetch_timeline_activity_list,+6 more
+Klarity	e49f08f7-f144-484b-86bb-3b1eab7a5602	0	search,fetch,list_accessible_workspaces,search_processes,get_process_details,get_process_observations,get_observation_citation,get_process_hierarchy,+9 more
+Clarify	27a89255-1541-408d-bb03-d003ae5d1481	0	get-current-user,get-schema,get-records,create-records,update-records,merge-records,query-data,add-comment,+18 more
+LunarCrush	837cceff-9820-4510-823f-9bdc5ef21f3a	0	List,Cryptocurrencies,Stocks,Topic,Creator,Post,Topic_Time_Series,Topic_Posts,+3 more
+CoinDesk	3b05dbce-1628-4c77-9b24-54455d1dbd5b	0	fetch_spot_instruments,fetch_spot_tick,fetch_spot_ohlcv,fetch_spot_orderbook,fetch_spot_trades,fetch_spot_toplist,fetch_index_tick,fetch_index_ohlcv,+16 more
+Chronograph	01744591-790c-471b-9452-f338eff230af	0	query-help-center-documentation,get-help-center-article,top-exposures,run-query,entity-search,commitment-history,investment-metrics
+IBISWorld	fa7af7d8-e1b2-4c8f-83f9-d2936bdc0aa7	0	fetch_metadata,fetch_chapters,search_company,search_industry,search_industry_region,search_procurement,search_business_environment,search_segment_benchmark
+Aiera	4ef6cb78-9212-4b0e-b067-bb30e4d27a6f	0	get_available_indexes,get_index_constituents,get_sectors_and_subsectors,find_events,get_event,get_upcoming_events,find_equities,get_equity_summaries,+10 more
+ICE Data Services	78e4dd7b-229c-4ca6-a469-b12d6bbef434	0	ids_query_trades,ids_get_reference_data,ids_describe_concept,ids_get_schema,ids_classify_trade_size,ids_compute
+Zapier	1f6f271e-3d29-4241-b35e-8abe6def4891	0	
+Aura	d5415d15-420c-45ee-a45c-2dc56d4ccad6	0	find_companies,get_company_subsidiaries,get_monthly_headcount,analyze_employee_growth,breakdown_by_job_function,analyze_seniority_levels
+Moody's Credit MCP	83a7523b-d6c5-45f8-89de-90a2998bae49	0	findEntity,getEntityPeers,getEntityCreditOpinionSummary,getEntityCreditUpgradeDowngradeFactors,getEntitySectorOutlook,searchAllDocuments,getEntityCountryProfile,searchEntityEarningsCall,+8 more
+Blockscout	48425fdb-37c1-408d-9606-30e16847b6a8	1	__unlock_blockchain_analysis__,get_chains_list,get_address_by_ens_name,get_contract_abi,get_address_info,get_tokens_by_address,get_latest_block,get_transactions_by_address,+7 more
+Fitch Solutions	d908b7e7-48c2-4786-b350-03e75480d49b	0	rdr-ask-research,rdr-get-financial,rdr-get-krd,rdr-get-peers,rdr-get-ratings,cs-get-article-headlines,cs-get-articles-content,cs-get-business-profile,+10 more
+Metal	98a92b54-d1e1-4025-87b6-906e028033be	0	list_companies,search_companies,list_company_tags,get_company,get_document,search_documents,search_people,search_users,+16 more
+Kpler	da9095ee-b79c-4e1c-a43f-6d82f9125429	0	kpler_get_ais_historical,kpler_get_ais_latest,kpler_get_arbitrage_benchmarks,kpler_get_arbitrage_combinations,kpler_get_arbitrage_products,kpler_get_arbitrage_regions,kpler_get_arbitrage_timeseries,kpler_get_arbitrage_timeseries_rolling,+47 more
+Linear	fa50c30c-9f62-4f94-b851-217868185db6	0	list_comments,create_comment,list_cycles,get_document,list_documents,get_issue,list_issues,create_issue,+14 more
+Dovetail	4e29c4e5-45c5-452f-a197-128dd32be513	0	get_project_highlights,get_project_insight,get_insight_content,list_project_insights,get_data_content,get_project_data,list_project_data,get_dovetail_projects,+1 more
+Metabase	13e064b4-8243-4ab8-ae2d-b5329200f854	0	search,get_table,get_table_field_values,get_metric,get_metric_field_values,construct_query,execute_query,query,+3 more
+Gmail	fd11a7b4-72bd-4224-beee-5f3b568213c3	0	

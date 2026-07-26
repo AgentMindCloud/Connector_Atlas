@@ -1,0 +1,44 @@
+# ASKED: CommuteHub | TravExp | Expedia | Almosafer.com | Super.com | Kiwi.com | EconomyBookings | Ryanair | Uber | Tripadvisor | lastminute.com | AfterShip Channels for TikTok Shop | Uber Eats | Trivago | Otto Travel | DirectBooker | Turkish Airlines | Viator | Cottages | Novasol | EVRoutes | Wyndham Hotels and Resorts | Taskrabbit Booking Assistance | CargoAi | Hit The Road Rentals | Bed-and-Breakfast.it | Telgani | ShipBob | Shippo | PGA – Play Golf | GuruWalk | Spacebring | Honeydew | Ask Soma - Astrology | Peepz | Veltra Activities | Fresha | Instacart | AllTrails | Planning Center | Tarteel | Ticketmaster | Zomato | StubHub | Ticket Tailor | MyCoach Pro | komoot | Aisle Wedding | Alma | Order by Cash App | Glovo | Thumbtack | wer kennt den BESTEN | Fever Event Discovery | CardChain AI | Dillr | aloha.fyi
+Super.com	0454875f-bc80-40cd-b933-d1712714e292	1	get_rates_for_hotel,get_lowest_price_for_hotel,get_rates_for_city,get_experiences_for_city
+Expedia	21506a18-96ae-40d0-9a9d-1433e08a8bc4	1	search_hotels,search_flights,get_hotel_pdp_offers
+Kiwi.com	01c311c4-53cb-452a-90a8-1d524c9b97d6	1	search-flight,feedback-to-devs
+Eedi	20be64b8-c989-4da9-9951-36156c29bf07	0	search_questions,get_questions
+Intercom	b2def8dc-ae47-4d46-877a-19b6a6ebb771	0	search,fetch,search_conversations,get_conversation,search_contacts,get_contact
+Read AI	f232e067-e927-4095-927a-e0db5bc00ca6	0	get_meeting_by_id,list_meetings
+Uber	cdecef4b-4a15-404c-b912-005ca366a898	1	get_estimates_between_two_locations_claude,publish_analytics_events
+Uber Eats	4286fd44-6541-4f89-9c1d-33a63a9dded6	1	search,publish_analytics
+Tripadvisor	1ddc28c1-c1f8-4894-9a85-f6dc8add9c89	1	compare_hotels,hotel_details,search_hotels
+lastminute.com	3ae97a2c-ee7f-4dba-8e0c-23662d036124	1	search_flights
+Trivago	81cc5080-a204-4aa1-a694-fa868a3c8718	1	trivago-accommodation-radius-search,trivago-accommodation-search
+Otto Travel	a758ddcc-4510-4774-b316-9ea13af188bc	0	read_skill,search_flights,query_flights,book_flight,search_hotels,get_hotel_rooms,book_hotel,get_bookings,+6 more
+DirectBooker	97369a45-f230-4124-9b9b-2944a26bca46	1	hotel-search,hotel-details,hotel-availability-lowest-direct-rate,hotel-lookup-by-name-and-coordinates,hotel-lookup-by-google-place-id
+AfterShip Channels for TikTok Shop	d875e9bd-a012-44cb-aa0c-84eb53ecdfc8	0	check-billing-plan,check-onboarding-status,get-ecommerce-categories,get-ecommerce-stores,get-orders,get-product-listings,get-products,get-sales-channel-stores,+3 more
+Datadog	68268024-1a91-4316-a9e1-14ecb814cb18	0	search_datadog_logs,analyze_datadog_logs,search_datadog_events,aggregate_events,get_datadog_metric,search_datadog_metrics,get_datadog_metric_context,search_datadog_monitors,+174 more
+Turkish Airlines	30765902-971c-407f-84ab-60bc5d731ede	1	flight-status,flight-status-by-route,search_flights,search_inbound_flights,get_city_guide,get_airline_promotions,get_booking_details,get_booking_baggage_allowance
+Viator	0db9a2ae-1b64-4673-9af6-059f29810a34	1	get_experience_details,search_experiences
+Wyndham Hotels and Resorts	3f8511ea-9906-414b-9b0a-34fcbd1f5587	1	search-wyndham-hotels,get-wyndham-hotel-details
+CargoAi	7faad730-e6ed-4eef-8e43-cb76c88399ce	0	track_shipment,search_rates,airline_contact,gha_information,subscribe_shipment,unsubscribe_shipment
+Taskrabbit Booking Assistance	b2271ab7-9aff-4343-9144-3e9b87b7ca02	1	check_service_availability,generate_deep_link,list_supported_services
+Shippo	983c8e05-8485-481c-b9b6-c25b291331ce	0	shippo_list_tools,shippo_describe_tool,shippo_read_execute_tool,shippo_write_execute_tool
+ShipBob	b5a11013-f123-42e1-b553-1caa40c95477	0	channels-get-channel,inventory-get-inventory,inventory-get-inventory-by-inventoryid,inventory-get-inventory-level,inventory-get-inventory-level-by-inventoryid,inventory-get-locations,inventory-get-locations-by-inventoryid,inventory-get-lots,+64 more
+PGA – Play Golf	3a9c161c-9194-474c-8893-ca2199ff1647	1	book_golf_lesson,get_golf_coach_availability,search_golf_coaches
+Veltra Activities	916840db-2856-41b1-8826-b678bdcf5d76	1	searchActivities
+Guru	6d13e7f5-f465-498c-b7c9-b99c4bc74719	0	answer_generation,create_draft,search_documents,update_card,list_knowledge_agents,get_card_by_id
+DeepL	6281926c-b9be-42d6-80eb-1d38c8c766ae	0	correct-text,download-document,get-custom-instruction,get-document-status,get-glossary-dictionary-entries,get-glossary-info,get-source-languages,get-style-rule,+6 more
+Ticketmaster	2d7bb4a8-769b-4d75-8e02-daf4ba8c1eb1	1	find_tickets,unified_search
+Ticket Tailor	7a28094f-541d-4ef8-89e2-6abc653d77a2	0	bundle_create,bundle_delete,bundle_update,check_in_create,check_ins_get,checkout_form_element_by_id_get,checkout_form_element_update,checkout_form_elements_get,+57 more
+AllTrails	2aab1516-4acf-49b3-a85f-ff16c5d8fbb0	1	find_trails_near_location,get_trail_weather_overview,find_trails_within_bounds,search_trails_by_name,get_trail_details
+Instacart	afd79b39-e774-4934-be5b-098784579838	0	cart,search_products
+StubHub	ee04ec30-7005-4dd3-803d-2d0cc7a88289	1	event_search,fetch_listings,highlight_listing
+Zomato	d5d64175-5675-4b7f-a583-549d88b84b64	0	create_cart,checkout_cart,get_saved_addresses_for_user,get_restaurant_menu_by_categories,get_menu_items_listing,get_order_history,get_order_tracking_info,get_cart_offers,+3 more
+Teamtailor	5e72079c-eae5-494c-87a4-d5af7361b7d7	0	add_job_interview_kit,add_job_question,add_job_skill_or_trait,add_tag,archive_question,complete_todo,create_question,create_todo,+37 more
+DataGrail	0478ee53-a253-4655-98ee-affd0f9cf9a6	0	fetch_configured_integration_catalog,fetch_integration_catalog,fetch_integration_errors,fetch_cookies,fetch_tags,get_banner_status,get_consent_privacy_policies,get_consent_updates,+43 more
+Trello	7bc869f4-0f64-4dd6-9c19-bee47499508c	0	trelloReadBoard,trelloReadCard,trelloReadChecklist,trelloReadInbox,trelloReadList,trelloReadMember,trelloReadPlanner,trelloReadWorkspace,+7 more
+Workato	7c57d0b0-7fe0-4ca9-9ead-932fcb929e57	0	
+Alma	d7df1c09-82a2-4ce9-9442-a9f0e58f9a36	0	get_user_profile,get_meal_data,get_alma_score_data,get_goals,get_weight_history
+Order by Cash App	3a81d020-f026-4552-beb8-cc144f917fc4	1	discover-nearby-restaurants,get-multiple-menus,get-restaurant-ordering-view,get-single-menu-view,get-single-menu,create-cart,app_create-cart
+Glovo	6c0d8284-8bf9-4ae6-90dd-69c1680807d2	1	search_products,render_products_carousel
+Thumbtack	e04f289f-19d6-413c-a3d2-7ff79a4dcb04	1	Search_home_service_pros,filter_home_service_pros,get_reviews_for_pros,get_category_recommendations
+Todoist	d1bac76b-5673-4d98-b275-41451f3dd847	0	add-comments,add-projects,add-sections,add-tasks,complete-tasks,delete-object,fetch,fetch-object,+19 more
+Fever Event Discovery	6e1be2c2-7237-4f8e-bf16-486799ec42a1	0	search_cities,search_events
+Tiller	ddd60d1b-2e30-4751-808c-b0ac43bf4ce3	0	list_categories,list_spreadsheets,query_transactions,update_transactions

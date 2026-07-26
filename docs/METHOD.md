@@ -194,3 +194,172 @@ sensors with the highest marginal information and stop.
 - **Discovery is a proposal engine.** `engine/discover.py` ranks archetype sets; the 14 shipped
   systems are hand-authored. Machine-found and human-authored are labelled separately in the tool,
   never merged.
+
+---
+
+# Phase 2 — the harvest, and what it cost the graph
+
+Everything above section 9 describes the **inherited** model. This section describes what happened
+when the inheritance was replaced with evidence. Both models are still computable
+(`--model inherited|harvested`) because the diff *is* the result.
+
+## 10. Harvest — real tool names, no auth
+
+`SearchMcpRegistry` returns per-connector tool names for connectors that are not installed, with no
+authentication. `engine/harvest.py` runs a cached, resumable loop over it: raw responses are appended
+to `data/harvest/raw/*.tsv`, all state is derived from those files, and `--plan` only ever emits
+names that have neither been returned nor been asked for. Re-running costs nothing.
+
+| | |
+|---|---|
+| Registry names asked | 679 (every one of the 820, plus alternates) |
+| Connectors with a real tool list | **475 / 820 — 57.9%** |
+| Distinct tool names collected | 2,828 |
+| Total tools claimed (incl. truncated tails) | 7,194 |
+| Records truncated by the `+N more` sentinel | 242 |
+| Authless connectors found | 73 |
+| Directory entries not in our registry | 2 (HealthEx, and one other) |
+
+**Coverage stopped at 57.9%, not the 90% the plan targeted.** That is a property of the source, not
+of the effort, and it was tested rather than assumed: eight names from the miss list were re-queried
+**one name per call**, eliminating any chance that 8-keyword batching had diluted them. Zero of the
+eight returned an exact match and three returned an empty array. `registry_full.json` is a dump of a
+wider or older directory than the live registry search covers. The negative control is recorded in
+`data/harvest/raw/b014.tsv`.
+
+Three archetypes have **zero** coverage — `desktop_local`, `browser_automation`, `ai_tools`. These
+are local extensions, not hosted MCP servers, so the registry cannot see them. Every claim about
+those 100+ connectors is still inherited, and they are tagged `DIRECTORY` wherever they appear.
+
+## 11. Derivation — names are evidence, not schemas
+
+`engine/profile.py`. Two rules do the work:
+
+1. **Side-effect class** = the *first* verb-shaped token in the tool name. The connector's class is
+   the maximum over its tools.
+2. **Read tools feed `emits`; write tools feed `consumes`. Nothing else feeds either.**
+
+Rule 2 is what deletes the fictional edges. A connector with no write tools consumes nothing, so
+nothing can point into it.
+
+Rule 1 was wrong in its first form and *counting caught it*. The original took the maximum over all
+verb tokens anywhere in the name; `order` was in the irreversible list; so Shopify's `get-order`,
+Razorpay's `fetch_all_orders` and AngelList's `get_close` all scored **irreversible**. Reading the
+regex would never have surfaced that. `--rules` prints a firing count for every verb and every noun
+and flags dead ones; three corrections came out of it (`order` and `map` reclassified as nouns, `id`
+dropped as a lookup idiom firing 29 times on nothing).
+
+**Tiers, never blurred:**
+
+| Tier | Basis | Count |
+|---|---|---|
+| `VERIFIED` | tool list observed live in a session | 11 |
+| `HARVESTED` | real tool names from the registry | 453 |
+| `DIRECTORY` | no tool evidence; archetype inherited | 357 |
+
+## 12. The held-out test
+
+The five constraints banked in session 1 were run against the derivation as a test set
+(`profile.py --heldout`). Ground truth lives in `data/verified_tools.json`.
+
+**6 of 6 checkable claims recovered**, including the family-level one: Cloudflare's `workers_*` tools
+are read-only (it cannot deploy a Worker) *while the connector as a whole is correctly irreversible*
+because `d1_*`/`kv_*`/`r2_*` do delete. A connector-level test would have missed that; the check runs
+at the level the claim is actually about.
+
+Two honest results came out of this rather than a clean sweep:
+
+- **One banked constraint did not survive.** PROJECT.md records "Gmail: registry says irreversible,
+  reality is `create`". The live tool list now contains `delete_label`, so Gmail really is
+  irreversible and the registry was right for the wrong reason. The narrow claim that survives is
+  the specific one: **no send tool exists.**
+- **One documented failure of the method.** tldraw's `exec` runs arbitrary canvas JavaScript. The
+  name carries no verb and no noun, so the derivation scores it `read`/`emits text` when the single
+  tool actually subsumes create, mutate and delete. Name-based inference has a floor and this is it.
+
+## 13. The diff — how wrong was the inherited model?
+
+| | inherited | harvested |
+|---|---|---|
+| Distinct join profiles | 62 | **236** |
+| Direct ordered pairs | 484,859 | **174,801  (36.1% survive)** |
+| Direct, native only | 67.69% | **23.82%** |
+| ≤2 hops, native only | 92.60% | **49.04%** |
+| Unreachable through hubs | 18,172 | **319,826** |
+| Connected triples (of 91,894,530) | 92.91% | **30.13%** |
+| Read-only connectors | 293 | 362 |
+
+- **465 connectors** changed their `emits`, **466** their `consumes`, **278** their side-effect class
+  (81 more severe than the archetype claimed, 197 less).
+- **293 connectors consume nothing at all.** Every inbound edge they had in the inherited model was
+  fictional. Fireflies is the worked example: three read tools, so **0 in-edges**, where the
+  archetype claimed it consumed `url`, `timestamp` and `media`.
+
+**A prediction the measurement overturned.** PROJECT.md expected `Fireflies → Todoist` to survive as
+a direct edge. It does not. Fireflies' real tools support only `person` and `text`, both of which are
+weak keys, so it has no strong join to anything. The inherited model gave it `email/timestamp/url`
+from its archetype and that is where the old edge came from. Fireflies is a weak-key source, and
+reaching a task manager from it needs a bridge.
+
+Two thirds of the graph was fiction. That is the headline, and it is a result about the *method*,
+not a defect: deleting edges that were never there is the model getting more true.
+
+## 14. The combination space, described without lying about it
+
+`engine/combine.py`. Three regimes, because brute force dies at four.
+
+| Regime | Size | Treatment |
+|---|---|---|
+| Pairs | 673,220 ordered | **Exhaustive.** Every pair classified: direct / k hops / unreachable |
+| Triples | 91,894,530 unordered | **Exhaustive.** Every triple accounted for, connected ones classified by shape |
+| N > 3 | 4-subsets ≈ 7.5 × 10¹⁰ | **Not enumerated.** Motif census instead |
+
+Both exhaustive claims are checked, not asserted: the triple pass reports `accounted_for` against
+`C(821,3)` and they are equal. This works because structure is computed over the 236 profile classes
+and expanded by class size with the right binomials — the class matrix *is* the pair matrix,
+losslessly compressed, and `out/pairs_harvested.json` ships the class index so any of the 673,220
+pairs resolves in two lookups.
+
+Connected triples by shape (of 27,691,870 connected): fan-in 4,197,686 · chain 2,431,859 · the rest
+are denser mixed shapes reported by their own degree fingerprint rather than forced into a bucket.
+
+**Beyond three, the honest answer is a census, not a list.** A 4-subset is 75 billion; a 10-subset is
+past 10²⁰. `--motifs` counts instantiations of the nine patterns from `composition.md`, each under an
+explicit structural encoding recorded next to its count, so disagreeing with a number means
+disagreeing with a written-down definition:
+
+| Motif | Instantiations (size 2–5) | All sizes |
+|---|---|---|
+| pipeline | 53,093,841 | — |
+| enrich | 58,818,929,530,166 | ~10²¹⁵ |
+| digest | 50,760,620,246,727 | ~10²¹⁵ |
+| fan-out | 18,397,966,345,983 | ~10¹⁵⁰ |
+| trigger → action | 2,030,181 | — |
+| materialize | 89,171 | — |
+| escalate | 61,582 | — |
+| reconcile | 49,610 | — |
+| mirror | 22,590 | — |
+
+The fan-shaped totals are exact and useless as headline integers — a sink with in-degree 711 admits
+2⁷¹¹ − 712 distinct Enrich instantiations. `composition.md`'s own advice for Digest is "cap the
+sources", so the census caps them at five and reports the unbounded magnitude separately. **The
+ordering is the finding:** the cheap patterns are astronomically abundant and the patterns that
+require a *writer on both ends* — mirror, reconcile, escalate — are four to nine orders of magnitude
+rarer. Composition is not limited by what can be read. It is limited by what can be written into.
+
+## 15. What Phase 2 still does not do
+
+- **42% of the directory has no tool evidence.** Those connectors carry archetype profiles and are
+  tagged `DIRECTORY`. Any aggregate on this page is a mix of measured and inherited, and the tier
+  split is printed everywhere it matters so the mix is visible.
+- **Tool names, not schemas.** No parameter types, no required fields, no auth scopes, no rate
+  limits. `HARVESTED` is a real tier between `DOCUMENTED` and `DIRECTORY` and it is never promoted.
+- **242 tool lists are truncated.** The count is recovered from the `+N more` sentinel; the names in
+  the tail are not, and nothing here invents them.
+- **13.7% of tool names contain no recognisable verb** (386 of 2,818) and default to `read` —
+  the choice that cannot manufacture an in-edge.
+- **`engine/discover.py` was not rewritten.** `combine.py` supersedes its purpose; the old
+  beam search over 47 archetypes is now dead code and should be deleted, not repaired.
+- **`data/systems.json` is demoted, not rewritten.** The 14 authored systems were scored under an
+  operator-payback framing this project has dropped. The payback numbers are gone from the UI and
+  the tab is labelled *examples*; the file itself still carries the old scores.

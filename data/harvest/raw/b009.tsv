@@ -1,0 +1,30 @@
+# ASKED: Realize MCP | Cello | Klaviyo | VybeOS | Intuit Mailchimp | Adobe Journey Optimizer | LoyaltyLion | Insider One | MailerLite | ActiveCampaign | HilltopAds | magnews | eYantra Corporate Gifting | Braze MCP Server | BlueConic | SiteGPT | Yogi | Maze | Freshservice | august | Listen Labs | Gainsight (Staircase AI) | Unwrap | ProductNow | Unthread | Zoho Desk | RT (Request Tracker) | Quinbook | Unstructured Transform | PDF Viewer | ChangeThisFile | SignNow | iScanner | pdf-viewer | PDF Tools - Fill, Sign, Merge, Split, Extract | Docling MCP | Nutrient PDF Editor | Nutrient DWS | SignWell | Avanquest PDF API Extension | Redacta | Anthropic Economic Index | HaitiDocs | JP Bid | GovQuery | Granted | Instrumentl | MoSPI | Kindora Funder Discovery | Benevity | Tango | exascale.build | CKAN MCP Server
+Klaviyo	b1a89151-dc5f-4d75-baa7-9da291b81a0c	0	get_account_details,get_campaigns,get_campaign,create_campaign,assign_template_to_campaign_message,get_catalog_items,get_events,get_metrics,+19 more
+Intuit Mailchimp	3a7fa2ac-d655-4479-bce3-8e10fcc26f96	0	campaign-planner,edit-campaign,save-to-mailchimp,get-email-themes,replace-image,edit-text,apply-theme,set-active-campaign,+4 more
+Adobe Journey Optimizer	4eb1485d-c3c6-4282-a72c-5bfc084cad27	0	ajo_list_sandboxes,ajo_list_campaigns,ajo_get_campaign,ajo_list_journeys,ajo_get_journey,ajo_list_channel_configurations,ajo_get_loyalty_challenges
+Insider One	5be6ae33-efeb-4127-b421-08c4c0abd76c	0	list_email_campaigns,get_email_campaign_analytics,get_email_overall_analytics
+Local Falcon	30b72fda-c127-4a95-b7a3-f18476e0a06f	0	listLocalFalconScanReports,getLocalFalconReport,runLocalFalconScan,listLocalFalconCampaignReports,getLocalFalconCampaignReport,createLocalFalconCampaign,runLocalFalconCampaign,pauseLocalFalconCampaign,+29 more
+Indeed	78cb9092-b837-4439-845d-fdccd5723e7f	0	search_jobs,get_job_details
+Visier	269911aa-9456-45c8-839f-c8d079fe0a5d	0	search_metrics,search_analytic_objects,search_dimensions_for_metric,search_dimensions_for_analytic_object,search_filter_dimension_members,search_analytic_object_properties,aggregate_metric_values,list_analytic_object_property_values
+MailerLite	5807a545-cd93-4e71-bb21-f3727bf34df1	0	add_subscriber,get_subscriber,update_subscriber,list_subscribers,get_subscriber_activity,get_subscriber_count,delete_subscriber,forget_subscriber,+37 more
+ActiveCampaign	adf5273a-9e9f-414c-a213-2b64a4aa36ae	0	list_contacts,get_contact,create_or_update_contact,list_tags,get_tag,create_contact_tag,add_tag_to_contact,list_lists,+24 more
+Freshservice	0625e715-7ebc-479c-9f6f-f643ad1d77b0	0	fetchSolutionCategories,fetchSolutionCategory,updateSolutionArticle,createOnboardingRequest,fetchOnboardingRequests,fetchOnboardingRequestForm,createOffboardingRequest,fetchOffboardingRequestTickets,+27 more
+Gainsight (Staircase AI)	7b4941fa-a8fa-4a00-a726-cf692ac269ca	0	staircase_query,staircase_fetch_evidence
+Unwrap	92d00407-7fa7-49bc-8d90-55a59434099c	0	list_views,get_started,list_feedback_integrations,search_segments,list_segment_field_values,discover_filter_schema,search_groups,search_actionable_groups,+7 more
+Listen Labs	6d886b6e-cc36-4ba2-a6c4-4d2d3b7a352b	0	list_studies,get_study_responses,get_response,get_study_analysis,search_across_studies
+Make	038318ff-ed0d-45f8-a453-b01de0071561	0	scenarios_list,scenarios_get,scenarios_create,scenarios_update,scenarios_delete,scenarios_activate,scenarios_deactivate,scenarios_run,+59 more
+SlidesGPT	59eafa91-020f-435e-b8a4-1bfcd7a957d8	1	create_slides,apply_theme
+Unthread	9fcc5cc5-15fe-4144-bafb-239db7e9038d	0	get_current_user,list_conversations,get_conversation_by_id,get_time_series_analytics,list_custom_fields,get_custom_field
+Zoho Desk	680aa72d-df6e-456f-b3c1-177f04b211c4	0	getAccount,getContact,createTicket,updateTicket,getTickets,getTicket,deleteTicket,getTicketsByContact,+33 more
+Zoho Projects	bec78036-b8e2-4af1-9ccc-daec0669f426	0	getAllPortals,getPortalDetails,getAllProjects,getProjectDetails,createProject,updateProject,trashProject,restoreProject,+22 more
+PDF Viewer	a6f1af7d-e85f-4775-bbfb-da7a8eb990db	0	display_pdf
+SignNow	4bf06559-36bf-4aab-b7f7-360af4e2db86	0	list_all_templates,list_documents,send_invite,create_embedded_invite,create_embedded_sending,create_embedded_editor,create_from_template,send_invite_from_template,+8 more
+Anthropic Economic Index	5e90e841-ba8a-433e-9303-cd41820de915	1	econ_index_get_dataset_overview,econ_index_get_global_usage,econ_index_list_countries,econ_index_get_usage_by_country,econ_index_list_subregions,econ_index_get_usage_by_subregion,econ_index_get_occupation_usage,econ_index_list_top_work_tasks,+1 more
+Granted	59156499-2b9f-42b9-8438-8994d7ce5dad	1	search_grants,get_grant,search_funders,get_funder,get_past_winners
+Instrumentl	5eb73e73-c172-433d-b3ad-b91da73c9ecd	0	get_current_account,get_grant,get_match,list_grants,list_project_matches,list_projects
+Kindora Funder Discovery	df363d23-97ef-4ccd-a36e-5369846f5506	1	search_funders,get_funder_profile,get_990_summary,get_foundation_grants,get_ntee_codes,get_funder_stats,list_tools,health_check
+MoSPI	49a84267-c5d5-4c7b-8070-ab6b0875d886	1	step1_know_about_mospi_api,step2_get_indicators,step3_get_metadata,step4_get_data
+NetDocuments	de658515-71ab-4e82-bf83-0677cbc2f6cd	0	search,fetch
+Benevity	de72cab2-21e3-486f-b774-b35b6dded1d8	1	Benevity Nonprofit Search,Benevity Get Nonprofit Details
+Tango	af83346b-0499-4fcc-ae7c-22235705bdcd	0	resolve,search,search_opportunities,get_details
+Excalidraw	934bf25a-e0d1-43ff-a488-b2c5567ec956	1	read_me,create_view,export_to_excalidraw,save_checkpoint,read_checkpoint

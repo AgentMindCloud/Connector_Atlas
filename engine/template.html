@@ -172,6 +172,62 @@ ol.plan li{margin-bottom:5px;padding-left:3px}
   .ctl{max-width:60vw} #hint{display:none}
 }
 @media(max-width:640px){ .hud h1{font-size:29px} #sfx{display:none} }
+
+/* ---- lab: the combinatorial views. Same visual world as the map -- glass on ink,
+   cinnabar for emphasis, jade for measured-good, tabular numerals everywhere a
+   number is meant to be compared down a column. ---- */
+#lab{position:fixed;inset:0;z-index:20;background:rgba(14,12,11,.93);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  display:none;overflow-y:auto;overflow-x:hidden;padding:26px clamp(16px,4vw,54px) 70px}
+#lab.open{display:block}
+#lab h2{font-family:var(--serif);font-weight:400;font-size:clamp(26px,4vw,38px);line-height:1.05}
+#lab h2 em{font-style:italic;color:var(--cin)}
+#lab .sub{color:var(--mut);font-size:11.5px;margin-top:6px;max-width:70ch;line-height:1.65}
+#lab .labx{position:fixed;top:22px;right:26px;z-index:22;background:var(--glass);
+  border:1px solid var(--line);color:var(--paper);font-family:var(--mono);font-size:14px;
+  width:34px;height:34px;border-radius:9px;cursor:pointer}
+#lab .labtabs{display:flex;gap:7px;flex-wrap:wrap;margin:20px 0 22px}
+#lab .labtabs button{background:transparent;border:1px solid var(--line);color:var(--mut);
+  font-family:var(--mono);font-size:11.5px;padding:8px 13px;border-radius:9px;cursor:pointer}
+#lab .labtabs button.on{color:var(--paper);border-color:rgba(230,74,46,.55);
+  background:rgba(230,74,46,.10)}
+.lv{display:none}.lv.on{display:block}
+.grid{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.card{background:rgba(244,239,232,.032);border:1px solid var(--line);border-radius:13px;padding:15px 17px}
+.card .k{font-size:9.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--mut)}
+.card .n{font-family:var(--serif);font-size:31px;line-height:1.1;margin-top:5px;
+  font-variant-numeric:tabular-nums}
+.card .n.jade{color:var(--jade)} .card .n.cin{color:var(--cin)}
+.card .d{font-size:10.5px;color:var(--mut);margin-top:6px;line-height:1.6}
+.ltab{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:8px}
+.ltab th{text-align:left;font-weight:500;color:var(--mut);font-size:9.5px;letter-spacing:.9px;
+  text-transform:uppercase;padding:8px 11px;border-bottom:1px solid var(--line);white-space:nowrap}
+.ltab td{padding:8px 11px;border-bottom:1px solid rgba(244,239,232,.05);vertical-align:top}
+.ltab td.num{text-align:right;font-variant-numeric:tabular-nums}
+.ltab tr:hover td{background:rgba(244,239,232,.03)}
+.scroll{overflow-x:auto;max-width:100%}
+.tierb{font-size:9px;letter-spacing:.7px;padding:2px 6px;border-radius:5px;border:1px solid;
+  text-transform:uppercase}
+.tierb.VERIFIED{color:var(--jade);border-color:rgba(53,164,129,.5)}
+.tierb.HARVESTED{color:var(--gold);border-color:rgba(201,180,88,.45)}
+.tierb.DIRECTORY{color:var(--mut);border-color:var(--line)}
+.authb{font-size:9px;letter-spacing:.7px;padding:2px 6px;border-radius:5px;
+  color:var(--jade);border:1px solid rgba(53,164,129,.4)}
+.pairbox{display:grid;gap:11px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  align-items:end;margin-bottom:16px}
+.pairbox input{background:var(--glass);border:1px solid var(--line);color:var(--paper);
+  font-family:var(--mono);font-size:12px;padding:10px 12px;border-radius:9px;width:100%}
+.verdict{border:1px solid var(--line);border-radius:13px;padding:17px 19px;margin-top:6px;
+  background:rgba(244,239,232,.032)}
+.verdict .big{font-family:var(--serif);font-size:25px;line-height:1.15}
+.verdict .big.yes{color:var(--jade)} .verdict .big.no{color:var(--cin)}
+.verdict .why{color:var(--mut);font-size:11.5px;margin-top:8px;line-height:1.65}
+.dbar{height:7px;border-radius:4px;background:rgba(244,239,232,.09);overflow:hidden;margin-top:6px}
+.dbar i{display:block;height:100%;border-radius:4px}
+.mono-sm{font-size:10.5px;color:var(--mut);word-break:break-word}
+.caveat{border-left:2px solid var(--cin);padding:9px 0 9px 13px;margin-top:16px;
+  color:var(--mut);font-size:11px;line-height:1.7;max-width:78ch}
+
 </style>
 
 <div id="orbs"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i></div>
@@ -188,12 +244,13 @@ ol.plan li{margin-bottom:5px;padding-left:3px}
   <button id="go">path</button>
   <button id="mode" title="direct = only real edges; bridge = build the edge">bridge</button>
   <button id="edges" class="on" title="show derived archetype edges">edges</button>
+  <button id="labbtn" title="pairs, motifs, model diff">lab</button>
 </div>
 
 <aside id="rail">
   <div class="tabs">
     <button id="tA" class="on">archetypes</button>
-    <button id="tS">systems</button>
+    <button id="tS">examples</button>
   </div>
   <div class="rows" id="rows"></div>
 </aside>
@@ -201,6 +258,22 @@ ol.plan li{margin-bottom:5px;padding-left:3px}
 <aside id="detail"></aside>
 <div id="pathout"></div>
 
+
+<div id="lab" role="dialog" aria-modal="true" aria-label="combinatorial views">
+  <button class="labx" id="labx" aria-label="close">×</button>
+  <h2>the <em>combination space</em></h2>
+  <div class="sub" id="labsub"></div>
+  <div class="labtabs" role="tablist">
+    <button data-v="P" class="on">pair explorer</button>
+    <button data-v="C">connector profile</button>
+    <button data-v="M">motif census</button>
+    <button data-v="D">model diff</button>
+  </div>
+  <div class="lv on" id="lvP"></div>
+  <div class="lv" id="lvC"></div>
+  <div class="lv" id="lvM"></div>
+  <div class="lv" id="lvD"></div>
+</div>
 <div id="sfx">
   <span class="sfc"><i style="background:#35A481"></i>read</span>
   <span class="sfc"><i style="background:#C9B458"></i>create</span>
@@ -550,10 +623,15 @@ function openConn(i){
       h+='<div class="warn"><b>dead ends observed</b><br>· '+
          c.vb.dead_ends.map(esc).join("<br>· ")+'</div>';
   }
-  h+='<div class="sec">emits</div><div class="chips">'+
-     (a.emits.length?a.emits.map(function(k){return '<span class="chip em">'+k+'</span>';}).join(""):'<span class="none">—</span>')+'</div>';
-  h+='<div class="sec">consumes</div><div class="chips">'+
-     (a.consumes.length?a.consumes.map(function(k){return '<span class="chip co">'+k+'</span>';}).join(""):'<span class="none">—</span>')+'</div>';
+  var ce=(c.e&&c.e.length)?c.e:[], cc=(c.cn&&c.cn.length)?c.cn:[];
+  h+='<div class="sec">emits · '+c.ti.toLowerCase()+'</div><div class="chips">'+
+     (ce.length?ce.map(function(k){return '<span class="chip em">'+k+'</span>';}).join(""):'<span class="none">—</span>')+'</div>';
+  h+='<div class="sec">consumes · '+c.ti.toLowerCase()+'</div><div class="chips">'+
+     (cc.length?cc.map(function(k){return '<span class="chip co">'+k+'</span>';}).join(""):'<span class="none">— no write tools, so nothing can point in</span>')+'</div>';
+  if(c.tl && c.tl.length){
+    h+='<div class="sec">real tools'+(c.tt?' · +'+c.tt+' hidden':'')+'</div><div class="chips">'+
+       c.tl.slice(0,10).map(function(t){return '<span class="chip">'+esc(t)+'</span>';}).join("")+'</div>';
+  }
   h+='<div class="sec">joins to · strong keys</div><div class="chips">';
   h+= joins.length? joins.map(function(j){
         return '<span class="chip" title="via '+j[1].join(", ")+'"><i style="display:inline-block;width:7px;height:7px;border-radius:50%;background:'+
@@ -645,12 +723,16 @@ function renderRail(){
          '"></i><span class="nm">'+esc(A[k].label)+'</span><span class="ct">'+(cnt[k]||0)+'</span></div>';
     });
   } else {
+    h+='<div class="srow" style="cursor:default;opacity:.75"><div class="m" style="line-height:1.6">'+
+       'Authored under an operator-payback framing this project has dropped. '+
+       'Kept as worked examples of composition shape, not as recommendations.</div></div>';
     SYS.forEach(function(s,i){
+      /* Payback months and LEVERAGE tiers were the wrong frame: they scored these
+         by what one operator would save, which says nothing about whether the
+         combination works. Only the structural facts survive here. */
       h+='<div class="srow'+(st.sys===i?" on":"")+'" data-s="'+i+'"><div class="t">'+esc(s.name)+'</div>'+
-         '<div class="m"><span class="tg '+s.score.tier_leverage+'">L'+s.score.tier_leverage+'</span>'+
-         '<span class="tg '+s.score.tier_capability+'">C'+s.score.tier_capability+'</span>'+
-         '<span>'+s.connector_count+' conn</span><span>·</span><span>'+
-         (s.score.economics.breakeven_months? s.score.economics.breakeven_months+"mo" : "never")+'</span></div></div>';
+         '<div class="m"><span class="tg '+s.score.tier_capability+'">C'+s.score.tier_capability+'</span>'+
+         '<span>'+s.connector_count+' connectors</span></div></div>';
     });
   }
   rows.innerHTML=h;
@@ -732,6 +814,7 @@ document.getElementById("zr").onclick=function(){st.tz=1;st.sys=null;st.hl=null;
   pathout.style.display="none";renderRail();
   st.anim={y0:st.yaw,p0:st.pitch,dy:0.7-st.yaw,dp:-0.18-st.pitch,t0:now(),dur:700};};
 addEventListener("keydown",function(e){ if(e.key==="Escape"){
+  if(LAB.classList.contains("open")){ LAB.classList.remove("open"); return; }
   detail.classList.remove("open"); pathout.style.display="none"; st.sel=-1; st.sys=null; renderRail(); }});
 
 /* ---------- boot ---------- */
@@ -743,6 +826,266 @@ document.getElementById("stat").innerHTML =
   AN.counts.verified+' verified this session';
 renderRail();
 var lastT=now();
+
+/* ================= lab: pairs, profiles, motifs, model diff =================
+   All four views read precomputed data. The pair matrix is class-compressed --
+   classOf maps a connector to its profile class, matrix[i][j] is the hop
+   distance -- so any of the 673,220 ordered pairs resolves in two lookups with
+   no search. Nothing here recomputes; the engine already did it exactly.       */
+var LAB=document.getElementById("lab"), PAIRS=D.pairs, MOT=D.motifs,
+    TRI=D.triples, DIFF=D.diff, QQ=D.questions;
+var byName={}; C.forEach(function(c,i){ byName[c.n.toLowerCase()]=i; });
+function fmt(n){ return (n==null)?"—":n.toLocaleString("en-US"); }
+function findName(q){
+  q=(q||"").trim().toLowerCase(); if(!q) return -1;
+  if(byName[q]!=null) return byName[q];
+  var best=-1,bl=1e9;
+  for(var i=0;i<C.length;i++){ var n=C[i].n.toLowerCase();
+    if(n.indexOf(q)>=0 && n.length<bl){best=i;bl=n.length;} }
+  return best;
+}
+function labsub(){
+  document.getElementById("labsub").innerHTML=
+    "Exhaustive over pairs and triples, a motif census beyond. <b>"+fmt(PAIRS.total)+
+    "</b> ordered pairs and <b>"+fmt(TRI.total)+"</b> unordered triples are each fully "+
+    "accounted for; 4-subsets alone number 7.5&#215;10<sup>10</sup> and are deliberately "+
+    "not enumerated. Model: <b>"+D.model+"</b>.";
+}
+
+/* ---- pair explorer ---- */
+function renderPairs(){
+  var h='<div class="pairbox">'+
+    '<div><div class="card k" style="border:0;padding:0 0 6px">from</div>'+
+    '<input id="pxa" placeholder="e.g. Fireflies" autocomplete="off"></div>'+
+    '<div><div class="card k" style="border:0;padding:0 0 6px">to</div>'+
+    '<input id="pxb" placeholder="e.g. Todoist" autocomplete="off"></div></div>'+
+    '<div id="pxout"></div>';
+  var hist=PAIRS.hist, tot=PAIRS.total;
+  h+='<div class="grid" style="margin-top:20px">';
+  [["direct edge","1","cin"],["two hops","2","jade"],["three hops","3",""],
+   ["unreachable","-1","cin"]].forEach(function(r){
+    var v=hist[r[1]]||0;
+    h+='<div class="card"><div class="k">'+r[0]+'</div><div class="n '+r[2]+'">'+
+       (100*v/tot).toFixed(1)+'%</div><div class="d">'+fmt(v)+' ordered pairs'+
+       '<div class="dbar"><i style="width:'+(100*v/tot).toFixed(1)+'%;background:'+
+       (r[2]==="jade"?"var(--jade)":r[2]==="cin"?"var(--cin)":"var(--mut)")+'"></i></div></div></div>';
+  });
+  h+='</div>';
+  h+='<div class="caveat">Distances are computed with hub and browser-fallback connectors '+
+     'blocked as intermediates &mdash; the <em>native only</em> regime. Weak keys '+
+     '(text, person, vendor_id) are excluded throughout: they match almost everything and '+
+     'would make the graph trivially complete.</div>';
+  h+='<h2 style="font-size:22px;margin-top:30px">connected <em>triples</em></h2>'+
+     '<div class="sub">All '+fmt(TRI.total)+' unordered triples classified. '+
+     fmt(TRI.connected)+' ('+(100*TRI.connected/TRI.total).toFixed(1)+
+     '%) induce a connected subgraph; the rest contain an isolated member.</div>'+
+     '<div class="scroll"><table class="ltab"><tr><th>shape</th><th>instances</th>'+
+     '<th>share of connected</th></tr>';
+  var sh=TRI.byShape, ks=Object.keys(sh);
+  ks.slice(0,9).forEach(function(k){
+    var v=sh[k], pc=100*v/TRI.connected;
+    h+='<tr><td>'+esc(k)+'</td><td class="num">'+fmt(v)+'</td><td class="num">'+
+       pc.toFixed(1)+'%<div class="dbar"><i style="width:'+Math.min(100,pc*3).toFixed(1)+
+       '%;background:var(--slate)"></i></div></td></tr>';
+  });
+  h+='</table></div>';
+  document.getElementById("lvP").innerHTML=h;
+  var a=document.getElementById("pxa"), b=document.getElementById("pxb");
+  function go(){
+    var i=findName(a.value), j=findName(b.value), o=document.getElementById("pxout");
+    if(i<0||j<0){ o.innerHTML='<div class="verdict"><div class="why">'+
+      'Type two connector names. Partial matches work.</div></div>'; return; }
+    var A1=C[i], B1=C[j];
+    if(i===j){ o.innerHTML='<div class="verdict"><div class="why">Same connector.</div></div>'; return; }
+    var ci=PAIRS.classOf[A1.n], cj=PAIRS.classOf[B1.n];
+    var d=(ci===cj)? ((PAIRS.keys[ci+","+ci])?1:-1) : PAIRS.matrix[ci][cj];
+    var kk=PAIRS.keys[ci+","+cj]||[];
+    var big,cls,why;
+    if(d===1){ big="direct edge"; cls="yes";
+      why="Joins on <b>"+kk.join(", ")+"</b>. "+esc(A1.n)+" emits "+
+           (A1.e.length?A1.e.join(", "):"nothing strong")+"; "+esc(B1.n)+" consumes "+
+           (B1.cn.length?B1.cn.join(", "):"nothing strong")+"."; }
+    else if(d>1){ big=d+" hops"; cls="";
+      why="No direct edge. Reachable through "+(d-1)+" intermediate connector"+
+          (d>2?"s":"")+" &mdash; a bridge, not a native join."; }
+    else { big="unreachable"; cls="no";
+      why="No path at all in the native regime. "+
+          (B1.cn.length? "":"<b>"+esc(B1.n)+" consumes no strong key</b>, so nothing can reach it. ")+
+          (A1.e.length? "":"<b>"+esc(A1.n)+" emits no strong key</b>, so it reaches nothing. "); }
+    o.innerHTML='<div class="verdict"><div class="big '+cls+'">'+big+'</div>'+
+      '<div class="why">'+why+'</div>'+
+      '<div class="why" style="margin-top:11px">'+
+      '<span class="tierb '+A1.ti+'">'+A1.ti+'</span> '+esc(A1.n)+
+      ' &nbsp;&rarr;&nbsp; <span class="tierb '+B1.ti+'">'+B1.ti+'</span> '+esc(B1.n)+'</div></div>';
+  }
+  a.oninput=go; b.oninput=go;
+  a.value="Fireflies"; b.value="Todoist"; go();
+}
+
+/* ---- connector profile ---- */
+function renderProf(){
+  var h='<div class="pairbox"><div style="grid-column:1/-1;max-width:420px">'+
+    '<div class="card k" style="border:0;padding:0 0 6px">connector</div>'+
+    '<input id="cfq" placeholder="search 821 connectors&hellip;" autocomplete="off"></div></div>'+
+    '<div id="cfout"></div>';
+  document.getElementById("lvC").innerHTML=h;
+  var q=document.getElementById("cfq");
+  function go(){
+    var i=findName(q.value), o=document.getElementById("cfout");
+    if(i<0){ o.innerHTML='<div class="verdict"><div class="why">No match.</div></div>'; return; }
+    var c=C[i];
+    var x='<div class="verdict"><div class="big">'+esc(c.n)+'</div>'+
+      '<div class="why">'+esc(c.r)+'</div><div class="chips" style="margin-top:11px">'+
+      '<span class="tierb '+c.ti+'">'+c.ti+'</span> '+
+      (c.au?'<span class="authb">authless</span> ':'')+
+      '<span class="chip" style="color:'+SIDEC[c.s]+';border-color:'+SIDEC[c.s]+'66">'+c.s+'</span>'+
+      '<span class="chip">'+(c.nt||0)+' tools</span></div></div>';
+    x+='<div class="grid" style="margin-top:16px">'+
+      '<div class="card"><div class="k">emits &middot; harvested</div><div class="d" style="margin-top:8px">'+
+      (c.e.length?c.e.join(", "):"&mdash; nothing strong")+'</div></div>'+
+      '<div class="card"><div class="k">consumes &middot; harvested</div><div class="d" style="margin-top:8px">'+
+      (c.cn.length?c.cn.join(", "):"&mdash; nothing strong, so no edge can point in")+'</div></div>'+
+      '<div class="card"><div class="k">emits &middot; inherited</div><div class="d" style="margin-top:8px">'+
+      ((c.ie&&c.ie.length)?c.ie.join(", "):"&mdash;")+'</div></div>'+
+      '<div class="card"><div class="k">consumes &middot; inherited</div><div class="d" style="margin-top:8px">'+
+      ((c.ic&&c.ic.length)?c.ic.join(", "):"&mdash;")+'</div></div></div>';
+    if(c.tl && c.tl.length){
+      x+='<h2 style="font-size:20px;margin-top:26px">real <em>tool names</em></h2>'+
+         '<div class="sub">The evidence the profile is derived from.'+
+         (c.tt? ' Registry truncated the list at 8; <b>'+c.tt+'</b> more exist and their names are not recoverable.':'')+
+         '</div><div class="chips" style="margin-top:11px">'+
+         c.tl.map(function(t){return '<span class="chip">'+esc(t)+'</span>';}).join("")+
+         (c.tt?'<span class="chip" style="color:var(--cin);border-color:rgba(230,74,46,.5)">+'+c.tt+' hidden</span>':'')+
+         '</div>';
+    } else {
+      x+='<div class="caveat">No tool list. This connector keeps its archetype profile '+
+         '(tier DIRECTORY) &mdash; the registry search never returned it, so nothing here '+
+         'is evidence about <em>this</em> connector specifically.</div>';
+    }
+    o.innerHTML=x;
+  }
+  q.oninput=go; q.value="Fireflies"; go();
+}
+
+/* ---- motif census ---- */
+function renderMot(){
+  var h='<div class="sub">The nine composition patterns, counted over the harvested graph. '+
+    'A motif is a design pattern, not a graph primitive, so each row states the structural '+
+    'encoding it was counted under &mdash; disagreeing with a count means disagreeing with a '+
+    'specific, written-down encoding.</div>'+
+    '<div class="scroll"><table class="ltab"><tr><th>pattern</th><th>instantiations</th>'+
+    '<th>encoding</th></tr>';
+  Object.keys(MOT).forEach(function(k){
+    var m=MOT[k], n, note="";
+    if(m.count!=null){ n=fmt(m.count); }
+    else { n=fmt(m.instantiations_size_2_to_5);
+      note='<div class="mono-sm" style="margin-top:4px">sizes 2&ndash;5. All sizes &asymp; 10<sup>'+
+        Math.round(m.instantiations_all_sizes_log10)+'</sup>; max degree '+fmt(m.max_degree)+'</div>'; }
+    h+='<tr><td><b>'+k.replace(/_/g," ")+'</b></td><td class="num">'+n+note+
+       '</td><td class="mono-sm">'+esc(m.encoding)+'</td></tr>';
+  });
+  h+='</table></div>';
+  h+='<div class="caveat">The fan-shaped patterns (enrich, fan-out, digest) are subset counts, '+
+     'so their unbounded totals run past 10<sup>200</sup>. That is exact, not estimated, and it '+
+     'is the honest shape of the answer: beyond triples the space is not enumerable and the '+
+     'useful question becomes which patterns it contains, not which members. The size-2-to-5 '+
+     'column is what anyone would actually build.</div>';
+  h+='<h2 style="font-size:22px;margin-top:30px">universal <em>donors</em> and sinks</h2>'+
+     '<div class="sub">Out-degree and in-degree over strong keys. Tier matters here: a '+
+     'DIRECTORY-tier connector ranks on an inherited profile, not on evidence.</div>'+
+     '<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">';
+  [["donors","universal_donors","reaches"],["sinks","universal_sinks","reached by"]].forEach(function(g){
+    var t='<div class="scroll"><table class="ltab"><tr><th>'+g[0]+'</th><th>tier</th><th>'+g[2]+'</th></tr>';
+    QQ[g[1]].slice(0,8).forEach(function(r){
+      t+='<tr><td>'+esc(r.example)+'</td><td><span class="tierb '+r.tier+'">'+r.tier+
+         '</span></td><td class="num">'+fmt(r.degree)+'</td></tr>';
+    });
+    h+=t+'</table></div>';
+  });
+  h+='</div>';
+  h+='<h2 style="font-size:22px;margin-top:30px">cheapest profile <em>upgrade</em></h2>'+
+     '<div class="sub">One key added to one connector, and how many new outbound edges it buys. '+
+     QQ.isolates.count+' connectors are isolated on strong keys &mdash; '+
+     esc(QQ.isolates.definition)+'.</div>'+
+     '<div class="scroll"><table class="ltab"><tr><th>connector</th><th>add key</th>'+
+     '<th>new out-edges</th></tr>';
+  QQ.cheapest_profile_upgrade.slice(0,10).forEach(function(r){
+    h+='<tr><td>'+esc(r.connector)+'</td><td><span class="chip em">'+esc(r.add_key)+
+       '</span></td><td class="num">'+fmt(r.new_out_edges_each)+'</td></tr>';
+  });
+  h+='</table></div>';
+  document.getElementById("lvM").innerHTML=h;
+}
+
+/* ---- model diff ---- */
+function renderDiff(){
+  var d=DIFF, dp=d.direct_ordered_pairs, pc=d.profiles_changed;
+  var h='<div class="sub">Every connector inherited its join profile from one of 47 archetypes. '+
+    'Real tool names say otherwise. This is the size of the correction.</div>'+
+    '<div class="grid" style="margin-top:18px">'+
+    '<div class="card"><div class="k">direct ordered pairs</div><div class="n cin">'+
+    dp.pct_of_inherited_surviving+'%</div><div class="d">survive. '+fmt(dp.inherited)+
+    ' &rarr; '+fmt(dp.harvested)+'<div class="dbar"><i style="width:'+
+    dp.pct_of_inherited_surviving+'%;background:var(--cin)"></i></div></div></div>'+
+    '<div class="card"><div class="k">distinct join profiles</div><div class="n jade">'+
+    d.distinct_join_profiles.harvested+'</div><div class="d">up from '+
+    d.distinct_join_profiles.inherited+'. The archetype model collapsed 821 connectors into '+
+    d.distinct_join_profiles.inherited+' shapes; tool names resolve '+
+    d.distinct_join_profiles.harvested+'.</div></div>'+
+    '<div class="card"><div class="k">consume nothing now</div><div class="n cin">'+
+    fmt(d.connectors_that_now_consume_nothing.count)+'</div><div class="d">connectors with no '+
+    'write tools. Every inbound edge they had was fictional.</div></div>'+
+    '<div class="card"><div class="k">side-effect class moved</div><div class="n">'+
+    fmt(pc.side_effects)+'</div><div class="d">'+fmt(d.side_effect_severity.increased)+
+    ' more severe than the archetype claimed, '+fmt(d.side_effect_severity.decreased)+
+    ' less.</div></div></div>';
+
+  h+='<h2 style="font-size:22px;margin-top:30px">reachability, <em>side by side</em></h2>'+
+     '<div class="scroll"><table class="ltab"><tr><th>regime</th><th>model</th><th>direct</th>'+
+     '<th>&le;2 hops</th><th>unreachable</th><th>diameter</th></tr>';
+  Object.keys(d.reachability).forEach(function(rg){
+    ["inherited","harvested"].forEach(function(m){
+      var r=d.reachability[rg][m];
+      h+='<tr><td>'+(m==="inherited"?esc(rg.replace(/_/g," ")):"")+'</td><td>'+m+
+         '</td><td class="num">'+r.pct_direct.toFixed(2)+'%</td><td class="num">'+
+         r.pct_within_2.toFixed(2)+'%</td><td class="num">'+fmt(r.unreachable)+
+         '</td><td class="num">'+r.diameter+'</td></tr>';
+    });
+  });
+  h+='</table></div>';
+  h+='<h2 style="font-size:22px;margin-top:30px">connectors that lost <em>every</em> inbound edge</h2>'+
+     '<div class="sub">'+esc(d.connectors_that_now_consume_nothing.meaning)+'</div>'+
+     '<div class="chips" style="margin-top:11px">'+
+     d.connectors_that_now_consume_nothing.sample.map(function(n){
+       return '<span class="chip">'+esc(n)+'</span>';}).join("")+
+     '<span class="chip" style="color:var(--mut)">&hellip; '+
+     (d.connectors_that_now_consume_nothing.count-d.connectors_that_now_consume_nothing.sample.length)+
+     ' more</span></div>';
+  h+='<div class="caveat">'+d.connectors_compared+' connectors compared. '+
+     'The harvested model is not simply better everywhere: '+
+     (821-453-11)+' connectors were never returned by the registry search and still carry their '+
+     'archetype profile, so part of this graph is still inherited. Those rows are tagged '+
+     'DIRECTORY and are excluded from any claim that rests on tool evidence.</div>';
+  document.getElementById("lvD").innerHTML=h;
+}
+
+var labBuilt=false;
+function openLab(){
+  if(!labBuilt){ labsub(); renderPairs(); renderProf(); renderMot(); renderDiff(); labBuilt=true; }
+  LAB.classList.add("open");
+}
+document.getElementById("labbtn").onclick=openLab;
+document.getElementById("labx").onclick=function(){ LAB.classList.remove("open"); };
+Array.prototype.forEach.call(LAB.querySelectorAll(".labtabs button"),function(b){
+  b.onclick=function(){
+    Array.prototype.forEach.call(LAB.querySelectorAll(".labtabs button"),function(x){
+      x.classList.remove("on"); });
+    b.classList.add("on");
+    Array.prototype.forEach.call(LAB.querySelectorAll(".lv"),function(v){ v.classList.remove("on"); });
+    document.getElementById("lv"+b.dataset.v).classList.add("on");
+  };
+});
+
 (function frame(){
   var t=now(), dt=Math.min(50,t-lastT); lastT=t;
   if(st.anim){

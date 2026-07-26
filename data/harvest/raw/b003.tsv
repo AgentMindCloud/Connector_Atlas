@@ -1,0 +1,66 @@
+# ASKED: Vasara | Juridata | SeedLegals | Harvey | CoCounsel Legal | Datasite | XLSCOUT ClaimChart LLM | CourtListener | HeyCounsel | Policy Doctor | Jus Mundi | Legal Data Hunter | Ontra | Midpage Legal Research | LegalZoom | Lawve AI | Everlaw | Lightbringer | CourtsApp | TopCounsel by The L Suite | Lloyd by The L Suite | Solve Intelligence | Courtroom5 | Descrybe Legal Engine | Aurora | Intapp Celeste | Clarivate IPOne CompuMark Trademarks | Definely | BoardWise | Relativity | Ironclad Contracts | LogRocket MCP | Geckoboard | Subtext | Wistia | Tableau Cloud | Mixpanel | PostHog | Asset Vision | Hex | Sigma | Pigment | Mystore | Jam | Flourish | ThoughtSpot Spotter | OctoPerf MCP | Orion by Gravity | Upsolve AI | Lightrun | Rill | Amplitude | Tableau | Metabase (Unofficial — Community) | Microsoft Clarity | Growthbook | Zoho Analytics | Stats Compass | PopHIVE Public Health Data | Dynatrace MCP Server | OpenReplay MCP
+Harvey	a428b976-7973-467f-9588-6b72643af755	0	Ask Harvey,Ask Harvey About Vault Project,Ask Harvey With Knowledge Source,List Vault Projects,List Knowledge Sources
+CoCounsel Legal	084ce5af-6b81-471a-a754-d1a50d3f61a1	0	legal_research_start_deep_research,legal_research_check_deep_research_status,legal_research_get_deep_research_report,legal_research_follow_up_deep_research
+Datasite	3a148118-6b4a-443e-9a66-9e1ec243d119	0	acceptDisclaimer,createContent,getAccessControl,getMembers,getProjectOverview,getQAStatus,grantFeatureAccess,inviteUser,+11 more
+CourtListener	58d5cff1-20b3-4bb8-9c51-9ac3e6bd0dac	0	search,get_endpoint_schema,call_endpoint,get_endpoint_item,get_choices,get_counts,get_more_results,extract_citations,+6 more
+Asana	41aefcf3-a829-45eb-8cee-d90b93912f57	0	create_project_preview,create_task_preview,search_tasks_preview,get_status_overview,get_items_for_portfolio,get_portfolio,get_portfolios,get_project,+7 more
+Coursera	03c911b8-9789-4cb1-949b-236f9d06b2da	0	coursera_roleplay_practice,search_courses,search_videos,search_hands_on_learning,get_course_material
+NetSuite	d7733f53-723c-477a-a87b-41926580ef7d	0	ns_createRecord,ns_getRecord,ns_getRecordTypeMetadata,ns_updateRecord,ns_getSubsidiaries,ns_listAllReports,ns_runReport,ns_listSavedSearches,+9 more
+LegalZoom	d87c0d44-2615-4af6-b3ac-ba22264496b2	0	check-attorney-consultation-entitlements,get_consultation_topics,get_valid_locations,get_attorney_availability,request_attorney_review,attach_document_to_attorney_review,prepare_document_upload,add-bap-to-cart
+Lawve AI	afce8e96-04a4-4d3c-9e63-0e47c64468ea	0	lawvable_search_skills,lawvable_get_skill_manifest
+Jus Mundi	f15b18a4-e4f0-4a4e-be24-ee8a4c17f41a	0	legal_research
+Legal Data Hunter	a38cc6ae-c7fb-4136-b50e-cf49a4ded4b3	0	search,resolve_reference,get_document,discover_countries,discover_sources,get_filters,report_source_issue
+Ontra	44c1fc8d-e5df-4846-be1d-a57db7070783	0	atlas_list_accounts,atlas_search,atlas_get,atlas_discover,system_info
+Midpage Legal Research	1a6a40cd-43c9-4752-9052-fed9c5e8c45c	0	search,findInOpinion,analyzeOpinion
+Ironclad Contracts	c5504c7c-d299-4637-a012-29ef1a2354a9	0	conversational_search,create_obligation,get_obligation,list_obligations,list_obligation_types,update_obligation
+Tropic	1561bc95-0862-4c90-8720-6ac8d683340e	0	get_supplier_intelligence,get_negotiation_playbook,run_price_benchmark,list_supplier_products,get_server_status,query_contract_documents,create_manual_benchmark_request,list_price_benchmarks,+2 more
+Tabs	1c64d334-6dd8-4aed-9f0c-ee91b7f3fabb	0	commitments_get,commitments_list,contracts_billing_term_groups_get,contracts_get,contracts_list,contracts_performance_obligations_get,contracts_usage_get,credit_memos_by_invoice,+19 more
+Deel	e4bed2f4-9f30-4e0f-a157-32fd49838b0c	0	add_off_cycle_payment_for_contract,add_workflow_actions,add_workflow_trigger,amend_contract,calculate_employment_cost,calculate_employment_cost_for_multiple_countries,calculate_eor_versus_entity_hiring_costs,calculate_take_home_pay,+87 more
+TopCounsel by The L Suite	dc0a67bc-7db2-4f4a-b391-9a46964ac5cf	0	find_outside_counsel
+Everlaw	d498e1f4-a632-40ba-ada2-32c9aae7232b	0	GetProjectSearchResult,PostProjectSearch,GetProjectBinders
+Solve Intelligence	064e137e-4712-4a68-abc8-c42e077f5e78	0	search_patents,get_patent_content,search_npl,lookup_patent_search_entities,list_patent_law_and_standards,read_patent_law_and_standard,search_patent_law_and_standards,grep_patent_law_and_standards,+1 more
+Courtroom5	295eaac1-7469-4c28-8fda-dbd2a0f76219	1	case_intake_assessment,deadline_calculator,next_step_guidance
+Lloyd by The L Suite	ad1b6f45-0c2c-442c-829c-44b55ebe4075	0	get_peer_insights,find_vendors
+Descrybe Legal Engine	9ce05d07-3fb2-474f-b427-d5a4496ab1ac	0	analyze_legal_question,search_cases_by_concept,search_case_text,find_case_from_reference,extract_case_references,get_case_details,get_case_pdf,get_case_passages,+5 more
+Sprouts Data Intelligence	fadebf8c-fa8d-42f0-b754-4635bd480ab0	0	sprouts_data_intelligence,move_to_sprouts,query_templates,query_refinement,search_history,icp_analysis,sprouts_user_preferences
+Vercel	78796cf8-5b52-471a-af73-d36a401732e4	0	
+Aurora	dee803ac-4887-4e73-a3c5-ab167f8f1fe8	0	searchMatters,searchWorkspaces,searchDocuments,searchTickets
+Clarivate IPOne CompuMark Trademarks	d68d9615-8525-4b27-94c0-2497a64ee6d0	0	ip-one___trademark-content,ip-one___trademark-count,ip-one___trademark-fulltext,ip-one___trademark-goods,ip-one___trademark-knockout-search,ip-one___trademark-search-field-names,ip-one___trademark-search-field-operators,ip-one___trademark-search-register-office-codes,+1 more
+Definely	ef1f5dc0-3c66-4834-b734-a6a144f6d7bd	0	get_document_table_of_contents,get_list_of_undefined_terms,get_list_of_defined_terms,get_containing_section,get_items_in_this_section,find_where_this_section_is_referenced,find_cross_references_in_this_section,find_undefined_terms_in_this_text,+12 more
+BoardWise	ab14fdd2-6e9c-41f5-982b-cb1f02eb5fd8	1	get_board_guidance,get_response_letter_guidance,find_relevant_guide,get_resources
+Intapp Celeste	dd9a36b4-e356-4ca5-a771-d979e8a898c6	0	dc_list_objects,dc_list_fields,dc_find_records,dc_entry,dc_lookup,dc_aggregate,dc_check_duplicates,dc_create_record,+9 more
+Relativity	05bc8b45-fc66-4a11-bfaa-24c60bedce1a	0	relone_connection_status,relone_list_clients,relone_list_matters,relone_create_client,relone_edit_client,relone_create_matter,relone_edit_matter,relone_list_users,+26 more
+Readwise	1bdc2099-1cf5-4b5e-bf03-76ca9c6c6248	0	readwise_search_highlights,readwise_create_highlights,readwise_list_highlights,readwise_update_highlight,readwise_delete_highlight,readwise_get_daily_review,reader_search_documents,reader_create_document,+14 more
+Subtext	ba1a54c3-9b80-4113-8c04-4a599cc48936	0	privacy-create,privacy-delete,privacy-list,privacy-promote,privacy-propose,review-close,review-snapshot,review-list-sessions,+7 more
+Mixpanel	29d60a67-6f16-489b-8a1e-efdcece8d1f6	0	Get-Projects,Get-Events,Get-Event-Details,Get-Property-Names,Get-Property-Values,Edit-Event,Edit-Property,Create-Tag,+12 more
+PostHog	50688846-553c-4a12-bc21-df94d2173734	0	query-run,query-generate-hogql-from-question,insight-create-from-query,insight-get,insights-get-all,insight-update,insight-delete,insight-query,+49 more
+Whimsical	9b75f9c6-c443-4b88-96ff-f33234d4f135	0	create,edit,search,fetch,file_tree,list_workspaces,how_to,generate_diagram,+3 more
+Sumble	cec39b4a-ee57-40e4-be4e-0e9ceddcb4a0	0	GetAccountInformation,GetMyCompanyProfile,LogOut,SearchTechnologies,FindOrganizations,EnrichOrganization,MatchOrganizations,ListOrganizationLists,+15 more
+Port IO	8f5edd1c-c876-465e-a5b9-cc8e6d27dcb7	0	list_blueprints,list_entities,list_scorecards,list_actions,run_action,search_port_knowledge_sources,load_skill,upsert_blueprint,+4 more
+Tixel	dc3f5f05-2f9c-4705-a58c-d99c5af50b13	1	search_events,list_event_listings,get_listing_details
+Cloze MCP	c55ee7b3-d783-4f8e-adb2-3c05247b9cad	0	about_me,add_note,add_todo,full_content,person_add,person_change,person_count,person_find,+12 more
+Lorikeet	0ffe8735-4ad5-4e7b-99e3-c8fc25f51b52	0	whoami,get_brand,list_workflows,get_workflow,get_workflow_context,get_natural_language_workflow_guidelines,list_tools,list_integrations,+98 more
+Hex	7ac6a583-508e-45fe-91c5-8eb3238d0a8f	0	search_projects,create_thread,get_thread,continue_thread
+Sigma	d02b089b-6cc9-44e3-8667-a590a0aa8df6	0	begin_session,describe,list_documents,query,search
+Pigment	505c326f-36ea-4a5a-ab99-8f86fad28af0	0	GetApplications,FindAiMetrics,QueryData
+Jam	923fb14b-ed65-4e41-8dd5-4c2c38c00457	0	getDetails,getConsoleLogs,getNetworkRequests,getScreenshot,getUserEvents,analyzeVideo
+ThoughtSpot Spotter	576048a9-f4be-43c6-8cdb-787897c49b03	0	check_connectivity,create_analysis_session,send_session_message,get_session_updates,create_dashboard
+Flourish	ebd57d53-3d93-4981-831b-d6648dbc87a4	0	flourish_list_templates,flourish_list_visualisations,flourish_get_template_details,flourish_get_visualisation_data,flourish_get_visualisation_settings,flourish_create_visualisation,flourish_duplicate_visualisation,flourish_update_visualisation_data_bindings,+2 more
+HealthEx	17f8e2cd-5ca5-4563-a43b-81073b4f65eb	0	get_health_records,get_medications,get_lab_results,get_vitals,get_allergies,get_immunizations,get_conditions,get_care_plan,+1 more
+Figma	c758d038-d8eb-4421-b426-9dd68dc7f84a	0	generate_diagram,get_design_context,get_screenshot,get_metadata,create_design_system_rules,get_variable_defs,get_code_connect_map,get_figjam,+1 more
+Nimble	41105597-badd-4563-aba3-88fe45348857	0	nimble_search,nimble_extract,nimble_extract_async,nimble_map,nimble_crawl_run,nimble_crawl_status,nimble_crawl_list,nimble_crawl_terminate,+10 more
+Gamma	1db06d1d-be38-4789-a66b-6fcb6b7bfc5e	0	
+Orion by Gravity	6e891213-b720-4ac4-a895-570b2e2639c5	0	list_projects,list_conversations,get_conversation_history,list_artifacts,get_artifact,search_wiki,list_users,list_metrics,+13 more
+Amplitude	8e40fa13-4654-4387-bbad-12b8ecc81351	0	get_charts,get_context,get_dashboard,get_experiments,get_notebook,query_dataset,query_charts,query_metric,+6 more
+Rillet	48437749-3dd3-4811-b0d5-80984473903d	0	amend_a_contract,apply_vendor_credit,create_a_bill,create_a_bill_payment,create_a_contract,create_a_credit_memo,create_a_customer,create_a_product,+73 more
+Microsoft Learn	89a7ddf5-2a6b-410c-be11-aa0e1a1b35a6	1	microsoft_docs_search,microsoft_docs_fetch,microsoft_code_sample_search
+MuleSoft	a847d0cb-319e-4c0a-a70d-5278ee7e5f13	0	apply_policy_to_instance,check_control_scope_targets,check_policy_conformance,create_automated_policy_strategy,create_control,create_omni_gateway,create_scanner,delete_automated_policy_strategy,+58 more
+O'Reilly	c36bb242-cf93-4886-a48a-7257d22ce856	0	search_oreilly_content
+Airtable	cb504fab-e494-490f-bff8-bb3ab23a2209	0	create_field,create_records_for_table,create_table,get_table_schema,list_bases,list_records_for_table,list_tables_for_base,ping,+4 more
+Microsoft Dataverse	b259a33c-3058-4252-94a6-478ec2babcc8	0	create_record,describe_table,list_tables,read_query,update_record,create_table,update_table,delete_table,+3 more
+Microsoft 365	ce0c9cda-5ea5-44c5-9cf2-40810dfa6582	0	sharepoint_search,sharepoint_folder_search,outlook_email_search,outlook_calendar_search,find_meeting_availability,chat_message_search,read_resource
+PlayMCP	34269403-d1cc-468f-8c0d-4bd01e8042c8	0	
+PopHIVE	cd7d9174-5546-440a-822d-1e9026e7334c	1	get_overview,get_current_status,get_trend,get_map,compare,get_coverage,get_data
+Polar Analytics	b9b882ab-aa77-4fb3-b554-0d2f3b0335cc	0	get_context,list_dashboards,get_dashboard_details,list_dimensions,get_dimension_values,get_view_details,get_metrics,get_custom_dimension_details,+3 more
+D&B Risk Analytics	42dbc617-e23b-4319-8e27-6a2c72e3c444	0	RAPortfolioTool,RASearchTool,RAOverviewTool,RAScoreAndRAtingsTool,RACompositeRiskScorecardTool,RAFinancialTool,RACorporateLinkageTool,RAUltimateBeneficialOwnerTool,+25 more
+Zoho Books	9e4a3416-f5b4-4a89-8e3a-a4955fa17475	0	get_item,list_contacts,list_taxes,delete_contact,get_expense,get_invoice,get_user,create_item,+41 more

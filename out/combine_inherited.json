@@ -1,0 +1,739 @@
+{
+ "model": "inherited",
+ "connectors": 821,
+ "distinct_join_profiles": 62,
+ "pairs": {
+  "ordered_pairs_total": 673220,
+  "exhaustive": true,
+  "native_only": {
+   "-1": 47960,
+   "1": 455722,
+   "2": 167705,
+   "3": 1833
+  },
+  "with_hubs": {
+   "-1": 18172,
+   "1": 484859,
+   "2": 170189
+  },
+  "direct_pct": 67.69
+ },
+ "triples": {
+  "unordered_triples_total": 91894530,
+  "accounted_for": 91894530,
+  "exhaustive": true,
+  "connected": 85381871,
+  "connected_pct": 92.91,
+  "by_shape": {
+   "other  arcs=6 deg=((2, 2), (2, 2), (2, 2))": 24380496,
+   "other  arcs=5 deg=((1, 2), (2, 1), (2, 2))": 19227600,
+   "other  arcs=4 deg=((0, 2), (2, 1), (2, 1))": 12081824,
+   "other  arcs=3 deg=((0, 1), (1, 1), (2, 1))": 7835427,
+   "other  arcs=4 deg=((1, 2), (1, 2), (2, 0))": 5786801,
+   "other  arcs=4 deg=((1, 1), (1, 1), (2, 2))": 3839914,
+   "fan-in  A,B->C": 3467556,
+   "other  arcs=3 deg=((0, 2), (1, 1), (2, 0))": 2701471,
+   "other  arcs=4 deg=((1, 1), (1, 2), (2, 1))": 2414967,
+   "other  arcs=3 deg=((1, 0), (1, 1), (1, 2))": 2117351,
+   "chain   A->B->C": 1188417,
+   "fan-out A->B,C": 240615,
+   "cycle   A->B->C->A": 99432
+  }
+ },
+ "motifs": {
+  "pipeline": {
+   "encoding": "ordered A->B->C, any three connectors (repeats allowed: two members of one class are two different connectors)",
+   "count": 289318048
+  },
+  "enrich": {
+   "encoding": "for each connector S, subsets of its in-neighbourhood of size >= 2; summed over all S",
+   "instantiations_size_2_to_5": 1064050102778702,
+   "instantiations_all_sizes_log10": 248.7,
+   "max_degree": 820,
+   "nodes_with_degree_ge_2": 799
+  },
+  "reconcile": {
+   "encoding": "unordered pairs with edges in BOTH directions",
+   "count": 187477
+  },
+  "fan_out": {
+   "encoding": "for each connector A, subsets of its out-neighbourhood of size >= 2; summed over all A",
+   "instantiations_size_2_to_5": 612790620762991,
+   "instantiations_all_sizes_log10": 241.4,
+   "max_degree": 798,
+   "nodes_with_degree_ge_2": 821
+  },
+  "digest": {
+   "encoding": "Enrich, restricted to sinks whose side-effect class is create or above -- the sink must be able to emit an artifact",
+   "instantiations_size_2_to_5": 788614279605741,
+   "instantiations_all_sizes_log10": 248.6,
+   "max_degree": 820,
+   "nodes_with_degree_ge_2": 509
+  },
+  "trigger_action": {
+   "encoding": "A -> HUB -> B where HUB is an automation_hub connector and B can write; without a firing mechanism the pattern is not instantiable",
+   "count": 6686224
+  },
+  "mirror": {
+   "encoding": "Reconcile pairs where BOTH connectors are mutate or above",
+   "count": 81004
+  },
+  "materialize": {
+   "encoding": "edges A->B where B consumes `file` and B can write, i.e. the output lands somewhere durable",
+   "count": 243195
+  },
+  "escalate": {
+   "encoding": "A->B with B irreversible, where A also reaches a non-irreversible sink on the same join key -- so a 'automate below the threshold' policy has somewhere to go",
+   "count": 153583
+  }
+ },
+ "questions": {
+  "universal_donors": [
+   {
+    "example": "CodeWords",
+    "tier": "DIRECTORY",
+    "class_size": 16,
+    "emits": [
+     "code",
+     "company",
+     "domain",
+     "email",
+     "file",
+     "geo",
+     "image",
+     "media",
+     "money",
+     "phone",
+     "project",
+     "rows",
+     "ticker",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "code",
+     "company",
+     "domain",
+     "email",
+     "file",
+     "geo",
+     "image",
+     "media",
+     "money",
+     "phone",
+     "project",
+     "rows",
+     "ticker",
+     "timestamp",
+     "url"
+    ],
+    "degree": 798
+   },
+   {
+    "example": "Claude in Chrome",
+    "tier": "DIRECTORY",
+    "class_size": 1,
+    "emits": [
+     "domain",
+     "email",
+     "file",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "file",
+     "url"
+    ],
+    "degree": 778
+   },
+   {
+    "example": "Shopify",
+    "tier": "DIRECTORY",
+    "class_size": 6,
+    "emits": [
+     "email",
+     "file",
+     "money",
+     "rows",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "email",
+     "file",
+     "geo",
+     "rows"
+    ],
+    "degree": 776
+   },
+   {
+    "example": "Google Drive",
+    "tier": "DIRECTORY",
+    "class_size": 8,
+    "emits": [
+     "email",
+     "file",
+     "project",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "file",
+     "project"
+    ],
+    "degree": 764
+   },
+   {
+    "example": "Unstructured Transform",
+    "tier": "DIRECTORY",
+    "class_size": 17,
+    "emits": [
+     "email",
+     "file",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "email",
+     "file"
+    ],
+    "degree": 764
+   },
+   {
+    "example": "Microsoft 365",
+    "tier": "DIRECTORY",
+    "class_size": 4,
+    "emits": [
+     "email",
+     "file",
+     "phone",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "email",
+     "file",
+     "phone",
+     "url"
+    ],
+    "degree": 764
+   },
+   {
+    "example": "Resend",
+    "tier": "DIRECTORY",
+    "class_size": 7,
+    "emits": [
+     "email",
+     "file",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "email",
+     "file",
+     "url"
+    ],
+    "degree": 764
+   },
+   {
+    "example": "NuMetric",
+    "tier": "DIRECTORY",
+    "class_size": 25,
+    "emits": [
+     "email",
+     "file",
+     "money",
+     "rows",
+     "timestamp"
+    ],
+    "consumes": [
+     "email",
+     "file",
+     "money",
+     "rows"
+    ],
+    "degree": 708
+   }
+  ],
+  "universal_sinks": [
+   {
+    "example": "CodeWords",
+    "tier": "DIRECTORY",
+    "class_size": 16,
+    "emits": [
+     "code",
+     "company",
+     "domain",
+     "email",
+     "file",
+     "geo",
+     "image",
+     "media",
+     "money",
+     "phone",
+     "project",
+     "rows",
+     "ticker",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "code",
+     "company",
+     "domain",
+     "email",
+     "file",
+     "geo",
+     "image",
+     "media",
+     "money",
+     "phone",
+     "project",
+     "rows",
+     "ticker",
+     "timestamp",
+     "url"
+    ],
+    "degree": 820
+   },
+   {
+    "example": "McAfee",
+    "tier": "DIRECTORY",
+    "class_size": 22,
+    "emits": [
+     "domain",
+     "email",
+     "rows",
+     "url"
+    ],
+    "consumes": [
+     "code",
+     "domain",
+     "email",
+     "file",
+     "phone",
+     "url"
+    ],
+    "degree": 820
+   },
+   {
+    "example": "Microsoft 365",
+    "tier": "DIRECTORY",
+    "class_size": 4,
+    "emits": [
+     "email",
+     "file",
+     "phone",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "email",
+     "file",
+     "phone",
+     "url"
+    ],
+    "degree": 819
+   },
+   {
+    "example": "Atlassian Rovo",
+    "tier": "DIRECTORY",
+    "class_size": 17,
+    "emits": [
+     "email",
+     "project",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "email",
+     "file",
+     "project",
+     "timestamp",
+     "url"
+    ],
+    "degree": 819
+   },
+   {
+    "example": "Hardline",
+    "tier": "DIRECTORY",
+    "class_size": 28,
+    "emits": [
+     "email",
+     "media",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "media",
+     "timestamp",
+     "url"
+    ],
+    "degree": 819
+   },
+   {
+    "example": "Supabase",
+    "tier": "DIRECTORY",
+    "class_size": 1,
+    "emits": [
+     "rows",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "email",
+     "money",
+     "project",
+     "rows",
+     "timestamp",
+     "url"
+    ],
+    "degree": 819
+   },
+   {
+    "example": "Resend",
+    "tier": "DIRECTORY",
+    "class_size": 7,
+    "emits": [
+     "email",
+     "file",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "email",
+     "file",
+     "url"
+    ],
+    "degree": 819
+   },
+   {
+    "example": "Sentry",
+    "tier": "DIRECTORY",
+    "class_size": 11,
+    "emits": [
+     "code",
+     "rows",
+     "timestamp",
+     "url"
+    ],
+    "consumes": [
+     "code",
+     "timestamp",
+     "url"
+    ],
+    "degree": 819
+   }
+  ],
+  "isolates": {
+   "count": 0,
+   "definition": "no strong-key edge in either direction; weak keys (text/person/vendor_id) excluded",
+   "sample": []
+  },
+  "cheapest_profile_upgrade": [
+   {
+    "connector": "Anthropic Economic Index",
+    "class_size": 1,
+    "add_key": "file",
+    "new_out_edges_each": 344
+   },
+   {
+    "connector": "Superhuman Docs",
+    "class_size": 1,
+    "add_key": "file",
+    "new_out_edges_each": 227
+   },
+   {
+    "connector": "Gamma",
+    "class_size": 1,
+    "add_key": "file",
+    "new_out_edges_each": 227
+   },
+   {
+    "connector": "Three.js 3D Viewer",
+    "class_size": 1,
+    "add_key": "file",
+    "new_out_edges_each": 227
+   },
+   {
+    "connector": "Google Calendar",
+    "class_size": 1,
+    "add_key": "file",
+    "new_out_edges_each": 212
+   },
+   {
+    "connector": "HubSpot",
+    "class_size": 28,
+    "add_key": "file",
+    "new_out_edges_each": 212
+   },
+   {
+    "connector": "Intercom",
+    "class_size": 1,
+    "add_key": "file",
+    "new_out_edges_each": 212
+   },
+   {
+    "connector": "Baz",
+    "class_size": 20,
+    "add_key": "email",
+    "new_out_edges_each": 207
+   },
+   {
+    "connector": "Craft",
+    "class_size": 1,
+    "add_key": "email",
+    "new_out_edges_each": 207
+   },
+   {
+    "connector": "Todoist",
+    "class_size": 1,
+    "add_key": "email",
+    "new_out_edges_each": 205
+   },
+   {
+    "connector": "G2",
+    "class_size": 1,
+    "add_key": "file",
+    "new_out_edges_each": 205
+   },
+   {
+    "connector": "CommuteHub",
+    "class_size": 30,
+    "add_key": "file",
+    "new_out_edges_each": 180
+   }
+  ],
+  "key_leverage": [
+   {
+    "key": "url",
+    "reaches_as_emitter": 287,
+    "reachable_as_consumer": 749,
+    "new_pairs_if_universal_bridge": 1036
+   },
+   {
+    "key": "timestamp",
+    "reaches_as_emitter": 230,
+    "reachable_as_consumer": 509,
+    "new_pairs_if_universal_bridge": 739
+   },
+   {
+    "key": "file",
+    "reaches_as_emitter": 404,
+    "reachable_as_consumer": 328,
+    "new_pairs_if_universal_bridge": 732
+   },
+   {
+    "key": "email",
+    "reaches_as_emitter": 291,
+    "reachable_as_consumer": 320,
+    "new_pairs_if_universal_bridge": 611
+   },
+   {
+    "key": "rows",
+    "reaches_as_emitter": 157,
+    "reachable_as_consumer": 426,
+    "new_pairs_if_universal_bridge": 583
+   },
+   {
+    "key": "money",
+    "reaches_as_emitter": 86,
+    "reachable_as_consumer": 262,
+    "new_pairs_if_universal_bridge": 348
+   },
+   {
+    "key": "domain",
+    "reaches_as_emitter": 161,
+    "reachable_as_consumer": 122,
+    "new_pairs_if_universal_bridge": 283
+   },
+   {
+    "key": "code",
+    "reaches_as_emitter": 146,
+    "reachable_as_consumer": 110,
+    "new_pairs_if_universal_bridge": 256
+   },
+   {
+    "key": "image",
+    "reaches_as_emitter": 94,
+    "reachable_as_consumer": 155,
+    "new_pairs_if_universal_bridge": 249
+   },
+   {
+    "key": "geo",
+    "reaches_as_emitter": 121,
+    "reachable_as_consumer": 105,
+    "new_pairs_if_universal_bridge": 226
+   },
+   {
+    "key": "company",
+    "reaches_as_emitter": 128,
+    "reachable_as_consumer": 70,
+    "new_pairs_if_universal_bridge": 198
+   },
+   {
+    "key": "phone",
+    "reaches_as_emitter": 76,
+    "reachable_as_consumer": 97,
+    "new_pairs_if_universal_bridge": 173
+   },
+   {
+    "key": "ticker",
+    "reaches_as_emitter": 101,
+    "reachable_as_consumer": 69,
+    "new_pairs_if_universal_bridge": 170
+   },
+   {
+    "key": "project",
+    "reaches_as_emitter": 78,
+    "reachable_as_consumer": 76,
+    "new_pairs_if_universal_bridge": 154
+   },
+   {
+    "key": "media",
+    "reaches_as_emitter": 85,
+    "reachable_as_consumer": 64,
+    "new_pairs_if_universal_bridge": 149
+   }
+  ]
+ },
+ "diff": {
+  "connectors_compared": 821,
+  "profiles_changed": {
+   "emits": 465,
+   "consumes": 466,
+   "side_effects": 278
+  },
+  "side_effect_severity": {
+   "increased": 81,
+   "decreased": 197
+  },
+  "connectors_that_now_consume_nothing": {
+   "count": 293,
+   "meaning": "every inbound edge these connectors had in the inherited model was fictional -- the archetype gave them a consumes set their tool list does not support",
+   "sample": [
+    "Actively",
+    "Adobe Customer Journey Analytics",
+    "Adobe Journey Optimizer",
+    "Adobe Marketing Agent",
+    "AfterShip Channels for TikTok Shop",
+    "Ahrefs",
+    "Aiera",
+    "AirOps",
+    "Airwallex Developer",
+    "AllTrails",
+    "Alma",
+    "Alpha Vantage MCP Server",
+    "Alpic",
+    "Amplitude",
+    "AngelList",
+    "Anthropic Economic Index",
+    "AppFolio Realm-X",
+    "Ashby",
+    "Atlassian Rovo",
+    "Audible",
+    "Aura",
+    "Aurora",
+    "Autodesk Product Help",
+    "Base44",
+    "Benevity"
+   ]
+  },
+  "connectors_now_read_only": 122,
+  "distinct_join_profiles": {
+   "inherited": 62,
+   "harvested": 236
+  },
+  "direct_ordered_pairs": {
+   "regime": "with hubs; a direct edge is a direct edge",
+   "inherited": 484859,
+   "harvested": 174801,
+   "delta": -310058,
+   "pct_of_inherited_surviving": 36.1
+  },
+  "reachability": {
+   "native_only": {
+    "inherited": {
+     "hop_histogram": {
+      "-1": 47960,
+      "1": 455722,
+      "2": 167705,
+      "3": 1833
+     },
+     "total_ordered_pairs": 673220,
+     "pct_direct": 67.69,
+     "pct_within_2": 92.6,
+     "unreachable": 47960,
+     "diameter": 3
+    },
+    "harvested": {
+     "hop_histogram": {
+      "-1": 340091,
+      "1": 160394,
+      "2": 169748,
+      "3": 2987
+     },
+     "total_ordered_pairs": 673220,
+     "pct_direct": 23.82,
+     "pct_within_2": 49.04,
+     "unreachable": 340091,
+     "diameter": 3
+    }
+   },
+   "with_fallbacks": {
+    "inherited": {
+     "hop_histogram": {
+      "-1": 31052,
+      "1": 471979,
+      "2": 168356,
+      "3": 1833
+     },
+     "total_ordered_pairs": 673220,
+     "pct_direct": 70.11,
+     "pct_within_2": 95.12,
+     "unreachable": 31052,
+     "diameter": 3
+    },
+    "harvested": {
+     "hop_histogram": {
+      "-1": 325472,
+      "1": 169766,
+      "2": 175065,
+      "3": 2917
+     },
+     "total_ordered_pairs": 673220,
+     "pct_direct": 25.22,
+     "pct_within_2": 51.22,
+     "unreachable": 325472,
+     "diameter": 3
+    }
+   },
+   "with_hubs": {
+    "inherited": {
+     "hop_histogram": {
+      "-1": 18172,
+      "1": 484859,
+      "2": 170189
+     },
+     "total_ordered_pairs": 673220,
+     "pct_direct": 72.02,
+     "pct_within_2": 97.3,
+     "unreachable": 18172,
+     "diameter": 2
+    },
+    "harvested": {
+     "hop_histogram": {
+      "-1": 319826,
+      "1": 174801,
+      "2": 178593
+     },
+     "total_ordered_pairs": 673220,
+     "pct_direct": 25.96,
+     "pct_within_2": 52.49,
+     "unreachable": 319826,
+     "diameter": 2
+    }
+   }
+  }
+ }
+}

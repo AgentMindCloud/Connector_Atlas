@@ -1,0 +1,11 @@
+# ASKED: Fireflies | Strava | Shopify | Docusign | Aha! | NuMetric | Blaze SQL | Evidence Studio
+Docusign	a876b642-2b05-4808-a565-deeb271802fd	0	getUserInfo,getAllAgreements,getAgreementDetails,getWorkflowTriggerRequirements,getWorkflowsList,triggerWorkflow,getWorkflowInstancesList,getWorkflowInstance,+12 more
+Shopify	80917cb7-3071-4fca-b053-a4262d356c60	0	search_products,get-shop-info,get-product,create-product,update-product,list-orders,get-order,list-customers,+17 more
+Fireflies	839a0ae2-0c0f-4c27-9f85-726ed6515536	0	get_user,get_transcript,get_transcripts
+Strava	135cc9eb-d5aa-4e24-81b0-6e78a3cff862	0	health,get_athlete_profile,list_activities,get_athlete_zones,get_activity_streams,get_activity_performance,get_club_info,get_gear
+Supermetrics Marketing Analytics	cc599e7b-8c59-4e89-9bf0-36d47bb9ec80	0	data_source_discovery,accounts_discovery,field_discovery,data_query,get_async_query_results,get_today,contact_supermetrics,manage_user_and_team,+5 more
+Spotify	86925244-b3bb-415b-b7e8-6e3cd1392247	1	create_playlist,get_currently_playing,search,add_to_library,fetch_tracks,Remove_from_library
+Isometric	f362ba22-f754-4b33-b0df-59d6336e2fdb	0	how_to,isometric_docs_get,isometric_docs_list,me,openapi_documents_get_object,openapi_documents_list_objects,protocols_analyze,protocols_get_content,+5 more
+Tray.ai	99dac444-03e0-4fb3-af2f-2eb60aa0f44f	0	ct_log_activity_df0b4e00,ct_log_activity_write_c959ec6c
+Trellis	0a45d87b-7a46-4e43-a0ce-113eb0e9f002	0	get_server_instructions,list_skills,get_skill,Search-get_server_instructions,Analytics-get_server_instructions,Search-search_cases,Search-get_case,Search-get_case_complaints,+16 more
+DocuSeal	62270356-d0aa-46fc-a0bf-e57af079104d	0	search_templates,create_template,send_documents,search_documents

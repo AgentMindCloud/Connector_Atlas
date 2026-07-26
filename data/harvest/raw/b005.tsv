@@ -1,0 +1,39 @@
+# ASKED: Jump | Kamai AI | G2 | EULER | Figaro Immobilier | Trimble SketchUp | AppFolio Realm-X | Three.js 3D Viewer | CivilQuants | Wizerr | Yardi Virtuoso | Parallel | Yardi Matrix | Verisk Underwriting Intelligence | Verisk XactRestore | Trackunit IrisX | Entropia | Switch | DappleOS | NAVI Protocol | MANDA | IQLand (Official) | BrokerIA Imoveis | Spot2 | Autodesk Fusion | OpenSTAAD MCP Server | Spendify | Brex | PayPal | Rho | Allowance | Spendflo | Mesh | Affinity | Pagos | Qonto | Square | Plaid Developer Tools | Airwallex Developer | GovTribe | GoCardless | Grasshopper Bank | Razorpay | Paytm Payment Gateway | Privacy.com | Embat | Flanks Aggregate | Lili | Monk | Perk | Revolut X
+G2	df731661-86d2-48e9-ac51-bdeceb265948	0	browse_competitive_intelligence,browse_product_buyer_intent,list_categories,list_my_products,list_product_reviews,list_products,show_category,show_product,+1 more
+Trimble SketchUp	b982ecd1-ee51-45f0-99d9-9330a0dd8b0c	0	build_model,get_docs,save_model
+Three.js 3D Viewer	471ca2be-244d-4d9a-955a-3cdbcf76a12b	0	
+EULER	5070225d-6c89-4bcc-92f9-e28184b0648d	0	ping,list_accounts,partners,partner_directory_search,partner_artifacts,referrals,submit_referral,company_deals,+12 more
+AppFolio Realm-X	7ee5e27a-c9cf-49bd-9cdc-324310605cfe	0	chat
+Clerk	48a3eb31-a881-4d52-b179-1af31624356a	1	clerk_sdk_snippet,list_clerk_sdk_snippets
+Lucid	0cce5c8c-7590-41d0-abbe-aa5c64961ac0	0	search,fetch,lucid_create_document_share_link,share_document_with_collaborators,lucid_create_org_chart,lucid_create_diagram_from_specification,lucid_create_mind_map,lucid_create_sequence_diagram,+3 more
+Yardi Virtuoso	01953ddd-4139-40c5-bbf9-47c1e2499623	0	rfm_connectai_create_work_order,rfm_connectai_search_work_orders,rfm_workorder_mark_work_order_as_complete,vn_mcpframework_get_autocomplete,vn_mcpframework_list_autocomplete_types
+Yardi Matrix	2b245db2-8a73-491a-9849-8f44b9ce9488	0	get_dataset_summary,validate_data_quality,get_schema_info,get_query_guidance,search_data_types,get_property_ids,search_properties,search_by_owner,+25 more
+Verisk Underwriting Intelligence	5268a4af-f0f3-4b6c-a3ad-2833920399aa	0	iso_losscost_activity_get,iso_losscost_experienceindex_get,iso_losscost_indications_get,iso_visualizer_skill_include
+Verisk XactRestore	ca0cd7ba-6a50-4aba-a1c9-45367fc80cc2	0	SearchRemodRestorationRoofingJobs,GetRemodRestorationRoofingJobDetails,GetRemodRestorationRoofingOptionDetails,SearchRemodRestorationProjects,CreateRemodRestorationProject,SearchEstimateGroupsRoomsAreas,CreateEstimateRoomOrArea,UpdateEstimateRoomOrArea,+10 more
+Dice	3035842b-464b-45f0-b8f0-1ddc01fb2eb2	1	search_jobs
+Adobe for creativity	22854937-9510-4b57-9230-62c820102d8f	0	adobe_mandatory_init,animate_design,asset_add_file,asset_copy_assets,asset_create_folders,asset_finalize_file_upload,asset_get_brand,asset_get_brand_color_themes,+59 more
+HubSpot	875dee50-9b3f-452b-af8c-fbc839966273	0	search_crm_objects,get_user_details,get_properties,search_properties,get_crm_objects,render_landing_page_ui,show_feedback_form,Get campaign analytics,+10 more
+PayPal	001103b7-bcde-4b9c-b5d4-f209c2fed1f3	0	create_product,list_product,show_product_details,list_disputes,get_dispute,accept_dispute_claim,create_invoice,list_invoices,+20 more
+Brex	9fc52c5f-5a64-4f59-a6f8-4aa9571b8179	0	get_card_by_id,get_expense_policy,get_reimbursement_payout_date,get_user_by_id,get_user_myself,list_my_cards,list_my_expenses,list_my_limits,+2 more
+Affinity	5c0aab87-9f11-478f-b7ed-03774fa6169c	0	create_list_entry,create_note,create_reminder,get_company_info,get_company_list_entries,get_current_user,get_entities_attached_to_note,get_entity_field_values,+23 more
+Pendo	2a884a14-5f1e-4742-8ee0-7ebe9cb69ac7	0	accountMetadataSchema,accountQuery,activityQuery,guideMetrics,list_all_applications,pes,searchEntities,segmentList,+3 more
+Send	d4b6d94e-8fd7-4936-a525-a1852acd3bb4	0	CreateDocument,EditDocument
+Play Sheet Music	96a2cde3-0340-43e9-b293-055f293b346d	0	
+Gusto	cf2b53a4-45ef-4541-9425-0116d42286ca	0	get_company,get_compensation,get_contractor,get_contractor_payment,get_contractor_payment_group,get_department,get_employee,get_home_address,+33 more
+Qonto	56de4854-49c8-4f8f-a53a-4badef6a472f	0	approve_request,change_card_status,change_client_invoice_status,change_supplier_invoice_status,create_card,create_card_request,create_client,create_client_invoice,+44 more
+Square	25d61b20-3ba1-4477-b51a-a743d1ca65fb	0	get_service_info,get_type_info,make_api_request
+Plaid Developer Tools	bacac1ad-ccb1-401e-a5d7-915da9742dce	0	plaid_debug_item,plaid_get_link_analytics,plaid_get_usages,plaid_list_teams
+GovTribe	f40e6edf-6955-4810-848b-19d98b2f4f4e	0	Documentation,Search_Federal_Contract_Opportunities,Search_Federal_Contract_Awards,Search_Federal_Contract_IDVs,Search_Federal_Contract_Sub_Awards,Search_Federal_Contract_Vehicles,Search_Federal_Grant_Opportunities,Search_Federal_Grant_Awards,+16 more
+Airwallex Developer	f9e2f745-d688-42a7-8c79-98fe7990dc03	0	create_transfer,list_transfers,simulate_transfer_result,list_beneficiaries,get_fx_quote,list_global_accounts,get_balances,simulate_create_deposit,+4 more
+GoCardless	d242c454-3a8c-4271-8a8a-e334b111c7c5	1	integrate_with_gocardless,read_gocardless_resource
+Grasshopper Bank	2bd58a48-6693-4964-9a00-b95861911928	0	accounts_list,documents_list,external_accounts_list,products_list,scheduled_transfers_list,transactions_list
+Mastercard Developers	18c736e4-140d-4c63-bced-fec98bcc6943	1	get-services-list,get-documentation,get-documentation-section-content,get-documentation-page,get-api-operation-list,get-api-operation-details,get-oauth10a-integration-guide,get-oauth20-integration-guide,+1 more
+Quartr	ac8e4b2a-1618-4b6f-8756-660eb7583ebe	0	search_companies,get_company,list_companies,list_related_companies,list_events,get_event,list_event_types,list_documents,+30 more
+Razorpay	c4259182-2a73-4a5f-91ab-0867a3eade9d	0	fetch_payment,fetch_all_payments,fetch_payment_card_details,fetch_order,fetch_all_orders,fetch_order_payments,fetch_payment_link,fetch_all_payment_links,+17 more
+Paytm Payment Gateway	7c2f4b78-5630-4f5f-9524-27e6f8d8cb01	0	fetch_all_orders,fetch_payment_options,fetch_card_bin_details,fetch_order_status,fetch_payment_links,fetch_transactions_by_link_id,fetch_refund_status,fetch_refunds,+4 more
+Privacy.com	1254a853-1375-40be-89ad-4b44b093ff87	0	get_card,get_pan,list_cards,list_transactions,close_card,create_card,pause_card,unpause_card,+2 more
+Embat	c261e4da-e467-4805-b2cb-458addbb360b	0	ask_tellme
+SurveyMonkey	58ff478e-b9b7-47c9-8253-78fb9364513a	0	add_page,add_question,create_survey,create_weblink_collector,delete_question,edit_question,generate_survey_plan,get_page,+12 more
+LILT	88245f33-e3a7-468f-ae27-3f118bef198a	0	translate_text,translate_files_with_verification,get_credit_balance_information,check_job_status,download_job
+Melon	02224ef2-6652-422e-9a70-fa93f699ab8f	0	chart_get,detail_get_playlist_songs,detail_get_content,detail_get_artist_songs,detail_get_artist_albums,detail_get_musicstory,detail_get_content_detail_url,genre_get_main_genres,+18 more
+Brevo	01a9fda6-bd91-4f02-af05-d8e4c3f4f556	0	accounts_get_account,senders_get_senders,contacts_get_contacts,attributes_get_attributes,lists_get_lists,lists_get_list,contact_import_export_get_contacts_from_list,segments_get_segments,+13 more
