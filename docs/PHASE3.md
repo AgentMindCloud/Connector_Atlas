@@ -150,6 +150,33 @@ Ordered by value, and each is a real gap rather than polish:
    would be the cheapest way to test it.
 5. **`out/*.json` are committed build artifacts.** Fine so far; gitignore them if they get noisy.
 
+### Phase 4 candidate, requested but explicitly deferred
+
+**`github.com/AgentMindCloud/abm-research`** — a multi-AI project of Jani's. The ask is to point this
+composition model at it and see whether it helps design a superior system: which connectors that
+project actually needs, where the join keys are, which patterns are instantiable, and what the
+`trigger_action` and precondition results say about automating it.
+
+**Not yet.** Jani has basic decisions to make on that project first, and pointing an atlas at a
+design that is still moving would produce confident answers to the wrong questions. Recorded here
+because the container is ephemeral and this file is the memory. Wait to be asked.
+
+Note when it happens: that repo is not in this session's GitHub scope, so it needs `add_repo` first.
+
+## The output, and how it is delivered
+
+`python3 engine/render.py` writes **two** files from one template:
+
+| file | shape | for |
+|---|---|---|
+| `out/atlas_v5.html` | complete standalone document | downloading, opening from disk |
+| `out/atlas_artifact.html` | body fragment, no doctype | Artifact publishing, which adds its own skeleton |
+
+`engine/template.html` is a **fragment** and always has been — it opens on `<title>`. Do not add a
+doctype to it; `render.py`'s `document()` wrapper supplies one for the standalone build, and adding
+a second would double-wrap the Artifact. Run `node engine/browsertest.js` after any change to
+either.
+
 ## Verification
 
 ```bash
@@ -163,13 +190,28 @@ python3 engine/schema.py  --rules                        # 0 dead rules, 1 unmap
 python3 engine/schema.py  --delta                        # the second held-out test
 python3 engine/score.py                                  # ROBUSTNESS/CAPABILITY, trigger check
 python3 engine/combine.py --all --model evidence         # triples must report EXHAUSTIVE
-python3 engine/render.py                                 # -> out/atlas_v5.html
+python3 engine/render.py                                 # -> out/atlas_v5.html + atlas_artifact.html
+node engine/browsertest.js                               # doctype/charset/viewport + all 5 views
 ```
 
-Browser test: Chromium at `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`, `playwright-core`
-into the scratchpad. Last run: **0 console errors, 0 page errors, all 5 lab views render at 1440px
-and 390px, no horizontal scroll, system panel has no undefined/NaN.** The side rail is
-`display:none` under 1100px by Phase 2 design — that is not a regression, and the test asserts it.
+Browser test is now **in the repo**: `node engine/browsertest.js` (needs `npm i playwright-core`;
+Chromium at `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`). Last run: **all assertions pass,
+0 console errors, 0 page errors** on desktop and on an emulated phone.
+
+**It was moved out of the scratchpad because it was passing while three real defects shipped.**
+`out/atlas_v5.html` had no doctype, no `<meta charset>` and no `<meta viewport>` — the page rendered
+in quirks mode and a phone laid it out at 980px, so every responsive rule under `max-width:1100px`
+was inert on the device it was written for. The test missed it because passing
+`viewport:{width:390}` to Playwright sets the layout viewport *directly*, which is exactly what a
+missing viewport meta prevents a phone from doing: it asserted against a state the bug made
+unreachable. The phone case now uses `isMobile` + `deviceScaleFactor`, and the scaffolding is
+asserted directly (`document.doctype`, `compatMode === 'CSS1Compat'`, `characterSet`, the viewport
+meta, and a non-ASCII round-trip on `textContent` — not `innerText`, which only sees visible text).
+
+Verified as a negative control by running the test against the un-wrapped fragment: it fails with
+`compatMode=BackCompat` and `innerWidth=980`. **Test the mechanism, not only the outcome** — a bug
+can hold the outcome and the test steady together. The side rail is `display:none` under 1100px by
+Phase 2 design; that is not a regression and the test asserts it.
 Keep the Residual Frequencies identity — cinnabar `#E64A2E`, jade `#35A481`, ink `#0E0C0B`,
 Instrument Serif + IBM Plex Mono, single dark theme by choice, fonts stack-fallback because the
 artifact CSP blocks font CDNs.

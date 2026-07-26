@@ -177,21 +177,65 @@ def schema_payload():
     }
 
 
+# `template.html` is a body FRAGMENT — it opens on <title> and has never carried a
+# doctype, an <html>/<head>/<body>, a charset or a viewport. Through Phase 3 it was
+# written straight out as if it were a whole document, which is a real defect with
+# three separate consequences:
+#
+#   no charset   the page holds 417 non-ASCII characters (155 em dashes, 38 arrows,
+#                Japanese connector names). Loaded over file:// with nothing
+#                declared, a browser guesses, and every one of them mojibakes.
+#   no viewport  a phone lays the page out at ~980px and scales down, so everything
+#                is tiny AND the max-width:1100px/640px rules never fire — the
+#                responsive design in the CSS never reaches a real device.
+#   no doctype   quirks mode, so the box model is not the one the CSS was written for.
+#
+# The browser test did not catch any of it, which is the more useful half of the
+# lesson: it set a 390px layout viewport directly, which is exactly what a missing
+# viewport meta prevents a phone from doing. It tested a state the bug made
+# unreachable. engine/browsertest.js now asserts the scaffolding itself.
+#
+# Two outputs, because the two destinations want opposite things: a downloaded file
+# needs the whole document, and an Artifact supplies its own skeleton and must not
+# be double-wrapped.
+HEAD = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+"""
+
+
+def document(fragment):
+    """Body fragment -> complete standalone HTML document.
+
+    <title> and <style> come from the fragment and belong in <head>, so the split
+    point is the first tag that does not: everything from there is body content.
+    """
+    cut = fragment.index("</style>") + len("</style>")
+    return HEAD + fragment[:cut] + "\n</head>\n<body>\n" + fragment[cut:] + "\n</body>\n</html>\n"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=os.path.join(ROOT, "out", "atlas_v5.html"))
+    ap.add_argument("--fragment-out", default=os.path.join(ROOT, "out", "atlas_artifact.html"),
+                    help="body-only copy for Artifact publishing, which adds its own skeleton")
     ap.add_argument("--include-weak", action="store_true")
     ap.add_argument("--model", choices=("inherited", "harvested"), default="harvested")
     a = ap.parse_args()
 
     data = build(a.include_weak, a.model)
     tpl = open(os.path.join(HERE, "template.html"), encoding="utf-8").read()
-    html = tpl.replace("__DATA__", json.dumps(data, ensure_ascii=False, separators=(",", ":")))
+    frag = tpl.replace("__DATA__", json.dumps(data, ensure_ascii=False, separators=(",", ":")))
+    html = document(frag)
     os.makedirs(os.path.dirname(a.out), exist_ok=True)
     open(a.out, "w", encoding="utf-8").write(html)
+    open(a.fragment_out, "w", encoding="utf-8").write(frag)
 
     n = data["analysis"]["counts"]
-    print(f"atlas v5 -> {a.out}  ({len(html)/1024:.0f} KB)")
+    print(f"atlas v5 -> {a.out}  ({len(html)/1024:.0f} KB, standalone document)")
+    print(f"          -> {a.fragment_out}  ({len(frag)/1024:.0f} KB, body fragment for Artifact)")
     print(f"  {n['connectors']} connectors · {n['archetypes']} archetypes · "
           f"{len(data['edges'])} derived edges · {n['distinct_join_profiles']} join profiles")
     d = data["diff"]
