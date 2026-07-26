@@ -1,0 +1,1134 @@
+{
+ "buildable": [
+  {
+   "mode": "buildable",
+   "seed": "crm_sales",
+   "archetypes": [
+    "crm_sales",
+    "database_warehouse",
+    "marketing_analytics",
+    "task_pm",
+    "meetings_transcripts",
+    "market_data",
+    "ecommerce_logistics",
+    "calendar"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "company",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "media",
+    "money",
+    "phone",
+    "project",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": false,
+   "instantiation": {
+    "crm_sales": [
+     "HubSpot",
+     "Actively",
+     "Attio"
+    ],
+    "database_warehouse": [
+     "Airtable",
+     "Blaze SQL",
+     "ClickHouse"
+    ],
+    "marketing_analytics": [
+     "Adobe Customer Journey Analytics",
+     "Adobe Experience Manager",
+     "Adobe Marketing Agent"
+    ],
+    "task_pm": [
+     "Atlassian Rovo",
+     "Adobe Workfront",
+     "Asana"
+    ],
+    "meetings_transcripts": [
+     "AI TeamsMaestro",
+     "Attention",
+     "Caretta"
+    ],
+    "market_data": [
+     "Aiera",
+     "Alpha Vantage MCP Server",
+     "AngelList"
+    ],
+    "ecommerce_logistics": [
+     "BuyLater",
+     "Domhaul",
+     "GoDaddy"
+    ],
+    "calendar": [
+     "Google Calendar",
+     "Akiflow",
+     "Calendly"
+    ]
+   }
+  },
+  {
+   "mode": "buildable",
+   "seed": "ecommerce_logistics",
+   "archetypes": [
+    "ecommerce_logistics",
+    "database_warehouse",
+    "market_data",
+    "marketing_analytics",
+    "task_pm",
+    "weather_geo",
+    "meetings_transcripts",
+    "cloud_infra"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "code",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "media",
+    "money",
+    "project",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": true,
+   "instantiation": {
+    "ecommerce_logistics": [
+     "BuyLater",
+     "Domhaul",
+     "GoDaddy"
+    ],
+    "database_warehouse": [
+     "Airtable",
+     "Blaze SQL",
+     "ClickHouse"
+    ],
+    "market_data": [
+     "Aiera",
+     "Alpha Vantage MCP Server",
+     "AngelList"
+    ],
+    "marketing_analytics": [
+     "Adobe Customer Journey Analytics",
+     "Adobe Experience Manager",
+     "Adobe Marketing Agent"
+    ],
+    "task_pm": [
+     "Atlassian Rovo",
+     "Adobe Workfront",
+     "Asana"
+    ],
+    "weather_geo": [
+     "SkyWatch",
+     "TomTom Maps",
+     "TomTom Maps MCP"
+    ],
+    "meetings_transcripts": [
+     "AI TeamsMaestro",
+     "Attention",
+     "Caretta"
+    ],
+    "cloud_infra": [
+     "AWS API MCP Server",
+     "AWS Marketplace",
+     "Alpic"
+    ]
+   }
+  },
+  {
+   "mode": "buildable",
+   "seed": "market_data",
+   "archetypes": [
+    "market_data",
+    "database_warehouse",
+    "task_pm",
+    "marketing_analytics",
+    "weather_geo",
+    "meetings_transcripts",
+    "cloud_infra",
+    "bi_analytics"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "code",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "media",
+    "money",
+    "project",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": true,
+   "instantiation": {
+    "market_data": [
+     "Aiera",
+     "Alpha Vantage MCP Server",
+     "AngelList"
+    ],
+    "database_warehouse": [
+     "Airtable",
+     "Blaze SQL",
+     "ClickHouse"
+    ],
+    "task_pm": [
+     "Atlassian Rovo",
+     "Adobe Workfront",
+     "Asana"
+    ],
+    "marketing_analytics": [
+     "Adobe Customer Journey Analytics",
+     "Adobe Experience Manager",
+     "Adobe Marketing Agent"
+    ],
+    "weather_geo": [
+     "SkyWatch",
+     "TomTom Maps",
+     "TomTom Maps MCP"
+    ],
+    "meetings_transcripts": [
+     "AI TeamsMaestro",
+     "Attention",
+     "Caretta"
+    ],
+    "cloud_infra": [
+     "AWS API MCP Server",
+     "AWS Marketplace",
+     "Alpic"
+    ],
+    "bi_analytics": [
+     "Amplitude",
+     "Asset Vision",
+     "Contentsquare"
+    ]
+   }
+  },
+  {
+   "mode": "buildable",
+   "seed": "market_data",
+   "archetypes": [
+    "market_data",
+    "file_storage",
+    "task_pm",
+    "marketing_analytics",
+    "cloud_infra",
+    "weather_geo",
+    "meetings_transcripts",
+    "ecommerce_logistics"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "code",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "media",
+    "money",
+    "project",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": true,
+   "instantiation": {
+    "market_data": [
+     "Aiera",
+     "Alpha Vantage MCP Server",
+     "AngelList"
+    ],
+    "file_storage": [
+     "Google Drive",
+     "Box",
+     "Dropbox"
+    ],
+    "task_pm": [
+     "Atlassian Rovo",
+     "Adobe Workfront",
+     "Asana"
+    ],
+    "marketing_analytics": [
+     "Adobe Customer Journey Analytics",
+     "Adobe Experience Manager",
+     "Adobe Marketing Agent"
+    ],
+    "cloud_infra": [
+     "AWS API MCP Server",
+     "AWS Marketplace",
+     "Alpic"
+    ],
+    "weather_geo": [
+     "SkyWatch",
+     "TomTom Maps",
+     "TomTom Maps MCP"
+    ],
+    "meetings_transcripts": [
+     "AI TeamsMaestro",
+     "Attention",
+     "Caretta"
+    ],
+    "ecommerce_logistics": [
+     "BuyLater",
+     "Domhaul",
+     "GoDaddy"
+    ]
+   }
+  },
+  {
+   "mode": "buildable",
+   "seed": "observability",
+   "archetypes": [
+    "observability",
+    "database_warehouse",
+    "market_data",
+    "task_pm",
+    "marketing_analytics",
+    "weather_geo",
+    "meetings_transcripts",
+    "cloud_infra"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "code",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "media",
+    "money",
+    "project",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": true,
+   "instantiation": {
+    "observability": [
+     "Coralogix",
+     "Datadog",
+     "Honeycomb"
+    ],
+    "database_warehouse": [
+     "Airtable",
+     "Blaze SQL",
+     "ClickHouse"
+    ],
+    "market_data": [
+     "Aiera",
+     "Alpha Vantage MCP Server",
+     "AngelList"
+    ],
+    "task_pm": [
+     "Atlassian Rovo",
+     "Adobe Workfront",
+     "Asana"
+    ],
+    "marketing_analytics": [
+     "Adobe Customer Journey Analytics",
+     "Adobe Experience Manager",
+     "Adobe Marketing Agent"
+    ],
+    "weather_geo": [
+     "SkyWatch",
+     "TomTom Maps",
+     "TomTom Maps MCP"
+    ],
+    "meetings_transcripts": [
+     "AI TeamsMaestro",
+     "Attention",
+     "Caretta"
+    ],
+    "cloud_infra": [
+     "AWS API MCP Server",
+     "AWS Marketplace",
+     "Alpic"
+    ]
+   }
+  },
+  {
+   "mode": "buildable",
+   "seed": "accounting_billing",
+   "archetypes": [
+    "accounting_billing",
+    "database_warehouse",
+    "market_data",
+    "task_pm",
+    "weather_geo",
+    "meetings_transcripts",
+    "cloud_infra",
+    "bi_analytics"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "code",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "media",
+    "money",
+    "project",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": true,
+   "instantiation": {
+    "accounting_billing": [
+     "Aiwyn Tax (formerly Column Tax)",
+     "Baremetrics",
+     "Campfire"
+    ],
+    "database_warehouse": [
+     "Airtable",
+     "Blaze SQL",
+     "ClickHouse"
+    ],
+    "market_data": [
+     "Aiera",
+     "Alpha Vantage MCP Server",
+     "AngelList"
+    ],
+    "task_pm": [
+     "Atlassian Rovo",
+     "Adobe Workfront",
+     "Asana"
+    ],
+    "weather_geo": [
+     "SkyWatch",
+     "TomTom Maps",
+     "TomTom Maps MCP"
+    ],
+    "meetings_transcripts": [
+     "AI TeamsMaestro",
+     "Attention",
+     "Caretta"
+    ],
+    "cloud_infra": [
+     "AWS API MCP Server",
+     "AWS Marketplace",
+     "Alpic"
+    ],
+    "bi_analytics": [
+     "Amplitude",
+     "Asset Vision",
+     "Contentsquare"
+    ]
+   }
+  },
+  {
+   "mode": "buildable",
+   "seed": "marketing_analytics",
+   "archetypes": [
+    "marketing_analytics",
+    "file_storage",
+    "presentations",
+    "market_data",
+    "cloud_infra",
+    "weather_geo",
+    "ecommerce_logistics",
+    "bi_analytics"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "code",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "money",
+    "project",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": true,
+   "instantiation": {
+    "marketing_analytics": [
+     "Adobe Customer Journey Analytics",
+     "Adobe Experience Manager",
+     "Adobe Marketing Agent"
+    ],
+    "file_storage": [
+     "Google Drive",
+     "Box",
+     "Dropbox"
+    ],
+    "presentations": [
+     "Beautiful.ai",
+     "Gamma",
+     "HyperFrames by HeyGen"
+    ],
+    "market_data": [
+     "Aiera",
+     "Alpha Vantage MCP Server",
+     "AngelList"
+    ],
+    "cloud_infra": [
+     "AWS API MCP Server",
+     "AWS Marketplace",
+     "Alpic"
+    ],
+    "weather_geo": [
+     "SkyWatch",
+     "TomTom Maps",
+     "TomTom Maps MCP"
+    ],
+    "ecommerce_logistics": [
+     "BuyLater",
+     "Domhaul",
+     "GoDaddy"
+    ],
+    "bi_analytics": [
+     "Amplitude",
+     "Asset Vision",
+     "Contentsquare"
+    ]
+   }
+  },
+  {
+   "mode": "buildable",
+   "seed": "observability",
+   "archetypes": [
+    "observability",
+    "file_storage",
+    "presentations",
+    "market_data",
+    "marketing_analytics",
+    "cloud_infra",
+    "weather_geo",
+    "ecommerce_logistics"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "code",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "money",
+    "project",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": true,
+   "instantiation": {
+    "observability": [
+     "Coralogix",
+     "Datadog",
+     "Honeycomb"
+    ],
+    "file_storage": [
+     "Google Drive",
+     "Box",
+     "Dropbox"
+    ],
+    "presentations": [
+     "Beautiful.ai",
+     "Gamma",
+     "HyperFrames by HeyGen"
+    ],
+    "market_data": [
+     "Aiera",
+     "Alpha Vantage MCP Server",
+     "AngelList"
+    ],
+    "marketing_analytics": [
+     "Adobe Customer Journey Analytics",
+     "Adobe Experience Manager",
+     "Adobe Marketing Agent"
+    ],
+    "cloud_infra": [
+     "AWS API MCP Server",
+     "AWS Marketplace",
+     "Alpic"
+    ],
+    "weather_geo": [
+     "SkyWatch",
+     "TomTom Maps",
+     "TomTom Maps MCP"
+    ],
+    "ecommerce_logistics": [
+     "BuyLater",
+     "Domhaul",
+     "GoDaddy"
+    ]
+   }
+  },
+  {
+   "mode": "buildable",
+   "seed": "payments_banking",
+   "archetypes": [
+    "payments_banking",
+    "file_storage",
+    "task_pm",
+    "prospecting_enrichment",
+    "accounting_billing",
+    "meetings_transcripts",
+    "market_data",
+    "ecommerce_logistics"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "company",
+    "domain",
+    "email",
+    "file",
+    "media",
+    "money",
+    "phone",
+    "project",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": false,
+   "instantiation": {
+    "payments_banking": [
+     "Affinity",
+     "Airwallex Developer",
+     "Allowance"
+    ],
+    "file_storage": [
+     "Google Drive",
+     "Box",
+     "Dropbox"
+    ],
+    "task_pm": [
+     "Atlassian Rovo",
+     "Adobe Workfront",
+     "Asana"
+    ],
+    "prospecting_enrichment": [
+     "Apollo.io",
+     "Clay",
+     "Contract-Factory — Sociétés & SIREN"
+    ],
+    "accounting_billing": [
+     "Aiwyn Tax (formerly Column Tax)",
+     "Baremetrics",
+     "Campfire"
+    ],
+    "meetings_transcripts": [
+     "AI TeamsMaestro",
+     "Attention",
+     "Caretta"
+    ],
+    "market_data": [
+     "Aiera",
+     "Alpha Vantage MCP Server",
+     "AngelList"
+    ],
+    "ecommerce_logistics": [
+     "BuyLater",
+     "Domhaul",
+     "GoDaddy"
+    ]
+   }
+  },
+  {
+   "mode": "buildable",
+   "seed": "support_cx",
+   "archetypes": [
+    "support_cx",
+    "database_warehouse",
+    "task_pm",
+    "accounting_billing",
+    "meetings_transcripts",
+    "prospecting_enrichment",
+    "calendar",
+    "ecommerce_logistics"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "company",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "media",
+    "money",
+    "phone",
+    "project",
+    "rows",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": false,
+   "instantiation": {
+    "support_cx": [
+     "Dovetail",
+     "Enterpret",
+     "Freshservice"
+    ],
+    "database_warehouse": [
+     "Airtable",
+     "Blaze SQL",
+     "ClickHouse"
+    ],
+    "task_pm": [
+     "Atlassian Rovo",
+     "Adobe Workfront",
+     "Asana"
+    ],
+    "accounting_billing": [
+     "Aiwyn Tax (formerly Column Tax)",
+     "Baremetrics",
+     "Campfire"
+    ],
+    "meetings_transcripts": [
+     "AI TeamsMaestro",
+     "Attention",
+     "Caretta"
+    ],
+    "prospecting_enrichment": [
+     "Apollo.io",
+     "Clay",
+     "Contract-Factory — Sociétés & SIREN"
+    ],
+    "calendar": [
+     "Google Calendar",
+     "Akiflow",
+     "Calendly"
+    ],
+    "ecommerce_logistics": [
+     "BuyLater",
+     "Domhaul",
+     "GoDaddy"
+    ]
+   }
+  },
+  {
+   "mode": "buildable",
+   "seed": "crm_sales",
+   "archetypes": [
+    "crm_sales",
+    "file_storage",
+    "task_pm",
+    "marketing_analytics",
+    "meetings_transcripts",
+    "ecommerce_logistics",
+    "prospecting_enrichment",
+    "accounting_billing"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "company",
+    "domain",
+    "email",
+    "file",
+    "media",
+    "money",
+    "phone",
+    "project",
+    "rows",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": false,
+   "instantiation": {
+    "crm_sales": [
+     "HubSpot",
+     "Actively",
+     "Attio"
+    ],
+    "file_storage": [
+     "Google Drive",
+     "Box",
+     "Dropbox"
+    ],
+    "task_pm": [
+     "Atlassian Rovo",
+     "Adobe Workfront",
+     "Asana"
+    ],
+    "marketing_analytics": [
+     "Adobe Customer Journey Analytics",
+     "Adobe Experience Manager",
+     "Adobe Marketing Agent"
+    ],
+    "meetings_transcripts": [
+     "AI TeamsMaestro",
+     "Attention",
+     "Caretta"
+    ],
+    "ecommerce_logistics": [
+     "BuyLater",
+     "Domhaul",
+     "GoDaddy"
+    ],
+    "prospecting_enrichment": [
+     "Apollo.io",
+     "Clay",
+     "Contract-Factory — Sociétés & SIREN"
+    ],
+    "accounting_billing": [
+     "Aiwyn Tax (formerly Column Tax)",
+     "Baremetrics",
+     "Campfire"
+    ]
+   }
+  },
+  {
+   "mode": "buildable",
+   "seed": "ecommerce_logistics",
+   "archetypes": [
+    "ecommerce_logistics",
+    "file_storage",
+    "presentations",
+    "marketing_analytics",
+    "media_av",
+    "cloud_infra",
+    "ai_tools",
+    "research_science"
+   ],
+   "connector_count": 8,
+   "join_keys": [
+    "code",
+    "domain",
+    "email",
+    "file",
+    "image",
+    "media",
+    "money",
+    "project",
+    "rows",
+    "timestamp",
+    "url"
+   ],
+   "feedback_closure": true,
+   "blast_radius": 3,
+   "has_delivery": true,
+   "has_scheduler": true,
+   "instantiation": {
+    "ecommerce_logistics": [
+     "BuyLater",
+     "Domhaul",
+     "GoDaddy"
+    ],
+    "file_storage": [
+     "Google Drive",
+     "Box",
+     "Dropbox"
+    ],
+    "presentations": [
+     "Beautiful.ai",
+     "Gamma",
+     "HyperFrames by HeyGen"
+    ],
+    "marketing_analytics": [
+     "Adobe Customer Journey Analytics",
+     "Adobe Experience Manager",
+     "Adobe Marketing Agent"
+    ],
+    "media_av": [
+     "Audible",
+     "Cloudglue",
+     "Cloudinary"
+    ],
+    "cloud_infra": [
+     "AWS API MCP Server",
+     "AWS Marketplace",
+     "Alpic"
+    ],
+    "ai_tools": [
+     "Claude in Chrome",
+     "Orbismo",
+     "Pega Blueprint"
+    ],
+    "research_science": [
+     "10x Genomics Cloud",
+     "AdisInsight",
+     "Amass Connector"
+    ]
+   }
+  }
+ ],
+ "mesh": [
+  {
+   "mode": "mesh",
+   "name": "maximum_safe_mesh",
+   "archetypes": [
+    "bi_analytics",
+    "calendar",
+    "code_context",
+    "gov_public_data",
+    "job_search",
+    "legal",
+    "market_data",
+    "marketing_analytics",
+    "meetings_transcripts",
+    "notes_docs",
+    "prospecting_enrichment",
+    "research_science",
+    "vertical_ops",
+    "weather_geo",
+    "web_search"
+   ],
+   "connector_count": 293,
+   "join_keys": [
+    "code",
+    "company",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "media",
+    "money",
+    "phone",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "blast_radius": 0,
+   "fan_in": 293,
+   "chain_depth": 3,
+   "per_archetype": {
+    "market_data": 53,
+    "research_science": 36,
+    "bi_analytics": 35,
+    "marketing_analytics": 32,
+    "legal": 32,
+    "meetings_transcripts": 28,
+    "code_context": 20,
+    "prospecting_enrichment": 18,
+    "gov_public_data": 14,
+    "web_search": 9,
+    "job_search": 8,
+    "weather_geo": 5,
+    "calendar": 1,
+    "notes_docs": 1,
+    "vertical_ops": 1
+   },
+   "note": "Every read-only connector in the directory. This is the hard ceiling on a zero-blast-radius system — bounded by the registry, not by imagination."
+  },
+  {
+   "mode": "mesh",
+   "name": "market_omniscience",
+   "archetypes": [
+    "market_data",
+    "research_science",
+    "marketing_analytics",
+    "gov_public_data",
+    "web_search",
+    "bi_analytics",
+    "prospecting_enrichment",
+    "job_search"
+   ],
+   "connector_count": 205,
+   "join_keys": [
+    "company",
+    "domain",
+    "email",
+    "file",
+    "geo",
+    "image",
+    "money",
+    "phone",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "blast_radius": 0,
+   "fan_in": 205,
+   "chain_depth": 3,
+   "per_archetype": {
+    "market_data": 53,
+    "research_science": 36,
+    "marketing_analytics": 32,
+    "gov_public_data": 14,
+    "web_search": 9,
+    "bi_analytics": 35,
+    "prospecting_enrichment": 18,
+    "job_search": 8
+   },
+   "sample": [
+    "Mergr",
+    "AngelList",
+    "Webull",
+    "Oxford Economics",
+    "S&P Global - Deterministic Retrieval",
+    "PitchBook Premium",
+    "The Tie Fundraising and M&A",
+    "Multiples.vc",
+    "FactSet AI-Ready Data",
+    "Interactive Brokers (IBKR)",
+    "Similarweb",
+    "Pyth",
+    "viaNexus vAST",
+    "Morningstar"
+   ]
+  },
+  {
+   "mode": "mesh",
+   "name": "demand_signal_mesh",
+   "archetypes": [
+    "marketing_analytics",
+    "support_cx",
+    "web_search",
+    "bi_analytics",
+    "market_data",
+    "local_services",
+    "weather_geo",
+    "job_search"
+   ],
+   "connector_count": 142,
+   "join_keys": [
+    "company",
+    "domain",
+    "geo",
+    "image",
+    "money",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "blast_radius": 0,
+   "fan_in": 142,
+   "chain_depth": 3,
+   "per_archetype": {
+    "marketing_analytics": 32,
+    "support_cx": 0,
+    "web_search": 9,
+    "bi_analytics": 35,
+    "market_data": 53,
+    "local_services": 0,
+    "weather_geo": 5,
+    "job_search": 8
+   },
+   "sample": [
+    "Syncly Social",
+    "Attribution MCP",
+    "Moz Local",
+    "OpenRush",
+    "Viberate music data",
+    "Channel3 MCP",
+    "Semrush",
+    "Ahrefs",
+    "Sociality.io",
+    "Windsor.ai",
+    "Sellerise",
+    "Watching That",
+    "Adobe Experience Manager",
+    "Helium 10"
+   ]
+  },
+  {
+   "mode": "mesh",
+   "name": "risk_compliance_radar",
+   "archetypes": [
+    "security",
+    "legal",
+    "gov_public_data",
+    "market_data",
+    "observability",
+    "identity_verification",
+    "code_context"
+   ],
+   "connector_count": 119,
+   "join_keys": [
+    "code",
+    "domain",
+    "file",
+    "geo",
+    "money",
+    "rows",
+    "ticker",
+    "timestamp",
+    "url"
+   ],
+   "blast_radius": 0,
+   "fan_in": 119,
+   "chain_depth": 3,
+   "per_archetype": {
+    "security": 0,
+    "legal": 32,
+    "gov_public_data": 14,
+    "market_data": 53,
+    "observability": 0,
+    "identity_verification": 0,
+    "code_context": 20
+   },
+   "sample": [
+    "Vasara",
+    "Juridata",
+    "SeedLegals",
+    "Harvey",
+    "CoCounsel Legal",
+    "Datasite",
+    "XLSCOUT ClaimChart LLM",
+    "CourtListener",
+    "HeyCounsel",
+    "Policy Doctor",
+    "Jus Mundi",
+    "Legal Data Hunter",
+    "Ontra",
+    "Midpage Legal Research"
+   ]
+  }
+ ]
+}
